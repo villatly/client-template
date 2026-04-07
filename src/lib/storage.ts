@@ -52,6 +52,7 @@ export async function writeFile(key: string, content: string): Promise<void> {
       access: "private",
       addRandomSuffix: false,
       contentType: "application/json",
+      allowOverwrite: true,
     });
     return;
   }
