@@ -46,6 +46,9 @@ const nextConfig: NextConfig = {
     root: path.join(__dirname),
   },
   outputFileTracingRoot: path.join(__dirname),
+  // Keep nodemailer as a native Node.js module (not bundled by webpack/Turbopack).
+  // Required for SMTP email delivery in Vercel serverless functions.
+  serverExternalPackages: ["nodemailer"],
 };
 
 export default nextConfig;

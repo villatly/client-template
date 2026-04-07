@@ -62,6 +62,12 @@ async function send(message: OutboundEmail): Promise<void> {
       break;
     }
 
+    case "smtp": {
+      const { sendViaSMTP } = await import("./providers/smtp");
+      await sendViaSMTP(payload);
+      break;
+    }
+
     case "dev":
     default: {
       const { sendViaDev } = await import("./providers/dev");

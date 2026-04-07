@@ -7,6 +7,6 @@
   "timezone": "Asia/Makassar",
   "defaultLocale": "en",
   "enabledLocales": ["en"],
-  "adminEmail": "owner@villa-amara.com",
+  "adminEmail": "",
   "premiumLayouts": true
 }
