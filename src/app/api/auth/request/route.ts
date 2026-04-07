@@ -32,8 +32,10 @@ export async function POST(req: Request) {
       }
     );
   }
-  const config = await getConfig();
-  const adminEmail = config.adminEmail;
+  // OTP always goes to ADMIN_EMAIL (env var) — fixed at installation, never user-editable.
+  // This is intentionally separate from config.adminEmail, which is the booking
+  // notification email and is configurable from the admin panel.
+  const adminEmail = process.env.ADMIN_EMAIL;
 
   if (!adminEmail) {
     return NextResponse.json(
@@ -41,6 +43,8 @@ export async function POST(req: Request) {
       { status: 503 }
     );
   }
+
+  const config = await getConfig();
 
   const code = await generateOTP();
 
