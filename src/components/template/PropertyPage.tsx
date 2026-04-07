@@ -1,0 +1,108 @@
+import type { PropertyContent, BrandingConfig, SectionVisibility, BookingConfig } from "@/lib/types";
+import type { LayoutPreset } from "@/lib/layout";
+import { getBrandingCSSVars, getFontClass } from "@/lib/theme";
+
+import Hero from "@/components/template/sections/Hero";
+import BookingCTA from "@/components/template/sections/BookingCTA";
+import About from "@/components/template/sections/About";
+import Gallery from "@/components/template/sections/Gallery";
+import Rooms from "@/components/template/sections/Rooms";
+import Amenities from "@/components/template/sections/Amenities";
+import Reviews from "@/components/template/sections/Reviews";
+import FAQ from "@/components/template/sections/FAQ";
+import Location from "@/components/template/sections/Location";
+import NearbyAttractions from "@/components/template/sections/NearbyAttractions";
+import Policies from "@/components/template/sections/Policies";
+import ContactCTA from "@/components/template/sections/ContactCTA";
+import Footer from "@/components/template/sections/Footer";
+import WhatsAppButton from "@/components/template/WhatsAppButton";
+
+interface PropertyPageProps {
+  property: {
+    content: PropertyContent;
+    branding: BrandingConfig;
+    sections: SectionVisibility;
+    booking: BookingConfig;
+  };
+}
+
+export default function PropertyPage({ property }: PropertyPageProps) {
+  const { content, branding, sections, booking } = property;
+  const fontClass = getFontClass(branding.fontStyle);
+  const layout: LayoutPreset = branding.layoutPreset ?? "default";
+
+  return (
+    <div style={getBrandingCSSVars(branding)} className={fontClass}>
+      {sections.hero && (
+        <Hero content={content.hero} branding={branding} booking={booking} layout={layout} />
+      )}
+
+      {sections.bookingCta && (
+        <BookingCTA
+          contact={content.contact}
+          branding={branding}
+          propertyName={content.identity.name}
+          booking={booking}
+          layout={layout}
+        />
+      )}
+
+      {sections.about && (
+        <About description={content.description} identity={content.identity} layout={layout} />
+      )}
+
+      {sections.gallery && (
+        <Gallery items={content.gallery} layout={layout} />
+      )}
+
+      {sections.rooms && (
+        <Rooms rooms={content.rooms} propertyType={content.identity.propertyType} booking={booking} contact={content.contact} layout={layout} />
+      )}
+
+      {sections.amenities && (
+        <Amenities amenities={content.amenities} layout={layout} />
+      )}
+
+      {sections.reviews && (
+        <Reviews reviews={content.reviews} layout={layout} />
+      )}
+
+      {sections.faq && (
+        <FAQ items={content.faq} layout={layout} />
+      )}
+
+      {sections.location && (
+        <Location location={content.location} layout={layout} />
+      )}
+
+      {sections.nearbyAttractions && (
+        <NearbyAttractions attractions={content.nearbyAttractions} layout={layout} />
+      )}
+
+      {sections.policies && (
+        <Policies policies={content.policies} layout={layout} />
+      )}
+
+      {sections.contactCta && (
+        <ContactCTA
+          contact={content.contact}
+          branding={branding}
+          propertyName={content.identity.name}
+          layout={layout}
+        />
+      )}
+
+      {sections.footer && (
+        <Footer identity={content.identity} contact={content.contact} layout={layout} />
+      )}
+
+      {/* Floating WhatsApp button — only renders if a number is configured */}
+      {booking.bookingWhatsapp && (
+        <WhatsAppButton
+          number={booking.bookingWhatsapp}
+          propertyName={content.identity.name}
+        />
+      )}
+    </div>
+  );
+}

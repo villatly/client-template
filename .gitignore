@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# testing
+coverage/
+
+# next.js
+.next/
+out/
+
+# production
+build/
+
+# misc
+.DS_Store
+*.pem
+.env*.local
+npm-debug.log*
+
+# email previews (dev provider output — open in browser to preview)
+.email-previews/
+
+# admin auth state (OTP tokens — server-side only, never commit)
+src/content/property/.auth-otp.json

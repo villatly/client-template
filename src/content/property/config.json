@@ -1,0 +1,12 @@
+{
+  "slug": "villa-amara-bali",
+  "name": "Villa Amara",
+  "propertyType": "villa",
+  "location": "Ubud, Bali",
+  "country": "Indonesia",
+  "timezone": "Asia/Makassar",
+  "defaultLocale": "en",
+  "enabledLocales": ["en"],
+  "adminEmail": "owner@villa-amara.com",
+  "premiumLayouts": true
+}

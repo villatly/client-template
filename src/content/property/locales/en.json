@@ -1,0 +1,377 @@
+{
+  "identity": {
+    "slug": "villa-amara-bali",
+    "name": "Villa Amara",
+    "propertyType": "villa",
+    "location": "Ubud, Bali",
+    "country": "Indonesia"
+  },
+  "hero": {
+    "headline": "Where Tranquility Meets Tropical Elegance",
+    "tagline": "A private luxury retreat nestled among the rice terraces of Ubud",
+    "intro": "Discover the soul of Bali at Villa Amara, an exquisite three-bedroom estate combining traditional Balinese architecture with modern luxury. Wake to panoramic rice field views, swim in your private infinity pool, and experience the cultural heart of Ubud just minutes from your door.",
+    "image": "https://images.unsplash.com/photo-1602002418816-5c0aeef426aa?w=1920&q=80",
+    "primaryCTA": {
+      "label": "Check Availability",
+      "url": "#booking"
+    },
+    "secondaryCTA": {
+      "label": "Explore Villa",
+      "url": "#gallery"
+    }
+  },
+  "description": {
+    "short": "Villa Amara is a luxury three-bedroom retreat in Ubud, Bali, featuring a private infinity pool, sweeping rice field views, and authentic Balinese architecture designed for unforgettable tropical escapes.",
+    "long": "Set on over 2,000 square metres of lush tropical gardens on the outskirts of Ubud, Villa Amara offers an intimate escape into the natural beauty and cultural richness of Bali. The estate features three individually designed pavilions, each blending hand-carved Javanese teak, natural stone, and open-air living with the comforts of a five-star resort. The centrepiece of the property is a 14-metre infinity pool overlooking tiered rice paddies, framed by mature coconut palms and fragrant frangipani trees. Guests enjoy a fully equipped gourmet kitchen, spacious outdoor dining pavilion, dedicated spa treatment room, and the attentive service of a private villa manager and housekeeping staff. Whether you seek a romantic retreat, a family gathering, or a creative escape, Villa Amara provides the perfect balance of seclusion and accessibility, with Ubud's world-renowned restaurants, galleries, and temples just a short drive away."
+  },
+  "gallery": [
+    {
+      "url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&q=80",
+      "alt": "Lush green rice terraces cascading down hillside in Bali"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=1200&q=80",
+      "alt": "Luxury bedroom with elegant white linens and warm ambient lighting"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1544984243-ec57ea16fe25?w=1200&q=80",
+      "alt": "Tropical garden pathway with vibrant green foliage and exotic plants"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1559599238-308793637427?w=1200&q=80",
+      "alt": "Traditional Balinese temple with ornate stone carvings and tiered roof"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80",
+      "alt": "Outdoor dining area with elegant table setting in a tropical setting"
+    },
+    {
+      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/397908215.jpg?k=6c220deb0f0c9a7531cfd593c6b5f598f7163800f84c8378fce13eccadced1ee&o=",
+      "alt": "Amazing villa in Lombok Bali"
+    }
+  ],
+  "rooms": [
+    {
+      "name": "Deluxe Room",
+      "shortDescription": "King suite with panoramic rice field views",
+      "description": "The Master Pavilion is a grand open-air suite blending hand-carved Javanese teak with contemporary luxury. Step directly onto your private terrace to take in sweeping views of the terraced rice paddies as the morning mist rises.",
+      "image": "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=1200&q=80",
+      "capacity": 2,
+      "bedType": "King bed",
+      "bathroomType": "Ensuite with outdoor rain shower",
+      "size": "85 m²",
+      "priceFrom": "$420",
+      "highlights": [
+        "Private terrace",
+        "Rice field view",
+        "Outdoor rain shower",
+        "Soaking tub"
+      ],
+      "amenities": [
+        "Mini bar",
+        "Nespresso machine",
+        "Safety deposit box",
+        "Smart TV"
+      ],
+      "ctaLabel": "",
+      "ctaUrl": "",
+      "isFeatured": true,
+      "gallery": [
+        {
+          "url": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80",
+          "alt": "Luxury king bedroom with teak headboard and ambient lighting"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200&q=80",
+          "alt": "Private terrace with rattan seating overlooking rice fields"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&q=80",
+          "alt": "Outdoor rain shower surrounded by tropical plants"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200&q=80",
+          "alt": "Deep soaking bathtub with candles and flower petals"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=1200&q=80",
+          "alt": "Open-air sitting area with rice field panorama at sunrise"
+        },
+        {
+          "url": "/uploads/1774890095545-typtxb.png",
+          "alt": ""
+        },
+        {
+          "url": "/uploads/1774890124297-34c5ce.png",
+          "alt": ""
+        }
+      ],
+      "id": "room-1",
+      "displayOrder": 0
+    },
+    {
+      "id": "room-2",
+      "name": "Garden Pavilion",
+      "shortDescription": "Peaceful garden retreat with pool access",
+      "description": "Nestled among tropical gardens with direct access to the infinity pool, the Garden Pavilion offers a serene and private sanctuary. Traditional stone carvings and bamboo accents create an authentic Balinese atmosphere.",
+      "image": "https://images.unsplash.com/photo-1544984243-ec57ea16fe25?w=1200&q=80",
+      "capacity": 2,
+      "bedType": "Queen bed",
+      "bathroomType": "Ensuite with garden shower",
+      "size": "65 m²",
+      "priceFrom": "$320",
+      "highlights": [
+        "Pool access",
+        "Tropical garden",
+        "Garden shower",
+        "Sun loungers"
+      ],
+      "amenities": [
+        "Air conditioning",
+        "Mini bar",
+        "Safety deposit box",
+        "Smart TV"
+      ],
+      "gallery": [
+        {
+          "url": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&q=80",
+          "alt": "Tropical garden villa with pool and lush greenery"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80",
+          "alt": "Garden shower with bamboo walls and tropical plants"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=1200&q=80",
+          "alt": "Sun loungers beside a tropical pool at golden hour"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80",
+          "alt": "Cosy queen bedroom with natural wood and soft lighting"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1200&q=80",
+          "alt": "Stone pathway through tropical garden at night"
+        }
+      ],
+      "isFeatured": false,
+      "displayOrder": 1
+    },
+    {
+      "id": "room-3",
+      "name": "Pool Bungalow",
+      "shortDescription": "Family suite steps from the pool",
+      "description": "The Pool Bungalow is a spacious family suite ideal for groups or families travelling together. With twin beds that convert to a king and a private outdoor sitting area, it combines flexibility with Balinese charm.",
+      "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80",
+      "capacity": 4,
+      "bedType": "2 twin beds (convert to king)",
+      "bathroomType": "Ensuite with walk-in shower",
+      "size": "70 m²",
+      "priceFrom": "$380",
+      "highlights": [
+        "Poolside location",
+        "Flexible bed configuration",
+        "Outdoor seating",
+        "Kids welcome"
+      ],
+      "amenities": [
+        "Air conditioning",
+        "Mini bar",
+        "Safety deposit box",
+        "Smart TV",
+        "Extra beds available"
+      ],
+      "gallery": [
+        {
+          "url": "https://images.unsplash.com/photo-1573052905904-34ad8c27f0cc?w=1200&q=80",
+          "alt": "Spacious family room with twin beds and warm décor"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1540541338537-1e5f7a8b5b9a?w=1200&q=80",
+          "alt": "Infinity pool at dusk with palm tree silhouettes"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1504615755583-2916b52192a3?w=1200&q=80",
+          "alt": "Outdoor bungalow terrace with rattan chairs and jungle view"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80",
+          "alt": "Private pool surrounded by tropical garden"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1615880484746-a134be9a6ecf?w=1200&q=80",
+          "alt": "Walk-in rain shower with stone tiles and wooden accents"
+        }
+      ],
+      "isFeatured": false,
+      "displayOrder": 2
+    }
+  ],
+  "amenities": [
+    {
+      "icon": "pool",
+      "label": "14m Private Infinity Pool"
+    },
+    {
+      "icon": "wifi",
+      "label": "High-Speed Wi-Fi Throughout"
+    },
+    {
+      "icon": "ac",
+      "label": "Air Conditioning in All Rooms"
+    },
+    {
+      "icon": "kitchen",
+      "label": "Fully Equipped Gourmet Kitchen"
+    },
+    {
+      "icon": "parking",
+      "label": "Complimentary Private Parking"
+    },
+    {
+      "icon": "spa",
+      "label": "In-Villa Spa Treatment Room"
+    },
+    {
+      "icon": "staff",
+      "label": "Daily Housekeeping & Villa Manager"
+    },
+    {
+      "icon": "laundry",
+      "label": "Laundry & Pressing Service"
+    },
+    {
+      "icon": "dining",
+      "label": "Outdoor Dining Pavilion"
+    },
+    {
+      "icon": "garden",
+      "label": "Tropical Landscaped Gardens"
+    },
+    {
+      "icon": "safe",
+      "label": "In-Room Safety Deposit Boxes"
+    },
+    {
+      "icon": "transport",
+      "label": "Airport Transfer Arrangement"
+    }
+  ],
+  "reviews": [
+    {
+      "author": "Sophie Laurent",
+      "text": "Villa Amara exceeded every expectation. The rice field views from the pool are breathtaking, and the staff anticipated our every need without being intrusive. We extended our stay by three nights and are already planning our return.",
+      "rating": 5,
+      "country": "France"
+    },
+    {
+      "author": "James Whitfield",
+      "text": "We stayed for our anniversary and it was nothing short of magical. The Master Pavilion is stunning, the breakfast prepared by the villa cook was outstanding, and the location is perfectly quiet yet close to everything Ubud has to offer.",
+      "rating": 5,
+      "country": "United Kingdom"
+    },
+    {
+      "author": "Mei Tanaka",
+      "text": "A beautifully maintained property with genuine Balinese character. The gardens alone are worth the visit. Our family of five had more than enough space, and the pool bungalow was perfect for the kids. Highly recommend for families.",
+      "rating": 5,
+      "country": "Japan"
+    },
+    {
+      "author": "David Muller",
+      "text": "Exceptional value for a villa of this calibre. The open-air living areas are gorgeous, the Wi-Fi was reliable for remote work, and the villa manager helped us arrange everything from cooking classes to temple visits. Four stars only because the road to the villa is a bit narrow.",
+      "rating": 4,
+      "country": "Australia"
+    },
+    {
+      "author": "Carolina Restrepo",
+      "text": "This was the highlight of our three-week trip through Southeast Asia. Waking up to the sound of birds and the view of the rice terraces was something I will never forget. The spa treatments arranged in-villa were world-class.",
+      "rating": 5,
+      "country": "Colombia"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Do you arrange airport transfers?",
+      "answer": "Yes, we offer private airport transfers from Ngurah Rai International Airport (DPS) to the villa. The journey takes approximately 90 minutes depending on traffic. Transfers can be arranged at the time of booking for an additional fee, and your driver will meet you at arrivals with a welcome sign."
+    },
+    {
+      "question": "Is the pool suitable for children?",
+      "answer": "The infinity pool measures 14 metres by 4 metres and has a shallow wading section at one end (0.5m depth) that is suitable for younger children under supervision. Pool towels and flotation devices are provided. Children must be supervised by an adult at all times."
+    },
+    {
+      "question": "Is breakfast included in the rate?",
+      "answer": "A complimentary daily breakfast is included for all guests. Our villa cook prepares a choice of Western, Asian, or traditional Balinese breakfast each morning, served in the outdoor dining pavilion. Dietary requirements and allergies can be accommodated with advance notice."
+    },
+    {
+      "question": "How reliable is the Wi-Fi?",
+      "answer": "Villa Amara is equipped with high-speed fibre-optic Wi-Fi covering all indoor and outdoor living areas. Speeds typically range from 50 to 100 Mbps, making it suitable for video calls, streaming, and remote work. A backup connection ensures uninterrupted service."
+    },
+    {
+      "question": "Are there restaurants nearby?",
+      "answer": "Ubud is renowned for its dining scene. Within a 10-minute drive you will find a wide selection of restaurants ranging from authentic warungs serving local cuisine to internationally acclaimed fine-dining establishments. Our villa manager is happy to provide personalised recommendations and assist with reservations."
+    },
+    {
+      "question": "What is the cancellation policy?",
+      "answer": "Reservations cancelled more than 30 days before check-in receive a full refund. Cancellations between 15 and 30 days before check-in are eligible for a 50% refund. Cancellations within 14 days of check-in are non-refundable. We recommend purchasing travel insurance for added peace of mind."
+    }
+  ],
+  "location": {
+    "areaName": "Ubud, Bali",
+    "mapUrl": "https://maps.google.com/?q=-8.5069,115.2625",
+    "description": "Villa Amara is located on the rural outskirts of Ubud, surrounded by emerald rice terraces and tropical forest. The villa sits just 15 minutes from the cultural centre of Ubud, offering easy access to temples, markets, galleries, and restaurants while providing the peace and privacy of the Balinese countryside."
+  },
+  "nearbyAttractions": [
+    {
+      "name": "Tegallalang Rice Terraces",
+      "description": "One of Bali's most iconic landscapes, these dramatically tiered rice paddies showcase the ancient Balinese cooperative irrigation system known as subak.",
+      "travelTime": "15 min drive"
+    },
+    {
+      "name": "Ubud Monkey Forest",
+      "description": "A sacred sanctuary home to over 1,200 long-tailed macaques set within a lush forest of ancient banyan and nutmeg trees, with moss-covered temples and walking paths.",
+      "travelTime": "20 min drive"
+    },
+    {
+      "name": "Tirta Empul Temple",
+      "description": "A revered Hindu water temple dating to 962 AD, known for its sacred spring and purification pools where visitors can participate in traditional cleansing rituals.",
+      "travelTime": "25 min drive"
+    },
+    {
+      "name": "Ubud Art Market",
+      "description": "A vibrant traditional market in the heart of Ubud offering handcrafted textiles, wood carvings, paintings, jewellery, and other artisanal goods from local Balinese craftspeople.",
+      "travelTime": "20 min drive"
+    },
+    {
+      "name": "Campuhan Ridge Walk",
+      "description": "A scenic hillside trail winding between two river valleys, offering panoramic views of palm-covered hills and a peaceful morning walk above the treetops.",
+      "travelTime": "20 min drive"
+    }
+  ],
+  "policies": {
+    "checkIn": "15:00",
+    "checkOut": "11:00",
+    "cancellation": "Free cancellation up to 30 days before check-in. 50% refund for cancellations 15-30 days prior. Non-refundable within 14 days of arrival.",
+    "notes": [
+      "A refundable security deposit of $300 is collected upon arrival.",
+      "Maximum occupancy is 6 guests across all rooms.",
+      "Smoking is permitted in outdoor areas only.",
+      "Pets are not permitted on the property.",
+      "Quiet hours are observed between 22:00 and 07:00.",
+      "Valid government-issued ID or passport required at check-in."
+    ]
+  },
+  "contact": {
+    "whatsapp": "+62 812 3456 7890",
+    "email": "reservations@villaamarabali.com",
+    "phone": "+62 361 456 789",
+    "ctaButtons": [
+      { "label": "Book on Booking.com", "url": "https://www.booking.com/hotel/id/villa-amara-ubud" },
+      { "label": "View on Airbnb", "url": "https://www.airbnb.com/rooms/villa-amara-ubud" }
+    ]
+  },
+  "seo": {
+    "title": "Villa Amara Ubud | Luxury Private Pool Villa in Bali",
+    "description": "Book Villa Amara, a luxury three-bedroom private pool villa in Ubud, Bali. Stunning rice field views, traditional Balinese architecture, and five-star service. Ideal for couples, families, and retreats.",
+    "ogImage": "https://images.unsplash.com/photo-1602002418816-5c0aeef426aa?w=1200&q=80"
+  }
+}
