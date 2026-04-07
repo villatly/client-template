@@ -15,6 +15,10 @@ if (process.env.NODE_ENV === "production") {
       "Required for Stripe redirect URLs. Set to your production domain, e.g. https://yourdomain.com",
     ADMIN_SESSION_SECRET:
       "Required for admin authentication. Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"",
+    SUPABASE_URL:
+      "Required for database access. Get it from your Supabase project → Settings → API.",
+    SUPABASE_SERVICE_ROLE_KEY:
+      "Required for database access. Get it from your Supabase project → Settings → API.",
   };
 
   const missing = Object.entries(required).filter(([key]) => !process.env[key]);

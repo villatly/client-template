@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { put } from "@vercel/blob";
 import path from "path";
 import { writeFile, mkdir } from "fs/promises";
+import { uploadImage } from "@/lib/storage";
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"];
@@ -35,22 +35,17 @@ export async function POST(request: Request) {
 
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
   const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const buffer = Buffer.from(await file.arrayBuffer());
 
-  // ── Vercel Blob (production) ──────────────────────────────────────────────────
-  // When BLOB_READ_WRITE_TOKEN is set, upload to Vercel Blob with public access
-  // so the image URL can be used directly in <img> tags. The URL is permanent
-  // and survives deployments.
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const blob = await put(`uploads/${safeName}`, file, {
-      access: "public",
-      addRandomSuffix: false,
-    });
-    return NextResponse.json({ url: blob.url });
+  // ── Supabase Storage (production) ─────────────────────────────────────────
+  if (process.env.SUPABASE_URL) {
+    const url = await uploadImage(`uploads/${safeName}`, buffer, file.type);
+    return NextResponse.json({ url });
   }
 
-  // ── Local filesystem (dev) ────────────────────────────────────────────────────
+  // ── Local filesystem (dev) ────────────────────────────────────────────────
   const uploadDir = path.join(process.cwd(), "public", "uploads");
   await mkdir(uploadDir, { recursive: true });
-  await writeFile(path.join(uploadDir, safeName), Buffer.from(await file.arrayBuffer()));
+  await writeFile(path.join(uploadDir, safeName), buffer);
   return NextResponse.json({ url: `/uploads/${safeName}` });
 }
