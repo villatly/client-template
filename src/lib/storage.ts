@@ -117,7 +117,6 @@ export async function writeFile(key: string, content: string): Promise<void> {
 
 export async function deleteFile(key: string): Promise<void> {
   const dbKey = toDbKey(key);
-  memCache.delete(dbKey);
 
   if (USE_SUPABASE) {
     await getClient().from("property_data").delete().eq("key", dbKey);
