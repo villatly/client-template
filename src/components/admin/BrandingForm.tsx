@@ -31,18 +31,18 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
   }
 
   const sectionLabels: Record<string, string> = {
-    bookingCta: "Barra de reserva",
-    about: "Sobre nosotros",
-    gallery: "Galería",
-    rooms: "Habitaciones / Rooms",
-    amenities: "Comodidades",
-    reviews: "Reseñas",
-    faq: "Preguntas frecuentes",
-    location: "Ubicación",
-    nearbyAttractions: "Atracciones cercanas",
-    policies: "Políticas",
-    contactCta: "Contacto CTA",
-    footer: "Pie de página",
+    bookingCta: "Booking Bar",
+    about: "About",
+    gallery: "Gallery",
+    rooms: "Rooms",
+    amenities: "Amenities",
+    reviews: "Reviews",
+    faq: "FAQ",
+    location: "Location",
+    nearbyAttractions: "Nearby Attractions",
+    policies: "Policies",
+    contactCta: "Contact CTA",
+    footer: "Footer",
   };
 
   async function handleSave() {
@@ -210,8 +210,8 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
 
       {/* Section Background Colors */}
       <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-1 text-sm font-semibold text-gray-900">Color de fondo por sección</h2>
-        <p className="mb-5 text-xs text-gray-500">Deja en blanco para usar el color por defecto de cada sección.</p>
+        <h2 className="mb-1 text-sm font-semibold text-gray-900">Section Background Colors</h2>
+        <p className="mb-5 text-xs text-gray-500">Leave blank to use each section&apos;s default background color.</p>
         <div className="grid gap-4 sm:grid-cols-2">
           {Object.entries(sectionLabels).map(([key, label]) => {
             const currentColor = (form.sectionColors as Record<string, string | undefined> | undefined)?.[key] ?? "";
@@ -229,7 +229,7 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
                     type="text"
                     value={currentColor}
                     onChange={(e) => setSectionColor(key, e.target.value)}
-                    placeholder="#ffffff (vacío = por defecto)"
+                    placeholder="#ffffff (empty = default)"
                     className={inputClass}
                   />
                   {currentColor && (
@@ -237,7 +237,7 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
                       type="button"
                       onClick={() => setSectionColor(key, "")}
                       className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
-                      title="Restablecer"
+                      title="Reset"
                     >
                       ✕
                     </button>
