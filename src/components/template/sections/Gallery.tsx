@@ -6,9 +6,10 @@ import type { LayoutPreset } from "@/lib/layout";
 interface GalleryProps {
   items: GalleryItem[];
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function Gallery({ items, layout = "default" }: GalleryProps) {
+export default function Gallery({ items, layout = "default", bgColor }: GalleryProps) {
   if (items.length === 0) return null;
 
   // ─── Editorial ─────────────────────────────────────────────────────────────
@@ -17,7 +18,7 @@ export default function Gallery({ items, layout = "default" }: GalleryProps) {
 
   if (layout === "editorial") {
     return (
-      <SectionWrapper id="gallery" background="white">
+      <SectionWrapper id="gallery" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
 
         <Reveal className="mb-14">
           <div className="border-l-4 border-primary pl-7">
@@ -77,7 +78,7 @@ export default function Gallery({ items, layout = "default" }: GalleryProps) {
 
   if (layout === "resort") {
     return (
-      <section id="gallery" className="bg-gray-950 py-20 md:py-28">
+      <section id="gallery" className="bg-gray-950 py-20 md:py-28" style={bgColor ? { backgroundColor: bgColor } : undefined}>
 
         <Reveal className="mx-auto mb-12 max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.4em] text-white/35">
@@ -143,7 +144,7 @@ export default function Gallery({ items, layout = "default" }: GalleryProps) {
   // 3-col grid with featured first image spanning 2 cols + 2 rows.
 
   return (
-    <SectionWrapper id="gallery" background="surface">
+    <SectionWrapper id="gallery" background="surface" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mb-12 text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           Gallery

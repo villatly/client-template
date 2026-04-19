@@ -44,43 +44,44 @@ export default function PropertyPage({ property }: PropertyPageProps) {
           propertyName={content.identity.name}
           booking={booking}
           layout={layout}
+          bgColor={branding.sectionColors?.bookingCta}
         />
       )}
 
       {sections.about && (
-        <About description={content.description} identity={content.identity} layout={layout} />
+        <About description={content.description} identity={content.identity} layout={layout} bgColor={branding.sectionColors?.about} />
       )}
 
       {sections.gallery && (
-        <Gallery items={content.gallery} layout={layout} />
+        <Gallery items={content.gallery} layout={layout} bgColor={branding.sectionColors?.gallery} />
       )}
 
       {sections.rooms && (
-        <Rooms rooms={content.rooms} propertyType={content.identity.propertyType} booking={booking} contact={content.contact} layout={layout} />
+        <Rooms rooms={content.rooms} propertyType={content.identity.propertyType} booking={booking} contact={content.contact} layout={layout} bgColor={branding.sectionColors?.rooms} />
       )}
 
       {sections.amenities && (
-        <Amenities amenities={content.amenities} layout={layout} />
+        <Amenities amenities={content.amenities} layout={layout} bgColor={branding.sectionColors?.amenities} />
       )}
 
       {sections.reviews && (
-        <Reviews reviews={content.reviews} layout={layout} />
+        <Reviews reviews={content.reviews} layout={layout} bgColor={branding.sectionColors?.reviews} />
       )}
 
       {sections.faq && (
-        <FAQ items={content.faq} layout={layout} />
+        <FAQ items={content.faq} layout={layout} bgColor={branding.sectionColors?.faq} />
       )}
 
       {sections.location && (
-        <Location location={content.location} layout={layout} />
+        <Location location={content.location} layout={layout} bgColor={branding.sectionColors?.location} />
       )}
 
       {sections.nearbyAttractions && (
-        <NearbyAttractions attractions={content.nearbyAttractions} layout={layout} />
+        <NearbyAttractions attractions={content.nearbyAttractions} layout={layout} bgColor={branding.sectionColors?.nearbyAttractions} />
       )}
 
       {sections.policies && (
-        <Policies policies={content.policies} layout={layout} />
+        <Policies policies={content.policies} layout={layout} bgColor={branding.sectionColors?.policies} />
       )}
 
       {sections.contactCta && (
@@ -89,11 +90,12 @@ export default function PropertyPage({ property }: PropertyPageProps) {
           branding={branding}
           propertyName={content.identity.name}
           layout={layout}
+          bgColor={branding.sectionColors?.contactCta}
         />
       )}
 
       {sections.footer && (
-        <Footer identity={content.identity} contact={content.contact} layout={layout} />
+        <Footer identity={content.identity} contact={content.contact} layout={layout} bgColor={branding.sectionColors?.footer} />
       )}
 
       {/* Floating WhatsApp button — only renders if a number is configured */}

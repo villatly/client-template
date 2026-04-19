@@ -5,14 +5,15 @@ interface FooterProps {
   identity: PropertyIdentity;
   contact: ContactInfo;
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function Footer({ identity, contact, layout }: FooterProps) {
+export default function Footer({ identity, contact, layout, bgColor }: FooterProps) {
   const year = new Date().getFullYear();
 
   if (layout === "editorial") {
     return (
-      <footer className="bg-gray-950 py-16 px-4">
+      <footer className="bg-gray-950 py-16 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-6xl">
 
           {/* Top: wordmark */}
@@ -67,7 +68,7 @@ export default function Footer({ identity, contact, layout }: FooterProps) {
 
   if (layout === "resort") {
     return (
-      <footer className="bg-gray-950 py-20 px-4">
+      <footer className="bg-gray-950 py-20 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-3xl text-center">
 
           {/* Property name as minimal wordmark */}
@@ -118,7 +119,7 @@ export default function Footer({ identity, contact, layout }: FooterProps) {
   }
 
   return (
-    <footer className="border-t border-border bg-white py-12">
+    <footer className="border-t border-border bg-white py-12" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-3">
           <div>

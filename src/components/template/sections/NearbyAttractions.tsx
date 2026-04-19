@@ -5,12 +5,13 @@ import type { LayoutPreset } from "@/lib/layout";
 interface NearbyAttractionsProps {
   attractions: NearbyAttraction[];
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function NearbyAttractions({ attractions, layout }: NearbyAttractionsProps) {
+export default function NearbyAttractions({ attractions, layout, bgColor }: NearbyAttractionsProps) {
   if (layout === "editorial") {
     return (
-      <section id="nearby" className="bg-white py-24 md:py-32 px-4">
+      <section id="nearby" className="bg-white py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-4xl">
 
           <div className="mb-14 border-l-4 border-primary pl-7">
@@ -51,7 +52,7 @@ export default function NearbyAttractions({ attractions, layout }: NearbyAttract
 
   if (layout === "resort") {
     return (
-      <section id="nearby" className="bg-gray-950 py-24 px-4">
+      <section id="nearby" className="bg-gray-950 py-24 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-4xl">
 
           <div className="mb-14 text-center">
@@ -86,7 +87,7 @@ export default function NearbyAttractions({ attractions, layout }: NearbyAttract
   }
 
   return (
-    <SectionWrapper id="nearby" background="surface-alt">
+    <SectionWrapper id="nearby" background="surface-alt" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mb-12 text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           Explore

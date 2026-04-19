@@ -6,6 +6,7 @@ import type { LayoutPreset } from "@/lib/layout";
 interface AmenitiesProps {
   amenities: Amenity[];
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
 const iconMap: Record<string, string> = {
@@ -26,7 +27,7 @@ const iconMap: Record<string, string> = {
   default: "M5 3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2H5zm4.5 5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm5 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 14.5c-2 0-3 1-3 1h6s-1-1-3-1z",
 };
 
-export default function Amenities({ amenities, layout = "default" }: AmenitiesProps) {
+export default function Amenities({ amenities, layout = "default", bgColor }: AmenitiesProps) {
 
   // ─── Editorial ─────────────────────────────────────────────────────────────
   // DARK INK SECTION — this is the single strongest contrast break on the
@@ -36,7 +37,7 @@ export default function Amenities({ amenities, layout = "default" }: AmenitiesPr
 
   if (layout === "editorial") {
     return (
-      <section id="amenities" className="bg-gray-900 py-24 md:py-32 px-4">
+      <section id="amenities" className="bg-gray-900 py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-5xl">
 
           <Reveal className="mb-14">
@@ -74,7 +75,7 @@ export default function Amenities({ amenities, layout = "default" }: AmenitiesPr
 
   if (layout === "resort") {
     return (
-      <section id="amenities" className="bg-gray-950 py-24 md:py-32 px-4">
+      <section id="amenities" className="bg-gray-950 py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-5xl">
 
           <Reveal className="mb-16 text-center">
@@ -117,7 +118,7 @@ export default function Amenities({ amenities, layout = "default" }: AmenitiesPr
   // ─── Default ───────────────────────────────────────────────────────────────
 
   return (
-    <SectionWrapper id="amenities" background="surface-alt">
+    <SectionWrapper id="amenities" background="surface-alt" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mb-12 text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           Amenities

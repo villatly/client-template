@@ -5,6 +5,7 @@ import type { LayoutPreset } from "@/lib/layout";
 interface LocationProps {
   location: LocationContent;
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
 function toEmbedUrl(url: string): string {
@@ -23,12 +24,12 @@ function toEmbedUrl(url: string): string {
   }
 }
 
-export default function Location({ location, layout }: LocationProps) {
+export default function Location({ location, layout, bgColor }: LocationProps) {
   const embedUrl = toEmbedUrl(location.mapUrl);
 
   if (layout === "editorial") {
     return (
-      <SectionWrapper id="location" background="white">
+      <SectionWrapper id="location" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-4xl">
 
           <div className="mb-10 border-l-4 border-primary pl-7">
@@ -62,7 +63,7 @@ export default function Location({ location, layout }: LocationProps) {
 
   if (layout === "resort") {
     return (
-      <section id="location" className="bg-white">
+      <section id="location" className="bg-white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         {/* Full-width map (bleeds to container edges) */}
         <div className="overflow-hidden">
           <iframe
@@ -90,7 +91,7 @@ export default function Location({ location, layout }: LocationProps) {
   }
 
   return (
-    <SectionWrapper id="location" background="white">
+    <SectionWrapper id="location" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
         <div>
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">

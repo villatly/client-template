@@ -7,9 +7,10 @@ interface AboutProps {
   description: DescriptionContent;
   identity: PropertyIdentity;
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function About({ description, identity, layout = "default" }: AboutProps) {
+export default function About({ description, identity, layout = "default", bgColor }: AboutProps) {
   const typeLabels: Record<string, string> = {
     villa: "Villa",
     hostel: "Hostel",
@@ -26,7 +27,7 @@ export default function About({ description, identity, layout = "default" }: Abo
 
   if (layout === "editorial") {
     return (
-      <section id="about" className="bg-white py-24 md:py-36 px-4">
+      <section id="about" className="bg-white py-24 md:py-36 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-5xl">
 
           <Reveal className="mb-16">
@@ -75,7 +76,7 @@ export default function About({ description, identity, layout = "default" }: Abo
 
   if (layout === "resort") {
     return (
-      <section id="about" className="bg-gray-950 py-32 md:py-48 px-4">
+      <section id="about" className="bg-gray-950 py-32 md:py-48 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-4xl text-center">
 
           <Reveal>
@@ -105,7 +106,7 @@ export default function About({ description, identity, layout = "default" }: Abo
   // ─── Default ───────────────────────────────────────────────────────────────
 
   return (
-    <SectionWrapper id="about" background="white">
+    <SectionWrapper id="about" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mx-auto max-w-3xl text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           {typeLabel}

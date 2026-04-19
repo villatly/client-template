@@ -98,9 +98,19 @@ VALUES ('uploads', 'uploads', true)
 ON CONFLICT (id) DO NOTHING;
 
 -- Allow public read access to all uploaded images
-CREATE POLICY IF NOT EXISTS "Public read access for uploads"
-  ON storage.objects FOR SELECT
-  USING (bucket_id = 'uploads');
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'storage'
+      AND tablename  = 'objects'
+      AND policyname = 'Public read access for uploads'
+  ) THEN
+    CREATE POLICY "Public read access for uploads"
+      ON storage.objects FOR SELECT
+      USING (bucket_id = 'uploads');
+  END IF;
+END $$;
 
 -- Allow service role (server-side) to upload/delete
 -- (Service role bypasses RLS, so no explicit policy needed for INSERT/DELETE)

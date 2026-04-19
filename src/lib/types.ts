@@ -135,6 +135,7 @@ export interface BrandingConfig {
   fontStyle: "serif" | "modern" | "minimal";
   /** Public-page layout preset. Premium presets require premiumLayouts: true in config. */
   layoutPreset?: "default" | "editorial" | "resort";
+  sectionColors?: Partial<Record<keyof SectionVisibility, string>>;
 }
 
 // ─── Section Visibility Config ────────────────────────────────────────

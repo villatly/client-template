@@ -3,6 +3,7 @@ interface SectionWrapperProps {
   id?: string;
   className?: string;
   background?: "white" | "surface" | "surface-alt" | "primary" | "dark";
+  style?: React.CSSProperties;
 }
 
 export default function SectionWrapper({
@@ -10,6 +11,7 @@ export default function SectionWrapper({
   id,
   className = "",
   background = "white",
+  style,
 }: SectionWrapperProps) {
   const bgClasses = {
     white: "bg-white",
@@ -20,7 +22,7 @@ export default function SectionWrapper({
   };
 
   return (
-    <section id={id} className={`py-16 md:py-24 ${bgClasses[background]} ${className}`}>
+    <section id={id} className={`py-16 md:py-24 ${bgClasses[background]} ${className}`} style={style}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">{children}</div>
     </section>
   );

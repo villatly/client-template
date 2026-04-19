@@ -22,6 +22,29 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
     setSaved(false);
   }
 
+  function setSectionColor(key: string, value: string) {
+    setForm((prev) => ({
+      ...prev,
+      sectionColors: { ...prev.sectionColors, [key]: value || undefined },
+    }));
+    setSaved(false);
+  }
+
+  const sectionLabels: Record<string, string> = {
+    bookingCta: "Barra de reserva",
+    about: "Sobre nosotros",
+    gallery: "Galería",
+    rooms: "Habitaciones / Rooms",
+    amenities: "Comodidades",
+    reviews: "Reseñas",
+    faq: "Preguntas frecuentes",
+    location: "Ubicación",
+    nearbyAttractions: "Atracciones cercanas",
+    policies: "Políticas",
+    contactCta: "Contacto CTA",
+    footer: "Pie de página",
+  };
+
   async function handleSave() {
     setSaving(true);
     await fetch("/api/admin/branding", {
@@ -182,6 +205,47 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
             // eslint-disable-next-line @next/next/no-img-element
             <img src={form.logo} alt="Logo preview" className="mt-3 h-12 object-contain" />
           )}
+        </div>
+      </section>
+
+      {/* Section Background Colors */}
+      <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+        <h2 className="mb-1 text-sm font-semibold text-gray-900">Color de fondo por sección</h2>
+        <p className="mb-5 text-xs text-gray-500">Deja en blanco para usar el color por defecto de cada sección.</p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {Object.entries(sectionLabels).map(([key, label]) => {
+            const currentColor = (form.sectionColors as Record<string, string | undefined> | undefined)?.[key] ?? "";
+            return (
+              <div key={key}>
+                <label className="mb-1.5 block text-xs font-medium text-gray-700">{label}</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={currentColor || "#ffffff"}
+                    onChange={(e) => setSectionColor(key, e.target.value)}
+                    className="h-9 w-10 cursor-pointer rounded border border-gray-300 p-0.5"
+                  />
+                  <input
+                    type="text"
+                    value={currentColor}
+                    onChange={(e) => setSectionColor(key, e.target.value)}
+                    placeholder="#ffffff (vacío = por defecto)"
+                    className={inputClass}
+                  />
+                  {currentColor && (
+                    <button
+                      type="button"
+                      onClick={() => setSectionColor(key, "")}
+                      className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
+                      title="Restablecer"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 

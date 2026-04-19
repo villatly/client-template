@@ -7,15 +7,16 @@ interface ContactCTAProps {
   branding: BrandingConfig;
   propertyName: string;
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function ContactCTA({ contact, branding, propertyName, layout }: ContactCTAProps) {
+export default function ContactCTA({ contact, branding, propertyName, layout, bgColor }: ContactCTAProps) {
   const ctaButtons = contact.ctaButtons ?? [];
 
   // ── Editorial variant ────────────────────────────────────────────────
   if (layout === "editorial") {
     return (
-      <section id="contact" className="bg-gray-950 py-20 md:py-28 px-4">
+      <section id="contact" className="bg-gray-950 py-20 md:py-28 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
 
@@ -79,7 +80,7 @@ export default function ContactCTA({ contact, branding, propertyName, layout }: 
   // ── Resort variant ───────────────────────────────────────────────────
   if (layout === "resort") {
     return (
-      <section id="contact" className="bg-gray-950 py-24 md:py-36 px-4">
+      <section id="contact" className="bg-gray-950 py-24 md:py-36 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-2xl text-center">
 
           <div className="mx-auto mb-10 h-px w-16 bg-white/15" />
@@ -140,7 +141,7 @@ export default function ContactCTA({ contact, branding, propertyName, layout }: 
 
   // ── Default variant ──────────────────────────────────────────────────
   return (
-    <section id="contact" className="bg-primary py-20 md:py-28">
+    <section id="contact" className="bg-primary py-20 md:py-28" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mx-auto max-w-3xl px-4 text-center">
         <h2 className="mb-4 text-3xl text-white sm:text-4xl">
           Ready to Book Your Stay?

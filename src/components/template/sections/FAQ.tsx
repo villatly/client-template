@@ -8,15 +8,16 @@ import type { LayoutPreset } from "@/lib/layout";
 interface FAQProps {
   items: FAQItem[];
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function FAQ({ items, layout }: FAQProps) {
+export default function FAQ({ items, layout, bgColor }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   // ── Editorial variant ────────────────────────────────────────────────
   if (layout === "editorial") {
     return (
-      <section id="faq" className="bg-white py-24 md:py-32 px-4">
+      <section id="faq" className="bg-white py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-4xl">
 
           <div className="mb-16 border-l-4 border-primary pl-7">
@@ -66,7 +67,7 @@ export default function FAQ({ items, layout }: FAQProps) {
   // ── Resort variant ───────────────────────────────────────────────────
   if (layout === "resort") {
     return (
-      <section id="faq" className="bg-gray-950 py-24 md:py-32 px-4">
+      <section id="faq" className="bg-gray-950 py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-3xl">
 
           <div className="mb-14 text-center">
@@ -107,7 +108,7 @@ export default function FAQ({ items, layout }: FAQProps) {
 
   // ── Default variant ──────────────────────────────────────────────────
   return (
-    <SectionWrapper id="faq" background="surface">
+    <SectionWrapper id="faq" background="surface" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mb-12 text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           FAQ

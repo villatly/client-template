@@ -7,9 +7,10 @@ import type { LayoutPreset } from "@/lib/layout";
 interface ReviewsProps {
   reviews: Review[];
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function Reviews({ reviews, layout = "default" }: ReviewsProps) {
+export default function Reviews({ reviews, layout = "default", bgColor }: ReviewsProps) {
   const avgRating =
     reviews.length > 0
       ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
@@ -22,7 +23,7 @@ export default function Reviews({ reviews, layout = "default" }: ReviewsProps) {
 
   if (layout === "editorial") {
     return (
-      <section id="reviews" className="bg-white py-24 md:py-32 px-4">
+      <section id="reviews" className="bg-white py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-4xl">
 
           <Reveal className="mb-14">
@@ -85,7 +86,7 @@ export default function Reviews({ reviews, layout = "default" }: ReviewsProps) {
 
   if (layout === "resort") {
     return (
-      <section id="reviews" className="bg-gray-950 py-24 px-4">
+      <section id="reviews" className="bg-gray-950 py-24 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
@@ -128,7 +129,7 @@ export default function Reviews({ reviews, layout = "default" }: ReviewsProps) {
   // ─── Default ───────────────────────────────────────────────────────────────
 
   return (
-    <SectionWrapper id="reviews" background="white">
+    <SectionWrapper id="reviews" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mb-12 text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           Guest Reviews

@@ -12,9 +12,10 @@ interface BookingCTAProps {
   propertyName: string;
   booking: BookingConfig;
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function BookingCTA({ contact, branding, propertyName, booking, layout }: BookingCTAProps) {
+export default function BookingCTA({ contact, branding, propertyName, booking, layout, bgColor }: BookingCTAProps) {
   const [widgetOpen, setWidgetOpen] = useState(false);
 
   const barClass = layout === "default" || !layout
@@ -23,7 +24,7 @@ export default function BookingCTA({ contact, branding, propertyName, booking, l
 
   return (
     <>
-      <section className={barClass}>
+      <section className={barClass} style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 lg:px-8">
           <p className="text-sm font-medium text-white/90 tracking-wide">
             Ready to experience {propertyName}?

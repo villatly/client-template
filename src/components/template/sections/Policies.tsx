@@ -5,12 +5,13 @@ import type { LayoutPreset } from "@/lib/layout";
 interface PoliciesProps {
   policies: PoliciesContent;
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function Policies({ policies, layout }: PoliciesProps) {
+export default function Policies({ policies, layout, bgColor }: PoliciesProps) {
   if (layout === "editorial") {
     return (
-      <section id="policies" className="bg-white py-24 md:py-32 px-4">
+      <section id="policies" className="bg-white py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-4xl">
 
           <div className="mb-14 border-l-4 border-primary pl-7">
@@ -57,7 +58,7 @@ export default function Policies({ policies, layout }: PoliciesProps) {
 
   if (layout === "resort") {
     return (
-      <section id="policies" className="bg-gray-950 py-24 px-4">
+      <section id="policies" className="bg-gray-950 py-24 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-3xl">
 
           <div className="mb-14 text-center">
@@ -102,7 +103,7 @@ export default function Policies({ policies, layout }: PoliciesProps) {
   }
 
   return (
-    <SectionWrapper id="policies" background="surface">
+    <SectionWrapper id="policies" background="surface" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mb-12 text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           Stay Info

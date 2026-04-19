@@ -13,9 +13,10 @@ interface RoomsProps {
   booking?: BookingConfig;
   contact?: ContactInfo;
   layout?: LayoutPreset;
+  bgColor?: string;
 }
 
-export default function Rooms({ rooms, propertyType, booking, contact, layout = "default" }: RoomsProps) {
+export default function Rooms({ rooms, propertyType, booking, contact, layout = "default", bgColor }: RoomsProps) {
   const sectionTitle = propertyType === "hostel" ? "Room Types" : "Accommodation";
   const sorted = [...rooms].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
 
@@ -61,7 +62,7 @@ export default function Rooms({ rooms, propertyType, booking, contact, layout = 
   // ─── Editorial: 2-column grid, 16:9 images, text-forward ────────────────────
   if (layout === "editorial") {
     return (
-      <SectionWrapper id="rooms" background="surface">
+      <SectionWrapper id="rooms" background="surface" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-5xl">
           <div className="mb-12 border-l-4 border-primary pl-7">
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.35em] text-primary/70">
@@ -139,7 +140,7 @@ export default function Rooms({ rooms, propertyType, booking, contact, layout = 
   // Each card stagger-reveals from below as it enters the viewport.
   if (layout === "resort") {
     return (
-      <section id="rooms" className="bg-gray-950 py-24 md:py-32 px-4">
+      <section id="rooms" className="bg-gray-950 py-24 md:py-32 px-4" style={bgColor ? { backgroundColor: bgColor } : undefined}>
         <div className="mx-auto max-w-5xl">
 
           {/* Section header */}
@@ -234,7 +235,7 @@ export default function Rooms({ rooms, propertyType, booking, contact, layout = 
 
   // ─── Default: 3-column card grid ─────────────────────────────────────────
   return (
-    <SectionWrapper id="rooms" background="white">
+    <SectionWrapper id="rooms" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mb-12 text-center">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
           {sectionTitle}
