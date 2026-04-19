@@ -160,19 +160,21 @@ export default function Rooms({ rooms, propertyType, booking, contact, layout = 
                 key={room.id}
                 type="button"
                 onClick={() => setSelected(room)}
-                className="group flex w-full overflow-hidden rounded-lg border border-white/8 bg-white/4 text-left transition-all duration-300 hover:border-white/18 hover:bg-white/7"
+                className="group flex flex-col sm:flex-row w-full overflow-hidden rounded-lg border border-white/8 bg-white/4 text-left transition-all duration-300 hover:border-white/18 hover:bg-white/7"
               >
-                {/* Image panel — 45% on desktop, full-width stacked on mobile */}
-                <div className="relative hidden sm:block w-[45%] flex-shrink-0 overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={room.image}
-                    alt={room.name}
-                    loading={idx < 2 ? "eager" : "lazy"}
-                    className="h-full w-full object-cover min-h-[240px] transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                  {/* Subtle right-side vignette — blends image into dark card */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/30" />
+                {/* Image — full-width on mobile, 45% panel on desktop */}
+                <div className="relative w-full sm:w-[45%] sm:flex-shrink-0 overflow-hidden">
+                  <div className="aspect-[16/9] sm:aspect-auto sm:h-full">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={room.image}
+                      alt={room.name}
+                      loading={idx < 2 ? "eager" : "lazy"}
+                      className="h-full w-full object-cover sm:min-h-[240px] transition-transform duration-700 group-hover:scale-[1.04]"
+                    />
+                  </div>
+                  {/* Subtle right-side vignette — blends image into dark card (desktop only) */}
+                  <div className="absolute inset-0 hidden sm:block bg-gradient-to-r from-transparent via-transparent to-black/30" />
                   {room.isFeatured && (
                     <span className="absolute top-4 left-4 rounded-sm bg-amber-400/90 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-950">
                       Featured
@@ -180,21 +182,8 @@ export default function Rooms({ rooms, propertyType, booking, contact, layout = 
                   )}
                 </div>
 
-                {/* Mobile: stacked image */}
-                <div className="relative block sm:hidden w-full overflow-hidden">
-                  <div className="aspect-[16/9]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={room.image}
-                      alt={room.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </div>
-
                 {/* Content panel */}
-                <div className="flex flex-col justify-center px-7 py-8 flex-1">
+                <div className="flex flex-col justify-center px-5 py-6 sm:px-7 sm:py-8 flex-1">
                   {room.shortDescription && (
                     <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
                       {room.shortDescription}
