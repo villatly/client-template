@@ -60,16 +60,8 @@ function toSeedPath(fileKey: string): string {
   return path.join(SEED_DIR, fileKey);
 }
 
-// ─── Module-level content cache ───────────────────────────────────────────────
-// Avoids repeated DB reads within the same serverless instance.
-// The cache in property.ts (5-min TTL) handles the cross-request layer.
-
-const memCache = new Map<string, string>();
-
-/** Evict a key from the in-process cache (called by writeFile). */
-export function evictBlobCache(key: string): void {
-  memCache.delete(toDbKey(key));
-}
+/** No-op — kept for API compatibility in case it's imported elsewhere. */
+export function evictBlobCache(_key: string): void {}
 
 // ─── Read ─────────────────────────────────────────────────────────────────────
 
@@ -77,11 +69,8 @@ export async function readFile(key: string): Promise<string> {
   if (USE_SUPABASE) {
     const dbKey = toDbKey(key);
 
-    // 1. In-process cache hit
-    const cached = memCache.get(dbKey);
-    if (cached !== undefined) return cached;
-
-    // 2. Supabase DB read
+    // Supabase DB read (no in-process cache — ensures admin changes are
+    // immediately visible on the public page across all Lambda instances)
     const { data, error } = await getClient()
       .from("property_data")
       .select("value")
@@ -89,7 +78,6 @@ export async function readFile(key: string): Promise<string> {
       .single();
 
     if (!error && data?.value !== undefined) {
-      memCache.set(dbKey, data.value);
       return data.value;
     }
 
@@ -116,7 +104,6 @@ export async function writeFile(key: string, content: string): Promise<void> {
         { onConflict: "key" }
       );
     if (error) throw new Error(`Supabase write failed for "${dbKey}": ${error.message}`);
-    memCache.set(dbKey, content);
     return;
   }
 
