@@ -6,5 +6,6 @@
   "buttonStyle": "rounded",
   "fontStyle": "serif",
   "layoutPreset": "default",
+  "faviconUrl": "",
   "sectionColors": {}
 }

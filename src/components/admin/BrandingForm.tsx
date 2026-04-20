@@ -208,6 +208,39 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
         </div>
       </section>
 
+      {/* Favicon */}
+      <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+        <h2 className="mb-1 text-sm font-semibold text-gray-900">Favicon</h2>
+        <p className="mb-4 text-xs text-gray-500">
+          The small icon shown in browser tabs and bookmarks. Leave blank to use an
+          auto-generated icon with your property initial and primary color.
+        </p>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-700">Favicon URL (optional)</label>
+          <input
+            type="url"
+            value={form.faviconUrl ?? ""}
+            onChange={(e) => set("faviconUrl", e.target.value)}
+            placeholder="https://... (.png or .ico, 64×64 recommended)"
+            className={inputClass}
+          />
+          {form.faviconUrl && (
+            <div className="mt-3 flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={form.faviconUrl} alt="Favicon preview" className="h-8 w-8 rounded object-contain border border-gray-200" />
+              <span className="text-xs text-gray-500">Preview at 32×32</span>
+            </div>
+          )}
+          {!form.faviconUrl && (
+            <p className="mt-2 text-xs text-gray-400">
+              Auto-generated: <span className="font-medium text-gray-600">&ldquo;{/* letter shown in icon */}first letter of property name&rdquo;</span> on a{" "}
+              <span className="inline-block h-3 w-3 rounded-sm align-middle" style={{ backgroundColor: form.primaryColor }} />{" "}
+              background.
+            </p>
+          )}
+        </div>
+      </section>
+
       {/* Section Background Colors */}
       <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="mb-1 text-sm font-semibold text-gray-900">Section Background Colors</h2>

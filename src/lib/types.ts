@@ -135,6 +135,9 @@ export interface BrandingConfig {
   fontStyle: "serif" | "modern" | "minimal";
   /** Public-page layout preset. Premium presets require premiumLayouts: true in config. */
   layoutPreset?: "default" | "editorial" | "resort";
+  /** Custom favicon URL. Falls back to auto-generated monogram if not set. */
+  faviconUrl?: string;
+  /** Per-section background color overrides (hex). Undefined = use section default. */
   sectionColors?: Partial<Record<keyof SectionVisibility, string>>;
 }
 
