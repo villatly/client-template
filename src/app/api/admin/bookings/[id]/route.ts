@@ -34,6 +34,7 @@ import {
   sendBookingConfirmedGuestEmail,
   sendBookingConfirmedAdminEmail,
   sendBookingCancelledGuestEmail,
+  sendBookingCancelledAdminEmail,
   sendBookingRequestAcceptedGuestEmail,
 } from "@/lib/email";
 
@@ -245,9 +246,18 @@ export async function PATCH(
           }
         }
         updated = await cancelBooking(id, body.reason);
-        sendBookingCancelledGuestEmail(updated).catch((err) =>
-          console.error(`Cancel email failed for booking ${id}:`, err)
-        );
+        // Notify guest and admin in parallel — both best-effort
+        Promise.allSettled([
+          sendBookingCancelledGuestEmail(updated),
+          sendBookingCancelledAdminEmail(updated),
+        ]).then((results) => {
+          const labels = ["guest cancellation", "admin cancellation"];
+          results.forEach((r, i) => {
+            if (r.status === "rejected") {
+              console.error(`${labels[i]} email failed for booking ${id}:`, r.reason);
+            }
+          });
+        });
         break;
       }
 

@@ -34,6 +34,7 @@ import { renderBookingRequestAdmin } from "./templates/booking-request-admin";
 import { renderBookingRequestReceivedGuest } from "./templates/booking-request-received-guest";
 import { renderBookingRequestAcceptedGuest } from "./templates/booking-request-accepted-guest";
 import { renderBookingCaptureFailedAdmin } from "./templates/booking-capture-failed-admin";
+import { renderBookingCancelledAdmin } from "./templates/booking-cancelled-admin";
 
 // ─── Internal message shape ───────────────────────────────────────────────────
 
@@ -197,6 +198,27 @@ export async function sendBookingConfirmedAdminEmail(
     branding,
     baseUrl
   );
+  await send({ to: config.adminEmail, subject, html, text });
+}
+
+/**
+ * Sent to the property admin when a booking is cancelled.
+ * If the booking was paid, includes a prominent "Action Required" block with
+ * the PaymentIntent ID and instructions to issue a refund in Stripe.
+ *
+ * Call site: PATCH /api/admin/bookings/[id] (action: "cancel")
+ */
+export async function sendBookingCancelledAdminEmail(
+  booking: Booking
+): Promise<void> {
+  const config = await getConfig();
+  if (!config.adminEmail) {
+    console.warn("Email: adminEmail not set in config.json — skipping admin cancellation notification");
+    return;
+  }
+  const branding = await getBranding();
+  const baseUrl  = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
+  const { subject, html, text } = renderBookingCancelledAdmin(booking, config, branding, baseUrl);
   await send({ to: config.adminEmail, subject, html, text });
 }
 
