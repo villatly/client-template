@@ -29,8 +29,13 @@
 import { NextResponse } from "next/server";
 import { getAvailability, writeAvailability } from "@/lib/property";
 import { fetchAndParseICal, icalEventsToBlockedRanges } from "@/lib/ical";
-import { getBookings, expireBooking } from "@/lib/bookings";
-import { sendBookingExpiredGuestEmail } from "@/lib/email";
+import { getBookings, expireBooking, rejectBooking } from "@/lib/bookings";
+import { isRangeBlocked } from "@/lib/pricing";
+import { getStripe } from "@/lib/stripe";
+import {
+  sendBookingExpiredGuestEmail,
+  sendBookingRejectedGuestEmail,
+} from "@/lib/email";
 
 interface SyncResult {
   roomId: string;
@@ -109,6 +114,80 @@ async function runSync(filter: { roomId?: string; unitId?: string }): Promise<Re
 
   await writeAvailability(avail);
 
+  // ── Reject payment_authorized bookings that now conflict with iCal blocks ──
+  //
+  // A payment_authorized booking has money held on the guest's card and its
+  // dates tentatively blocked. If a freshly-synced iCal feed now occupies the
+  // same dates on the same unit, we must void the authorization hold and reject
+  // the booking before the guest assumes everything is fine.
+  //
+  // We reload availability AFTER writing it so the conflict check sees the
+  // current state including the blocks we just imported.
+  const availAfterSync = await getAvailability();
+  const authorizedBookings = (await getBookings()).filter(
+    (b) => b.status === "payment_authorized"
+  );
+
+  const authorizedRejections: Array<{
+    bookingId: string;
+    outcome: "rejected" | "error";
+    error?: string;
+  }> = [];
+
+  for (const b of authorizedBookings) {
+    const roomData = availAfterSync[b.roomId];
+    if (!roomData) continue;
+
+    const unitIdx = b.unitId
+      ? roomData.units.findIndex((u) => u.id === b.unitId)
+      : 0;
+    const unit = roomData.units[unitIdx >= 0 ? unitIdx : 0];
+    if (!unit) continue;
+
+    // Only test against iCal-sourced blocks — booking blocks from other confirmed
+    // reservations are already caught at authorization time (authorizeBooking recheck).
+    const icalBlocks = unit.blockedRanges.filter((r) => !!r.icalSourceId);
+    if (!isRangeBlocked(b.checkIn, b.checkOut, icalBlocks)) continue;
+
+    // Conflict detected — void the Stripe hold first so the guest is not charged.
+    const intentId = b.payment.intentId;
+    if (intentId) {
+      try {
+        await getStripe().paymentIntents.cancel(intentId);
+        console.log(`iCal sync: voided PI ${intentId} for booking ${b.id} (iCal conflict)`);
+      } catch (voidErr) {
+        console.error(
+          `iCal sync: failed to void PI ${intentId} for booking ${b.id}:`,
+          voidErr
+        );
+        // Continue to reject the booking even if void fails — the hold will
+        // expire naturally after 7 days and the admin log will have the PI ID.
+      }
+    }
+
+    // Reject the booking and notify the guest.
+    try {
+      const rejected = await rejectBooking(
+        b.id,
+        "Your dates were booked on another platform just before your payment was processed"
+      );
+      sendBookingRejectedGuestEmail(rejected).catch((emailErr) =>
+        console.error(
+          `iCal sync: rejection email failed for booking ${b.id}:`,
+          emailErr
+        )
+      );
+      authorizedRejections.push({ bookingId: b.id, outcome: "rejected" });
+      console.log(
+        `iCal sync: rejected payment_authorized booking ${b.id} — iCal conflict on unit ${unit.id}`
+      );
+    } catch (rejectErr) {
+      const msg = rejectErr instanceof Error ? rejectErr.message : String(rejectErr);
+      console.error(`iCal sync: failed to reject booking ${b.id}:`, msg);
+      authorizedRejections.push({ bookingId: b.id, outcome: "error", error: msg });
+    }
+  }
+
   // ── Expire stale pending_payment bookings ─────────────────────────────────
   // Safety net for cases where the Stripe checkout.session.expired webhook was
   // never delivered (network issue, misconfigured endpoint, etc.).
@@ -150,6 +229,7 @@ async function runSync(filter: { roomId?: string; unitId?: string }): Promise<Re
     allOk: results.every((r) => r.status === "ok"),
     totalSources: results.length,
     staleExpired: staleResults,
+    authorizedRejections,
   });
 }
 

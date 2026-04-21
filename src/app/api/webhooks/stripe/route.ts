@@ -58,6 +58,7 @@ import {
   sendBookingRejectedGuestEmail,
   sendBookingExpiredGuestEmail,
   sendAmountMismatchAdminEmail,
+  sendCaptureFailedAdminEmail,
 } from "@/lib/email";
 
 export async function POST(req: Request) {
@@ -238,13 +239,14 @@ export async function POST(req: Request) {
             // manually: either use the "Force confirm" action in the admin dashboard (if the
             // capture actually succeeded despite the error) or cancel the booking to void
             // the hold and free the dates.
+            const captureErrMsg = captureErr instanceof Error ? captureErr.message : String(captureErr);
             console.error(
               `\n╔═══════════════════════════════════════════════════════╗\n` +
               `║  CAPTURE FAILED after successful authorization        ║\n` +
               `╟───────────────────────────────────────────────────────╢\n` +
               `║  Booking ID  : ${bookingId}\n` +
               `║  PI          : ${intentId}\n` +
-              `║  Error       : ${captureErr instanceof Error ? captureErr.message : String(captureErr)}\n` +
+              `║  Error       : ${captureErrMsg}\n` +
               `║  Guest       : ${booking.guest.email}\n` +
               `╟───────────────────────────────────────────────────────╢\n` +
               `║  Booking left in payment_authorized (dates blocked).  ║\n` +
@@ -252,7 +254,11 @@ export async function POST(req: Request) {
               `║  capture status, then use Force Confirm or Cancel.    ║\n` +
               `╚═══════════════════════════════════════════════════════╝\n`
             );
-            break; // No confirmation email — requires manual admin resolution
+            // Alert the admin by email so the issue is not only visible in logs.
+            sendCaptureFailedAdminEmail(booking, intentId, captureErrMsg).catch((emailErr) =>
+              console.error(`Failed to send capture failure alert email for booking ${bookingId}:`, emailErr)
+            );
+            break; // No guest confirmation — requires manual admin resolution
         }
 
         // Step 3: Confirm — record payment as captured, dates remain blocked

@@ -33,6 +33,7 @@ import { renderBookingAmountMismatchAdmin } from "./templates/booking-amount-mis
 import { renderBookingRequestAdmin } from "./templates/booking-request-admin";
 import { renderBookingRequestReceivedGuest } from "./templates/booking-request-received-guest";
 import { renderBookingRequestAcceptedGuest } from "./templates/booking-request-accepted-guest";
+import { renderBookingCaptureFailedAdmin } from "./templates/booking-capture-failed-admin";
 
 // ─── Internal message shape ───────────────────────────────────────────────────
 
@@ -267,6 +268,36 @@ export async function sendBookingRequestAcceptedGuestEmail(
   const [config, branding] = await Promise.all([getConfig(), getBranding()]);
   const { subject, html, text } = renderBookingRequestAcceptedGuest(booking, checkoutUrl, config, branding);
   await send({ to: booking.guest.email, subject, html, text });
+}
+
+/**
+ * Sent to the admin when Stripe's PaymentIntent capture fails after a successful
+ * authorization. The booking is left in payment_authorized with dates blocked.
+ * Admin must resolve manually: force-confirm if capture actually succeeded, or cancel.
+ *
+ * Call site: POST /api/webhooks/stripe (capture failure in checkout.session.completed)
+ */
+export async function sendCaptureFailedAdminEmail(
+  booking: Booking,
+  intentId: string,
+  captureError: string
+): Promise<void> {
+  const config = await getConfig();
+  if (!config.adminEmail) {
+    console.warn("Email: adminEmail not set in config.json — skipping capture failure alert");
+    return;
+  }
+  const branding = await getBranding();
+  const baseUrl  = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
+  const { subject, html, text } = renderBookingCaptureFailedAdmin(
+    booking,
+    intentId,
+    captureError,
+    config,
+    branding,
+    baseUrl
+  );
+  await send({ to: config.adminEmail, subject, html, text });
 }
 
 /**

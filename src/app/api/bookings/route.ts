@@ -21,7 +21,7 @@
 import { NextResponse } from "next/server";
 import { getAvailability, getContent, getBooking } from "@/lib/property";
 import { calculatePrice, findAvailableUnit } from "@/lib/pricing";
-import { createBooking, attachStripeSession } from "@/lib/bookings";
+import { createBooking, attachStripeSession, expireBooking } from "@/lib/bookings";
 import { validateStripeEnv, getStripe } from "@/lib/stripe";
 import {
   sendBookingPendingPaymentEmail,
@@ -257,6 +257,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ id: booking.id, checkoutUrl: session.url }, { status: 201 });
   } catch (err) {
     console.error("Stripe Checkout Session creation failed:", err);
+    // Clean up the orphaned booking immediately. Without this it would sit in
+    // pending_payment forever (the iCal sync would expire it after 2 hrs, but
+    // that's unnecessary noise in the admin dashboard).
+    expireBooking(booking.id).catch((expireErr) =>
+      console.error(`Failed to expire orphaned booking ${booking.id} after Stripe session error:`, expireErr)
+    );
     return NextResponse.json(
       { error: "Payment session could not be created. Please try again in a moment." },
       { status: 502 }
