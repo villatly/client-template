@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const checkIn  = searchParams.get("checkIn");
   const checkOut = searchParams.get("checkOut");
+  const guests   = Math.max(1, parseInt(searchParams.get("guests") ?? "1", 10) || 1);
 
   if (!checkIn || !checkOut || checkIn >= checkOut) {
     return NextResponse.json({ error: "Invalid dates" }, { status: 400 });
@@ -19,10 +20,16 @@ export async function GET(request: Request) {
   const results = content.rooms.map((room) => {
     const roomAvail = availability[room.id];
 
+    // Capacity check — a room is over capacity if it has a defined capacity
+    // smaller than the requested guest count.
+    const capacityExceeded =
+      room.capacity != null && room.capacity > 0 && guests > room.capacity;
+
     if (!roomAvail) {
       return {
         room,
-        available:         true,
+        available:         !capacityExceeded,
+        capacityExceeded,
         availableUnits:    1,
         totalUnits:        1,
         pricePerNight:     null,
@@ -36,12 +43,15 @@ export async function GET(request: Request) {
 
     const availableUnits = countAvailableUnits(roomAvail.units, checkIn, checkOut);
     const totalUnits     = roomAvail.units.length;
-    const available      = availableUnits > 0;
+    const datesAvailable = availableUnits > 0;
+    // A room is bookable only when both dates and capacity are OK.
+    const available      = datesAvailable && !capacityExceeded;
     const priceCalc      = calculatePrice(roomAvail, checkIn, checkOut);
 
     return {
       room,
       available,
+      capacityExceeded,
       availableUnits,
       totalUnits,
       pricePerNight:     roomAvail.pricePerNight,
@@ -53,5 +63,5 @@ export async function GET(request: Request) {
     };
   });
 
-  return NextResponse.json({ checkIn, checkOut, results });
+  return NextResponse.json({ checkIn, checkOut, guests, results });
 }

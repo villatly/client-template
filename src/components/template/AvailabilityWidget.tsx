@@ -14,6 +14,7 @@ import PriceBreakdown from "@/components/template/PriceBreakdown";
 interface AvailabilityResult {
   room: RoomUnit;
   available: boolean;
+  capacityExceeded: boolean;
   availableUnits: number;
   totalUnits: number;
   pricePerNight: number | null;
@@ -44,23 +45,59 @@ function fmtDateShort(dateStr: string) {
   });
 }
 
+// ─── Guests counter ───────────────────────────────────────────────────────────
+
+function GuestsCounter({ value, onChange }: { value: number; onChange: (n: number) => void }) {
+  return (
+    <div className="flex items-center gap-3">
+      <button
+        type="button"
+        onClick={() => onChange(Math.max(1, value - 1))}
+        disabled={value <= 1}
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:border-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        aria-label="Remove guest"
+      >
+        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
+        </svg>
+      </button>
+      <span className="w-6 text-center text-sm font-semibold text-gray-900">{value}</span>
+      <button
+        type="button"
+        onClick={() => onChange(Math.min(20, value + 1))}
+        disabled={value >= 20}
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:border-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        aria-label="Add guest"
+      >
+        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 // ─── Search + Results step ────────────────────────────────────────────────────
 
 function SearchStep({
   config,
   checkIn, setCheckIn,
   checkOut, setCheckOut,
+  guests, setGuests,
   results, loading, error,
   onSearch, onBook,
 }: {
   config: BookingConfig;
   checkIn: string; setCheckIn: (v: string) => void;
   checkOut: string; setCheckOut: (v: string) => void;
+  guests: number; setGuests: (n: number) => void;
   results: AvailabilityResult[] | null;
   loading: boolean; error: string;
   onSearch: () => void;
   onBook: (r: AvailabilityResult) => void;
 }) {
+  const availableCount = results?.filter(r => r.available).length ?? 0;
+
   return (
     <>
       <div className="p-6">
@@ -90,6 +127,15 @@ function SearchStep({
           </div>
         </div>
 
+        {/* Guests row */}
+        <div className="mb-4 flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
+          <div>
+            <p className="text-sm font-medium text-gray-700">Guests</p>
+            <p className="text-xs text-gray-400">Adults &amp; children</p>
+          </div>
+          <GuestsCounter value={guests} onChange={n => { setGuests(n); }} />
+        </div>
+
         {error && (
           <p className="mb-3 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700">
             {error}
@@ -114,35 +160,42 @@ function SearchStep({
 
       {results && (
         <div className="border-t border-gray-100 px-6 pb-6">
-          {results.filter(r => r.available).length === 0 ? (
+          {availableCount === 0 ? (
             <div className="mt-4 rounded-lg bg-gray-50 border border-gray-200 px-4 py-5 text-center">
-              <p className="text-sm font-medium text-gray-700">No rooms available for these dates</p>
+              <p className="text-sm font-medium text-gray-700">
+                No rooms available for {guests} guest{guests !== 1 ? "s" : ""} on these dates
+              </p>
               <p className="mt-1 text-xs text-gray-500">
-                Try different dates or contact us directly to check availability.
+                Try different dates or a smaller group size, or contact us directly.
               </p>
             </div>
           ) : (
             <>
               <p className="mb-3 mt-4 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                {results.filter(r => r.available).length}{" "}
-                room {results.filter(r => r.available).length === 1 ? "type" : "types"} available
+                {availableCount} room {availableCount === 1 ? "type" : "types"} available
               </p>
               <div className="space-y-3">
                 {results.map((r) => {
-                  const { room, available, availableUnits, totalUnits, avgPricePerNight, minStay, nights, totalPrice } = r;
-                  const badgeLabel = !available
+                  const { room, available, capacityExceeded, availableUnits, totalUnits, avgPricePerNight, minStay, nights, totalPrice } = r;
+                  const belowMinStay = available && nights < minStay;
+
+                  const badgeLabel = capacityExceeded
+                    ? `Too small for ${guests} guests`
+                    : !available
                     ? "Unavailable"
                     : totalUnits > 1 && availableUnits === 1
                     ? "1 room left!"
                     : totalUnits > 1
                     ? `${availableUnits} rooms left`
                     : "Available";
-                  const badgeClass = !available
+                  const badgeClass = capacityExceeded
+                    ? "bg-orange-100 text-orange-700"
+                    : !available
                     ? "bg-gray-100 text-gray-500"
                     : availableUnits === 1 && totalUnits > 1
                     ? "bg-amber-100 text-amber-800"
                     : "bg-emerald-100 text-emerald-800";
-                  const belowMinStay = available && nights < minStay;
+
                   return (
                     <div
                       key={room.id}
@@ -206,17 +259,19 @@ function SearchStep({
 // ─── Booking form step ────────────────────────────────────────────────────────
 
 function BookingStep({
-  result, checkIn, checkOut, config, onBack,
+  result, checkIn, checkOut, config, initialGuests, onBack,
 }: {
   result: AvailabilityResult;
   checkIn: string; checkOut: string;
   config: BookingConfig;
+  /** Pre-filled from the search step so the guest doesn't re-enter their group size. */
+  initialGuests: number;
   onBack: () => void;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [adults, setAdults] = useState(1);
+  const [adults, setAdults] = useState(initialGuests);
   const [children, setChildren] = useState(0);
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -506,6 +561,7 @@ export default function AvailabilityWidget({ config, onClose, prefill }: Props) 
   const [step, setStep] = useState<Step>(prefill ? "booking" : "search");
   const [checkIn, setCheckIn] = useState(prefill?.checkIn ?? "");
   const [checkOut, setCheckOut] = useState(prefill?.checkOut ?? "");
+  const [guests, setGuests] = useState(prefill ? (prefill.room.capacity ? Math.min(1, prefill.room.capacity) : 1) : 1);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<AvailabilityResult[] | null>(null);
   const [searchError, setSearchError] = useState("");
@@ -522,7 +578,9 @@ export default function AvailabilityWidget({ config, onClose, prefill }: Props) 
     setSearchError("");
     setResults(null);
     try {
-      const res = await fetch(`/api/availability?checkIn=${checkIn}&checkOut=${checkOut}`);
+      const res = await fetch(
+        `/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`
+      );
       const data = await res.json();
       if (!res.ok) {
         setSearchError("Could not check availability. Please try again.");
@@ -571,6 +629,8 @@ export default function AvailabilityWidget({ config, onClose, prefill }: Props) 
             setCheckIn={v => { setCheckIn(v); setResults(null); setSearchError(""); }}
             checkOut={checkOut}
             setCheckOut={v => { setCheckOut(v); setResults(null); setSearchError(""); }}
+            guests={guests}
+            setGuests={n => { setGuests(n); setResults(null); }}
             results={results}
             loading={loading}
             error={searchError}
@@ -585,6 +645,7 @@ export default function AvailabilityWidget({ config, onClose, prefill }: Props) 
             checkIn={checkIn}
             checkOut={checkOut}
             config={config}
+            initialGuests={guests}
             onBack={handleBackFromBooking}
           />
         )}
