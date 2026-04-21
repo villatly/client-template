@@ -14,7 +14,7 @@
 
 import { NextResponse } from "next/server";
 import { getBookingById, cancelBooking } from "@/lib/bookings";
-import { sendBookingCancelledGuestEmail } from "@/lib/email";
+import { sendBookingCancelledGuestEmail, sendBookingCancelledAdminEmail } from "@/lib/email";
 
 const GUEST_CANCELLABLE: string[] = [
   "confirmed",
@@ -56,10 +56,13 @@ export async function POST(
   try {
     const cancelled = await cancelBooking(id, reason);
 
-    // Best-effort notification email (don't fail the cancellation if email fails)
-    Promise.allSettled([sendBookingCancelledGuestEmail(cancelled)]).catch(
-      () => {}
-    );
+    // Send guest + admin cancellation emails — awaited so Vercel doesn't kill
+    // the Lambda before they fire. Errors are caught so email failure never
+    // blocks the cancellation response.
+    await Promise.allSettled([
+      sendBookingCancelledGuestEmail(cancelled),
+      sendBookingCancelledAdminEmail(cancelled),
+    ]);
 
     return NextResponse.json({ ok: true, status: cancelled.status });
   } catch (err) {

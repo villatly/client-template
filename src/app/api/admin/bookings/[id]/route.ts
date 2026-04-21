@@ -213,7 +213,7 @@ export async function PATCH(
           status: "paid",
           paidAt: new Date().toISOString(),
         });
-        Promise.allSettled([
+        await Promise.allSettled([
           sendBookingConfirmedGuestEmail(updated),
           sendBookingConfirmedAdminEmail(updated),
         ]).then((emailResults) => {
@@ -246,8 +246,8 @@ export async function PATCH(
           }
         }
         updated = await cancelBooking(id, body.reason);
-        // Notify guest and admin in parallel — both best-effort
-        Promise.allSettled([
+        // Awaited so Vercel Lambda doesn't terminate before emails fire
+        await Promise.allSettled([
           sendBookingCancelledGuestEmail(updated),
           sendBookingCancelledAdminEmail(updated),
         ]).then((results) => {
