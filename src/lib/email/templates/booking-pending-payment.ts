@@ -42,8 +42,9 @@ export function renderBookingPendingPayment(
 
     <hr style="border:none;border-top:1px solid #e7e5e4;margin:28px 0;">
     <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.6;">
-      Your reservation is <strong>not confirmed</strong> until payment is completed.
-      If you did not make this booking request, you can safely ignore this email.
+      <strong>Already paid?</strong> This email was sent automatically the moment you started your
+      booking — you may have completed payment seconds later. If so, ignore this email and look out
+      for your booking confirmation which will arrive shortly.
     </p>
   `;
 
@@ -74,6 +75,9 @@ export function renderBookingPendingPayment(
     `Complete payment: ${checkoutUrl}`,
     ``,
     `Note: This link is valid for 30 minutes from when you started your booking.`,
+    ``,
+    `Already paid? This email was sent automatically when you started your booking.`,
+    `If you completed payment, ignore this email — your confirmation will arrive shortly.`,
     ``,
     `${config.name} · ${config.location}`,
     config.adminEmail,
