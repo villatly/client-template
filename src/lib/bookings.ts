@@ -663,6 +663,45 @@ export async function declineBookingRequest(id: string, reason?: string): Promis
 }
 
 /**
+ * Record a Stripe refund on a booking's payment record.
+ *
+ * Does NOT change the booking status — the host may refund without cancelling
+ * (e.g. a partial goodwill refund) or after the booking has already been cancelled.
+ *
+ * Full refund  (refundAmount >= totalPrice) → payment.status = "refunded"
+ * Partial      (refundAmount < totalPrice)  → payment.status stays "paid";
+ *              payment.refundAmount + payment.refundedAt are populated for display.
+ *
+ * The caller (API route) is responsible for calling stripe.refunds.create() BEFORE
+ * calling this function so that our record is only written if Stripe succeeded.
+ */
+export async function recordRefund(
+  id: string,
+  refundAmount: number
+): Promise<Booking> {
+  const bookings = await getBookings();
+  const idx = bookings.findIndex((b) => b.id === id);
+  if (idx < 0) throw new Error(`Booking ${id} not found`);
+
+  const booking = bookings[idx];
+  const isFullRefund = refundAmount >= booking.totalPrice;
+
+  const timestamp = now();
+  bookings[idx] = {
+    ...booking,
+    updatedAt: timestamp,
+    payment: {
+      ...booking.payment,
+      status: isFullRefund ? "refunded" : booking.payment.status,
+      refundedAt: timestamp,
+      refundAmount,
+    },
+  };
+  await writeBookings(bookings);
+  return bookings[idx];
+}
+
+/**
  * Update admin notes on a booking (non-status change, always allowed).
  */
 export async function updateAdminNotes(id: string, notes: string): Promise<Booking> {

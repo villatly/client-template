@@ -1,19 +1,11 @@
 /**
  * Email sent to the guest when the admin accepts their booking request (request_to_book mode).
- * Contains the Stripe payment link and a 24-hour deadline to complete payment.
+ * Contains the Stripe payment link. The Checkout Session expires in 30 minutes.
  */
 
 import type { Booking } from "@/lib/types";
 import type { PropertyConfig, BrandingConfig } from "@/lib/types";
-
-function fmtDate(d: string) {
-  return new Date(d + "T00:00:00").toLocaleDateString("en-US", {
-    weekday: "short",
-    month:   "long",
-    day:     "numeric",
-    year:    "numeric",
-  });
-}
+import { emailLayout, detailRow, sectionHeading, ctaButton, fmtDate } from "./base";
 
 export function renderBookingRequestAcceptedGuest(
   booking:     Booking,
@@ -21,109 +13,85 @@ export function renderBookingRequestAcceptedGuest(
   config:      PropertyConfig,
   branding:    BrandingConfig,
 ): { subject: string; html: string; text: string } {
-  const color = branding.primaryColor ?? "#1a1a1a";
+  const firstName = booking.guest.name.split(" ")[0];
+  const subject   = `Your booking is accepted — complete payment to confirm`;
+  const previewText = `Great news! Your request for ${booking.roomName} at ${config.name} has been accepted. Complete payment to confirm.`;
 
-  const subject = `Your booking request is accepted — complete payment to confirm`;
+  const detailRows = [
+    detailRow("Room",       booking.roomName),
+    detailRow("Check-in",   fmtDate(booking.checkIn)),
+    detailRow("Check-out",  fmtDate(booking.checkOut)),
+    detailRow("Duration",   `${booking.nights} night${booking.nights !== 1 ? "s" : ""}`),
+    detailRow("Amount due", `${booking.currency} ${booking.totalPrice.toLocaleString()}`),
+  ].join("");
 
-  const html = `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f5f5f4;font-family:system-ui,-apple-system,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f4;padding:32px 16px;">
-    <tr><td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+  const body = `
+    <!-- Accepted badge -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="display:inline-block;background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:50px;padding:8px 22px;">
+        <span style="color:#15803d;font-weight:700;font-size:14px;">✓ &nbsp;Request Accepted</span>
+      </div>
+    </div>
 
-        <!-- Header -->
-        <tr><td style="background:${color};padding:28px 32px;">
-          <p style="margin:0;font-size:14px;font-weight:600;color:#ffffff;letter-spacing:0.05em;text-transform:uppercase;">${config.name}</p>
-          <h1 style="margin:8px 0 0;font-size:22px;font-weight:700;color:#ffffff;">Great news — your request is accepted!</h1>
-        </td></tr>
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1c1917;text-align:center;">
+      Great news, ${firstName}!
+    </h2>
+    <p style="margin:0 0 8px;font-size:15px;color:#57534e;line-height:1.6;text-align:center;">
+      Your booking request for <strong>${booking.roomName}</strong> at <strong>${config.name}</strong> has been accepted.
+    </p>
+    <p style="margin:0 0 28px;font-size:13px;color:#a8a29e;text-align:center;">
+      ⏱ Complete payment in the next <strong>30 minutes</strong> to confirm your dates.
+    </p>
 
-        <!-- Body -->
-        <tr><td style="padding:32px 32px 0;">
-          <p style="margin:0 0 16px;font-size:15px;color:#374151;">Hi ${booking.guest.name},</p>
-          <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">
-            We're delighted to confirm that your request for <strong>${booking.roomName}</strong> has been accepted. To secure your reservation, please complete payment using the link below.
-          </p>
-          <p style="margin:0 0 24px;font-size:14px;color:#6b7280;line-height:1.6;">
-            The payment link is valid for <strong>30 minutes</strong>. If it expires, please contact us directly to arrange a new link.
-          </p>
-        </td></tr>
+    ${sectionHeading("Booking summary")}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+      style="border:1px solid #e7e5e4;border-radius:8px;padding:4px 20px;background:#fafaf9;">
+      <tbody>${detailRows}</tbody>
+    </table>
 
-        <!-- Payment CTA -->
-        <tr><td style="padding:0 32px 28px;text-align:center;">
-          <a href="${checkoutUrl}" style="display:inline-block;background:${color};color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:16px 40px;border-radius:8px;letter-spacing:0.01em;">
-            Complete payment →
-          </a>
-          <p style="margin:12px 0 0;font-size:12px;color:#9ca3af;">Secure payment powered by Stripe</p>
-        </td></tr>
+    ${ctaButton("Complete Payment →", checkoutUrl, branding.primaryColor)}
 
-        <!-- Booking summary -->
-        <tr><td style="padding:0 32px 32px;">
-          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:20px 24px;">
-            <p style="margin:0 0 12px;font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.06em;">Booking summary</p>
-            <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;color:#374151;">
-              <tr>
-                <td style="padding:5px 0;color:#6b7280;width:110px;">Reference</td>
-                <td style="padding:5px 0;font-family:monospace;font-weight:600;">${booking.confirmationCode}</td>
-              </tr>
-              <tr>
-                <td style="padding:5px 0;color:#6b7280;">Room</td>
-                <td style="padding:5px 0;font-weight:500;">${booking.roomName}</td>
-              </tr>
-              <tr>
-                <td style="padding:5px 0;color:#6b7280;">Check-in</td>
-                <td style="padding:5px 0;">${fmtDate(booking.checkIn)}</td>
-              </tr>
-              <tr>
-                <td style="padding:5px 0;color:#6b7280;">Check-out</td>
-                <td style="padding:5px 0;">${fmtDate(booking.checkOut)}</td>
-              </tr>
-              <tr>
-                <td style="padding:5px 0;color:#6b7280;">Nights</td>
-                <td style="padding:5px 0;">${booking.nights}</td>
-              </tr>
-              <tr>
-                <td style="padding:5px 0;color:#6b7280;font-size:15px;">Amount due</td>
-                <td style="padding:5px 0;font-weight:700;font-size:15px;color:#111827;">${booking.currency} ${booking.totalPrice.toLocaleString()}</td>
-              </tr>
-            </table>
-          </div>
-        </td></tr>
+    <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.6;text-align:center;">
+      Secure payment powered by Stripe.<br>
+      If the link expires, contact us at
+      <a href="mailto:${config.adminEmail}" style="color:${branding.primaryColor};text-decoration:none;">${config.adminEmail}</a>
+      and we'll send you a new one.
+    </p>
 
-        <!-- Footer -->
-        <tr><td style="background:#f9fafb;border-top:1px solid #f3f4f6;padding:20px 32px;">
-          <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.6;">
-            ${config.name} · ${config.location}, ${config.country}<br>
-            If the button above doesn't work, copy this link: ${checkoutUrl}
-          </p>
-        </td></tr>
+    <hr style="border:none;border-top:1px solid #e7e5e4;margin:28px 0;">
+    <p style="margin:0;font-size:12px;color:#a8a29e;line-height:1.6;">
+      Payment link not working? Copy and paste this URL into your browser:<br>
+      <span style="font-size:11px;word-break:break-all;">${checkoutUrl}</span>
+    </p>
+  `;
 
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
+  const html = emailLayout({
+    propertyName: config.name,
+    location:     config.location,
+    adminEmail:   config.adminEmail,
+    primaryColor: branding.primaryColor,
+    previewText,
+    body,
+  });
 
-  const text = `Great news — your request is accepted! — ${config.name}
+  const text = `Great news, ${firstName}! — ${config.name}
 
-Hi ${booking.guest.name},
+Your booking request for ${booking.roomName} has been accepted.
+Complete payment in the next 30 minutes to confirm your dates.
 
-Your request for ${booking.roomName} has been accepted. Please complete payment to secure your reservation:
+BOOKING SUMMARY
+  Room:       ${booking.roomName}
+  Check-in:   ${fmtDate(booking.checkIn)}
+  Check-out:  ${fmtDate(booking.checkOut)}
+  Nights:     ${booking.nights}
+  Amount due: ${booking.currency} ${booking.totalPrice.toLocaleString()}
 
+Complete payment here:
 ${checkoutUrl}
 
-The payment link is valid for 30 minutes.
+If the link expires, contact us at ${config.adminEmail} and we'll send you a new one.
 
-Booking summary:
-  Reference: ${booking.confirmationCode}
-  Room:      ${booking.roomName}
-  Check-in:  ${fmtDate(booking.checkIn)}
-  Check-out: ${fmtDate(booking.checkOut)}
-  Nights:    ${booking.nights}
-  Amount:    ${booking.currency} ${booking.totalPrice.toLocaleString()}
-
-${config.name} · ${config.location}, ${config.country}`;
+${config.name} · ${config.location}`;
 
   return { subject, html, text };
 }

@@ -8,8 +8,9 @@ export function renderBookingConfirmedGuest(
   branding: BrandingConfig,
   baseUrl: string
 ): { subject: string; html: string; text: string } {
-  const subject = `Booking confirmed — ${booking.confirmationCode} — ${config.name}`;
-  const previewText = `Your stay at ${config.name} is confirmed. Confirmation code: ${booking.confirmationCode}`;
+  const subject = `Booking confirmed ✓ — ${booking.confirmationCode} — ${config.name}`;
+  const previewText = `Your stay at ${config.name} is confirmed. Check-in: ${fmtDate(booking.checkIn)}. Confirmation: ${booking.confirmationCode}`;
+  const firstName = booking.guest.name.split(" ")[0];
 
   const guestsLabel = [
     `${booking.guest.adults} adult${booking.guest.adults !== 1 ? "s" : ""}`,
@@ -19,14 +20,14 @@ export function renderBookingConfirmedGuest(
   ].filter(Boolean).join(", ");
 
   const detailRows = [
-    detailRow("Room",       booking.roomName),
-    detailRow("Check-in",   fmtDate(booking.checkIn)),
-    detailRow("Check-out",  fmtDate(booking.checkOut)),
-    detailRow("Duration",   `${booking.nights} night${booking.nights !== 1 ? "s" : ""}`),
-    detailRow("Guests",     guestsLabel),
-    detailRow("Total",      `${booking.currency} ${booking.totalPrice.toLocaleString()}`),
+    detailRow("Room",      booking.roomName),
+    detailRow("Check-in",  fmtDate(booking.checkIn)),
+    detailRow("Check-out", fmtDate(booking.checkOut)),
+    detailRow("Duration",  `${booking.nights} night${booking.nights !== 1 ? "s" : ""}`),
+    detailRow("Guests",    guestsLabel),
+    detailRow("Total",     `${booking.currency} ${booking.totalPrice.toLocaleString()}`),
     booking.payment.status === "paid"
-      ? detailRow("Payment",    `Paid via card`)
+      ? detailRow("Payment", `Paid via card ✓`)
       : "",
   ].join("");
 
@@ -39,17 +40,18 @@ export function renderBookingConfirmedGuest(
     </div>
 
     <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1c1917;text-align:center;">
-      Your stay is confirmed, ${booking.guest.name.split(" ")[0]}!
+      See you soon, ${firstName}!
     </h2>
     <p style="margin:0 0 28px;font-size:15px;color:#57534e;line-height:1.6;text-align:center;">
-      We look forward to welcoming you to ${config.name}.
+      Your stay at <strong>${config.name}</strong> is confirmed.<br>
+      We can't wait to welcome you.
     </p>
 
-    <!-- Confirmation code -->
+    <!-- Confirmation code block -->
     <div style="background:#1c1917;border-radius:10px;padding:20px 24px;text-align:center;margin:0 0 28px;">
-      <p style="margin:0 0 4px;font-size:11px;color:#a8a29e;letter-spacing:2px;text-transform:uppercase;">Confirmation Code</p>
+      <p style="margin:0 0 4px;font-size:11px;color:#a8a29e;letter-spacing:2px;text-transform:uppercase;">Your confirmation code</p>
       <p style="margin:0;font-size:30px;font-weight:700;color:#ffffff;font-family:'Courier New',Courier,monospace;letter-spacing:5px;">${booking.confirmationCode}</p>
-      <p style="margin:6px 0 0;font-size:12px;color:#78716c;">Keep this code — you may need it to manage your booking.</p>
+      <p style="margin:6px 0 0;font-size:12px;color:#78716c;">Save this — you may need it to manage your booking.</p>
     </div>
 
     ${sectionHeading("Reservation details")}
@@ -59,16 +61,19 @@ export function renderBookingConfirmedGuest(
     </table>
 
     ${booking.guest.notes ? `
-    ${sectionHeading("Special requests")}
+    ${sectionHeading("Your special requests")}
     <p style="margin:0;font-size:14px;color:#57534e;line-height:1.6;background:#fafaf9;border:1px solid #e7e5e4;border-radius:8px;padding:14px 18px;">${booking.guest.notes}</p>
     ` : ""}
 
-    ${ctaButton("View booking details →", `${baseUrl}/booking/confirm/${booking.id}`, branding.primaryColor)}
+    <!-- What to expect -->
+    ${sectionHeading("Before you arrive")}
+    <div style="background:#fafaf9;border:1px solid #e7e5e4;border-radius:8px;padding:16px 20px;font-size:14px;color:#57534e;line-height:1.8;">
+      <p style="margin:0 0 6px;">📋 &nbsp;Bring a copy of this confirmation (or save your code <strong>${booking.confirmationCode}</strong>).</p>
+      <p style="margin:0 0 6px;">✉️ &nbsp;Questions before your arrival? Reply to this email or reach us at <a href="mailto:${config.adminEmail}" style="color:${branding.primaryColor};text-decoration:none;">${config.adminEmail}</a>.</p>
+      <p style="margin:0;">🏠 &nbsp;We'll be in touch with any additional check-in details closer to your arrival date.</p>
+    </div>
 
-    <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.6;text-align:center;">
-      Have questions? Reply to this email or contact us at
-      <a href="mailto:${config.adminEmail}" style="color:${branding.primaryColor};text-decoration:none;">${config.adminEmail}</a>
-    </p>
+    ${ctaButton("View booking details →", `${baseUrl}/booking/confirm/${booking.id}`, branding.primaryColor)}
   `;
 
   const html = emailLayout({
@@ -81,13 +86,14 @@ export function renderBookingConfirmedGuest(
   });
 
   const text = [
-    `Booking Confirmed — ${config.name}`,
+    `Booking Confirmed ✓ — ${config.name}`,
     ``,
-    `Hi ${booking.guest.name.split(" ")[0]},`,
+    `See you soon, ${firstName}!`,
     ``,
-    `Your booking is confirmed! We look forward to welcoming you.`,
+    `Your stay at ${config.name} is confirmed. We can't wait to welcome you.`,
     ``,
     `CONFIRMATION CODE: ${booking.confirmationCode}`,
+    `(Save this — you may need it to manage your booking)`,
     ``,
     `RESERVATION DETAILS`,
     `Room:      ${booking.roomName}`,
@@ -96,9 +102,13 @@ export function renderBookingConfirmedGuest(
     `Nights:    ${booking.nights}`,
     `Guests:    ${guestsLabel}`,
     `Total:     ${booking.currency} ${booking.totalPrice.toLocaleString()}`,
-    booking.payment.status === "paid" ? `Payment:   Paid via card` : "",
+    booking.payment.status === "paid" ? `Payment:   Paid via card ✓` : "",
     ``,
     booking.guest.notes ? `Special requests: ${booking.guest.notes}\n` : "",
+    `BEFORE YOU ARRIVE`,
+    `- Questions? Reply to this email or contact us at ${config.adminEmail}`,
+    `- We'll be in touch with check-in details closer to your arrival date.`,
+    ``,
     `View your booking: ${baseUrl}/booking/confirm/${booking.id}`,
     ``,
     `${config.name} · ${config.location}`,

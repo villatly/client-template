@@ -9,22 +9,24 @@ export function renderBookingPendingPayment(
   branding: BrandingConfig
 ): { subject: string; html: string; text: string } {
   const subject = `Complete your payment — ${booking.roomName} at ${config.name}`;
-  const previewText = `Your spot is reserved — complete payment to confirm your stay. Link valid for 30 minutes.`;
+  const previewText = `Your dates are held — complete payment in the next 30 minutes to confirm your stay at ${config.name}.`;
+  const firstName = booking.guest.name.split(" ")[0];
 
   const detailsRows = [
-    detailRow("Room",       booking.roomName),
-    detailRow("Check-in",   fmtDate(booking.checkIn)),
-    detailRow("Check-out",  fmtDate(booking.checkOut)),
-    detailRow("Duration",   `${booking.nights} night${booking.nights !== 1 ? "s" : ""}`),
-    detailRow("Total",      `${booking.currency} ${booking.totalPrice.toLocaleString()}`),
+    detailRow("Room",      booking.roomName),
+    detailRow("Check-in",  fmtDate(booking.checkIn)),
+    detailRow("Check-out", fmtDate(booking.checkOut)),
+    detailRow("Duration",  `${booking.nights} night${booking.nights !== 1 ? "s" : ""}`),
+    detailRow("Total",     `${booking.currency} ${booking.totalPrice.toLocaleString()}`),
   ].join("");
 
   const body = `
-    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1c1917;">Complete your payment</h2>
-    <p style="margin:0 0 28px;font-size:15px;color:#57534e;line-height:1.6;">
-      Hi ${booking.guest.name.split(" ")[0]}, your booking request for
-      <strong>${booking.roomName}</strong> is being held pending payment.
-      Complete payment now to confirm your dates.
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1c1917;">Almost there, ${firstName}!</h2>
+    <p style="margin:0 0 8px;font-size:15px;color:#57534e;line-height:1.6;">
+      Your dates at <strong>${config.name}</strong> are being held. Complete payment now to lock in your reservation.
+    </p>
+    <p style="margin:0 0 28px;font-size:13px;color:#a8a29e;">
+      ⏱ This payment link is valid for <strong>30 minutes</strong>.
     </p>
 
     ${sectionHeading("Booking summary")}
@@ -36,14 +38,13 @@ export function renderBookingPendingPayment(
     ${ctaButton("Complete Payment →", checkoutUrl, branding.primaryColor)}
 
     <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.6;text-align:center;">
-      This payment link is valid for <strong>30 minutes</strong> from when you started your booking.<br>
-      If it has expired, please visit our website to start a new booking.
+      If the link expires, your dates will be released — simply start a new booking on our website.
     </p>
 
     <hr style="border:none;border-top:1px solid #e7e5e4;margin:28px 0;">
     <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.6;">
-      <strong>Already paid?</strong> This email was sent automatically the moment you started your
-      booking — you may have completed payment seconds later. If so, ignore this email and look out
+      <strong>Already paid?</strong> This email was sent automatically the moment your booking was created —
+      you may have completed payment seconds later. If so, ignore this email and look out
       for your booking confirmation which will arrive shortly.
     </p>
   `;
@@ -60,10 +61,9 @@ export function renderBookingPendingPayment(
   const text = [
     `Complete your payment — ${booking.roomName} at ${config.name}`,
     ``,
-    `Hi ${booking.guest.name.split(" ")[0]},`,
+    `Almost there, ${firstName}!`,
     ``,
-    `Your booking request is being held pending payment.`,
-    `Complete payment within 30 minutes to confirm your stay.`,
+    `Your dates at ${config.name} are being held. Complete payment in the next 30 minutes to confirm your reservation.`,
     ``,
     `BOOKING SUMMARY`,
     `Room:      ${booking.roomName}`,
@@ -72,12 +72,13 @@ export function renderBookingPendingPayment(
     `Nights:    ${booking.nights}`,
     `Total:     ${booking.currency} ${booking.totalPrice.toLocaleString()}`,
     ``,
-    `Complete payment: ${checkoutUrl}`,
+    `Complete payment here:`,
+    checkoutUrl,
     ``,
-    `Note: This link is valid for 30 minutes from when you started your booking.`,
+    `If the link expires, your dates will be released — start a new booking on our website.`,
     ``,
-    `Already paid? This email was sent automatically when you started your booking.`,
-    `If you completed payment, ignore this email — your confirmation will arrive shortly.`,
+    `Already paid? This email was sent automatically at the moment your booking was created.`,
+    `If you completed payment, ignore this — your confirmation will arrive shortly.`,
     ``,
     `${config.name} · ${config.location}`,
     config.adminEmail,

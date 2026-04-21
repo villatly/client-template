@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: "/admin/branding",    label: "Branding" },
   { href: "/admin/sections",    label: "Sections" },
   { href: "/admin/booking",     label: "Booking" },
+  { href: "/admin/settings",    label: "Settings" },
 ];
 
 export default function AdminNav() {

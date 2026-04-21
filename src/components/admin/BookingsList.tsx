@@ -179,6 +179,13 @@ function DetailPanel({
   const [confirmDecline, setConfirmDecline] = useState(false);
   const [declining, setDeclining] = useState(false);
   const [declineReason, setDeclineReason] = useState("");
+  // Refund state
+  const [showRefund, setShowRefund] = useState(false);
+  const [refundMode, setRefundMode] = useState<"preset" | "custom">("preset");
+  const [refundPreset, setRefundPreset] = useState<25 | 50 | 75 | 100>(100);
+  const [refundCustom, setRefundCustom] = useState("");
+  const [refunding, setRefunding] = useState(false);
+  const [refundError, setRefundError] = useState("");
 
   async function patch(body: Record<string, unknown>) {
     const res = await fetch(`/api/admin/bookings/${booking.id}`, {
@@ -226,6 +233,45 @@ function DetailPanel({
     setForcing(false);
   }
 
+  async function doRefund() {
+    setRefundError("");
+    const amount =
+      refundMode === "custom"
+        ? parseFloat(refundCustom.replace(/[^0-9.]/g, ""))
+        : Math.round((refundPreset / 100) * booking.totalPrice);
+
+    if (!amount || amount <= 0) {
+      setRefundError("Enter a valid amount.");
+      return;
+    }
+    if (amount > booking.totalPrice) {
+      setRefundError(`Cannot exceed ${booking.currency} ${booking.totalPrice.toLocaleString()}.`);
+      return;
+    }
+
+    setRefunding(true);
+    try {
+      const res = await fetch(`/api/admin/bookings/${booking.id}/refund`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        onUpdate(data.booking);
+        setShowRefund(false);
+        setRefundCustom("");
+        setRefundPreset(100);
+        setRefundMode("preset");
+      } else {
+        setRefundError(data.error ?? "Refund failed");
+      }
+    } catch {
+      setRefundError("Network error — please try again.");
+    }
+    setRefunding(false);
+  }
+
   const canAccept       = booking.status === "pending_review";
   const canDecline      = booking.status === "pending_review";
   const canConfirm      = booking.status === "pending_confirmation";
@@ -235,6 +281,10 @@ function DetailPanel({
   const canForceConfirm = booking.status === "payment_authorized" && booking.confirmationMode === "payment";
   // Warn admin that a manual Stripe refund is needed if cancelling a paid booking
   const cancelNeedsRefund = booking.status === "confirmed" && booking.payment.status === "paid";
+  // Refund is available on any paid booking that hasn't been fully refunded yet
+  const canRefund       = booking.payment.status === "paid" && !!booking.payment.intentId;
+  const alreadyRefunded = booking.payment.status === "refunded";
+  const partiallyRefunded = booking.payment.status === "paid" && !!booking.payment.refundAmount && booking.payment.refundAmount > 0;
 
   const payBadge = PAYMENT_BADGE[booking.payment.status] ?? PAYMENT_BADGE.none;
 
@@ -304,6 +354,31 @@ function DetailPanel({
                 </a>
                 {" "}↗
               </p>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Refund status — shown if a refund has been issued */}
+      {(alreadyRefunded || partiallyRefunded) && (
+        <section>
+          <SectionLabel>Refund issued</SectionLabel>
+          <div className={`rounded-lg border px-3 py-3 text-xs space-y-1 ${alreadyRefunded ? "border-purple-200 bg-purple-50" : "border-amber-100 bg-amber-50"}`}>
+            <p className={`font-semibold ${alreadyRefunded ? "text-purple-700" : "text-amber-700"}`}>
+              {alreadyRefunded ? "✓ Full refund issued" : "↩ Partial refund issued"}
+            </p>
+            {booking.payment.refundAmount != null && (
+              <p className="text-gray-600">
+                Amount: <strong>{booking.currency} {booking.payment.refundAmount.toLocaleString()}</strong>
+                {!alreadyRefunded && (
+                  <span className="text-gray-400 ml-1">
+                    (of {booking.currency} {booking.totalPrice.toLocaleString()} total)
+                  </span>
+                )}
+              </p>
+            )}
+            {booking.payment.refundedAt && (
+              <p className="text-gray-400">{fmtDateTime(booking.payment.refundedAt)}</p>
             )}
           </div>
         </section>
@@ -509,22 +584,8 @@ function DetailPanel({
                   ⚠ This booking has a captured payment
                 </p>
                 <p className="text-xs text-red-600 mt-0.5 leading-relaxed">
-                  Stripe does not issue automatic refunds on cancellation.
-                  After cancelling here, you must manually issue a refund from
-                  the{" "}
-                  {booking.payment.intentId ? (
-                    <a
-                      href={stripePaymentUrl(booking.payment.intentId)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline font-medium"
-                    >
-                      Stripe dashboard ↗
-                    </a>
-                  ) : (
-                    "Stripe dashboard"
-                  )}
-                  .
+                  Use the <strong>Issue Refund</strong> button below to refund the guest before or after cancelling.
+                  Dates will be freed immediately on cancellation regardless.
                 </p>
               </div>
             )}
@@ -549,6 +610,99 @@ function DetailPanel({
                 Nevermind
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Refund */}
+        {canRefund && !showRefund && (
+          <ActionButton
+            onClick={() => { setShowRefund(true); setRefundError(""); }}
+            loading={false}
+            variant="amber-outline"
+          >
+            Issue Refund
+          </ActionButton>
+        )}
+        {showRefund && (
+          <div className="w-full rounded-lg border border-amber-200 bg-amber-50 p-3 space-y-3">
+            <p className="text-xs font-semibold text-amber-800">
+              Issue a refund — {booking.currency} {booking.totalPrice.toLocaleString()} paid
+            </p>
+
+            {/* Mode toggle */}
+            <div className="flex gap-1">
+              <button
+                onClick={() => setRefundMode("preset")}
+                className={`rounded px-2.5 py-1 text-[11px] font-medium transition-colors ${refundMode === "preset" ? "bg-amber-600 text-white" : "border border-amber-300 text-amber-700 hover:bg-amber-100"}`}
+              >
+                Quick %
+              </button>
+              <button
+                onClick={() => setRefundMode("custom")}
+                className={`rounded px-2.5 py-1 text-[11px] font-medium transition-colors ${refundMode === "custom" ? "bg-amber-600 text-white" : "border border-amber-300 text-amber-700 hover:bg-amber-100"}`}
+              >
+                Custom amount
+              </button>
+            </div>
+
+            {refundMode === "preset" ? (
+              <div className="space-y-2">
+                <div className="flex flex-wrap gap-1.5">
+                  {([25, 50, 75, 100] as const).map((pct) => {
+                    const amt = Math.round((pct / 100) * booking.totalPrice);
+                    return (
+                      <button
+                        key={pct}
+                        onClick={() => setRefundPreset(pct)}
+                        className={`rounded px-2.5 py-1 text-[11px] font-medium transition-colors ${refundPreset === pct ? "bg-amber-600 text-white" : "border border-amber-300 text-amber-700 hover:bg-amber-100"}`}
+                      >
+                        {pct}% — {booking.currency} {amt.toLocaleString()}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-[11px] text-amber-700">
+                  Refund: <strong>{booking.currency} {Math.round((refundPreset / 100) * booking.totalPrice).toLocaleString()}</strong>
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-amber-800 font-medium shrink-0">{booking.currency}</span>
+                <input
+                  type="number"
+                  min="1"
+                  max={booking.totalPrice}
+                  step="1"
+                  placeholder={`Max ${booking.totalPrice.toLocaleString()}`}
+                  value={refundCustom}
+                  onChange={(e) => { setRefundCustom(e.target.value); setRefundError(""); }}
+                  className="block w-full rounded border border-amber-200 bg-white px-2.5 py-1.5 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                />
+              </div>
+            )}
+
+            {refundError && (
+              <p className="text-[11px] text-red-600 font-medium">{refundError}</p>
+            )}
+
+            <div className="flex gap-2 items-center">
+              <button
+                onClick={doRefund}
+                disabled={refunding}
+                className="rounded-md bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700 disabled:opacity-50"
+              >
+                {refunding ? "Processing…" : "Confirm refund"}
+              </button>
+              <button
+                onClick={() => { setShowRefund(false); setRefundError(""); setRefundCustom(""); }}
+                className="text-xs text-gray-500 hover:text-gray-900"
+              >
+                Cancel
+              </button>
+            </div>
+            <p className="text-[10px] text-amber-600 leading-relaxed">
+              This will immediately process the refund via Stripe. The guest will receive the money within 5–10 business days depending on their bank.
+            </p>
           </div>
         )}
       </div>
