@@ -78,7 +78,32 @@ INSERT INTO property_data (key, value) VALUES
   "bookingWhatsapp": ""
 }'),
 
-('availability', '{}'),
+('availability', '{
+  "room-1": {
+    "pricePerNight": 420,
+    "minStay": 2,
+    "pricePeriods": [],
+    "units": [
+      { "id": "room-1-u1", "blockedRanges": [] }
+    ]
+  },
+  "room-2": {
+    "pricePerNight": 320,
+    "minStay": 2,
+    "pricePeriods": [],
+    "units": [
+      { "id": "room-2-u1", "blockedRanges": [] }
+    ]
+  },
+  "room-3": {
+    "pricePerNight": 380,
+    "minStay": 3,
+    "pricePeriods": [],
+    "units": [
+      { "id": "room-3-u1", "blockedRanges": [] }
+    ]
+  }
+}'),
 
 ('bookings', '[]')
 

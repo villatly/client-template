@@ -78,10 +78,18 @@ export async function readFile(key: string): Promise<string> {
       .single();
 
     if (!error && data?.value !== undefined) {
-      return data.value;
+      // Guard: if the `availability` row exists but holds `{}` (the empty
+      // placeholder the setup script used to insert), fall through to the seed.
+      // `{}` means "no rooms configured" which is indistinguishable from a
+      // properly-seeded empty state, so we use the bundled seed instead.
+      // Other keys (bookings = [], etc.) are left as-is — [] is valid there.
+      const isEmptyAvailability = dbKey === "availability" && data.value.trim() === "{}";
+      if (!isEmptyAvailability) {
+        return data.value;
+      }
     }
 
-    // 3. Fall back to seed file (first boot — row not yet inserted)
+    // Fall back to seed file (first boot — row not yet inserted, or availability={})
     const seed = fs.readFileSync(toSeedPath(key), "utf-8");
     // Persist the seed to DB so future reads are fast
     await writeFile(key, seed);
