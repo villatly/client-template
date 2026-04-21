@@ -290,14 +290,17 @@ function BlockedList({ unit, rd, onRemove, currency }: {
     .map((r, i) => ({ ...r, origIdx: i }))
     .sort((a, b) => a.from.localeCompare(b.from));
 
-  if (sorted.length === 0) return <p className="text-sm text-gray-400">No blocked periods yet.</p>;
+  if (sorted.length === 0) return <p className="text-sm text-gray-400">No blocked periods. Use the calendar above to block dates manually, or confirm a booking to block automatically.</p>;
 
   return (
     <ul className="space-y-2">
-      {sorted.map(({ from, to, origIdx }) => {
+      {sorted.map((range) => {
+        const { from, to, origIdx, bookingId, icalSourceId, icalSummary } = range;
         const nights = nightsBetween(from, to);
         const isPast = to < today;
         const isActive = from <= today && to >= today;
+        const isBooking = !!bookingId;
+        const isIcal = !!icalSourceId;
 
         let rev = 0;
         for (let d = 0; d < nights; d++) {
@@ -308,11 +311,17 @@ function BlockedList({ unit, rd, onRemove, currency }: {
           rev += pi >= 0 ? rd.pricePeriods[pi].pricePerNight : rd.pricePerNight;
         }
 
+        const source = isBooking
+          ? { label: "Booking", cls: "bg-emerald-100 text-emerald-700" }
+          : isIcal
+          ? { label: icalSummary ?? "iCal", cls: "bg-sky-100 text-sky-700" }
+          : { label: "Manual", cls: "bg-gray-100 text-gray-600" };
+
         return (
-          <li key={origIdx} className={`flex items-center justify-between rounded-lg border px-4 py-3 ${isPast ? "border-gray-200 bg-gray-50 opacity-60" : isActive ? "border-blue-200 bg-blue-50" : "border-rose-200 bg-rose-50"}`}>
-            <div className="flex items-center gap-3">
-              <span className={`h-2 w-2 rounded-full shrink-0 ${isPast ? "bg-gray-400" : isActive ? "bg-blue-500" : "bg-rose-400"}`} />
-              <div>
+          <li key={origIdx} className={`flex items-start justify-between gap-3 rounded-lg border px-4 py-3 ${isPast ? "border-gray-200 bg-gray-50 opacity-60" : isActive ? "border-blue-200 bg-blue-50" : "border-rose-200 bg-rose-50"}`}>
+            <div className="flex items-start gap-3 min-w-0">
+              <span className={`mt-1 h-2 w-2 rounded-full shrink-0 ${isPast ? "bg-gray-400" : isActive ? "bg-blue-500" : "bg-rose-400"}`} />
+              <div className="min-w-0">
                 <p className="text-sm font-medium text-gray-800">
                   {from === to ? from : `${from} → ${to}`}
                 </p>
@@ -320,14 +329,27 @@ function BlockedList({ unit, rd, onRemove, currency }: {
                   {nights} {nights === 1 ? "night" : "nights"}
                   {!isPast && <span className="ml-2 text-gray-400">· Est. {currency} {rev.toLocaleString()}</span>}
                 </p>
+                {isBooking && (
+                  <p className="text-[11px] text-gray-400 mt-0.5">
+                    Booking ID: <span className="font-mono">{bookingId!.slice(0, 8)}…</span>
+                    {" · "}
+                    <span className="text-amber-600">Removing this does NOT cancel the booking</span>
+                  </p>
+                )}
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${isPast ? "bg-gray-200 text-gray-600" : isActive ? "bg-blue-200 text-blue-700" : "bg-rose-200 text-rose-700"}`}>
-                {isPast ? "Past" : isActive ? "Active" : "Upcoming"}
+            <div className="flex items-center gap-2 shrink-0">
+              <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${source.cls}`}>
+                {source.label}
+              </span>
+              <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${isPast ? "bg-gray-200 text-gray-600" : isActive ? "bg-blue-200 text-blue-700" : "bg-rose-200 text-rose-700"}`}>
+                {isPast ? "Past" : isActive ? "Active now" : "Upcoming"}
               </span>
               {!isPast && (
-                <button onClick={() => onRemove(origIdx)} className="text-xs text-gray-400 hover:text-red-600 transition-colors">
+                <button
+                  onClick={() => onRemove(origIdx)}
+                  className="text-xs text-gray-400 hover:text-red-600 transition-colors ml-1"
+                >
                   Remove
                 </button>
               )}
@@ -462,6 +484,7 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
   const [activeUnitIdx, setActiveUnitIdx] = useState(0);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [unsaved, setUnsaved] = useState(false);
 
   const rd = data[activeRoom] ?? defaultRoomAvail(activeRoom);
   // Clamp active unit index in case units were removed
@@ -471,6 +494,7 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
   const updateRoom = useCallback((patch: Partial<RoomAvailability>) => {
     setData((d) => ({ ...d, [activeRoom]: { ...(d[activeRoom] ?? defaultRoomAvail(activeRoom)), ...patch } }));
     setSaved(false);
+    setUnsaved(true);
   }, [activeRoom]);
 
   /** Update just the active unit's blockedRanges, keeping all other units intact. */
@@ -483,6 +507,7 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
       return { ...d, [activeRoom]: { ...room, units: updatedUnits } };
     });
     setSaved(false);
+    setUnsaved(true);
   }, [activeRoom, safeUnitIdx]);
 
   function handleBlock(from: string, to: string) {
@@ -493,7 +518,16 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
       { from, to }
     );
     const kept = ranges.filter((r) => to < r.from || from > r.to);
-    updateActiveUnit([...kept, merged].sort((a, b) => a.from.localeCompare(b.from)));
+    const newRanges = [...kept, merged].sort((a, b) => a.from.localeCompare(b.from));
+    // Auto-save immediately
+    setData((d) => {
+      const room = d[activeRoom] ?? defaultRoomAvail(activeRoom);
+      const updatedUnits = room.units.map((u, i) => i === safeUnitIdx ? { ...u, blockedRanges: newRanges } : u);
+      const newData = { ...d, [activeRoom]: { ...room, units: updatedUnits } };
+      autoSave(newData);
+      return newData;
+    });
+    setSaved(false);
   }
 
   function handleUnblock(from: string, to: string) {
@@ -503,7 +537,28 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
       if (r.from < from) result.push({ from: r.from, to: prevDay(from) });
       if (r.to > to) result.push({ from: nextDay(to), to: r.to });
     }
-    updateActiveUnit(result.sort((a, b) => a.from.localeCompare(b.from)));
+    const newRanges = result.sort((a, b) => a.from.localeCompare(b.from));
+    // Auto-save immediately
+    setData((d) => {
+      const room = d[activeRoom] ?? defaultRoomAvail(activeRoom);
+      const updatedUnits = room.units.map((u, i) => i === safeUnitIdx ? { ...u, blockedRanges: newRanges } : u);
+      const newData = { ...d, [activeRoom]: { ...room, units: updatedUnits } };
+      autoSave(newData);
+      return newData;
+    });
+    setSaved(false);
+  }
+
+  function handleRemove(origIdx: number) {
+    const newRanges = activeUnit.blockedRanges.filter((_, idx) => idx !== origIdx);
+    setData((d) => {
+      const room = d[activeRoom] ?? defaultRoomAvail(activeRoom);
+      const updatedUnits = room.units.map((u, i) => i === safeUnitIdx ? { ...u, blockedRanges: newRanges } : u);
+      const newData = { ...d, [activeRoom]: { ...room, units: updatedUnits } };
+      autoSave(newData);
+      return newData;
+    });
+    setSaved(false);
   }
 
   function handleAddUnit() {
@@ -529,15 +584,28 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
     return dt.toISOString().split("T")[0];
   }
 
-  async function save() {
+  async function save(dataToSave = data) {
     setSaving(true);
     await fetch("/api/admin/availability", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(dataToSave),
     });
     setSaving(false);
     setSaved(true);
+    setUnsaved(false);
+  }
+
+  async function autoSave(newData: AvailabilityData) {
+    setSaving(true);
+    await fetch("/api/admin/availability", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newData),
+    });
+    setSaving(false);
+    setSaved(true);
+    setUnsaved(false);
   }
 
   if (rooms.length === 0) return <p className="text-sm text-gray-400">No rooms found. Add rooms first.</p>;
@@ -602,12 +670,23 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
       {/* Blocked periods list (per unit) */}
       {activeUnit && (
         <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
-          <h3 className="mb-4 text-sm font-semibold text-gray-900">Blocked Periods — Unit {safeUnitIdx + 1}</h3>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900">Blocked Periods — Unit {safeUnitIdx + 1}</h3>
+              <p className="text-[11px] text-gray-400 mt-0.5">
+                <span className="inline-flex items-center gap-1 mr-3"><span className="h-2 w-2 rounded-full bg-rose-400 inline-block"/>Upcoming</span>
+                <span className="inline-flex items-center gap-1 mr-3"><span className="h-2 w-2 rounded-full bg-blue-500 inline-block"/>Active now</span>
+                <span className="inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-gray-400 inline-block"/>Past</span>
+              </p>
+            </div>
+            {saving && <span className="text-xs text-gray-400">Saving…</span>}
+            {saved && !saving && <span className="text-xs text-emerald-600">✓ Saved</span>}
+          </div>
           <BlockedList
             unit={activeUnit}
             rd={rd}
             currency={currency}
-            onRemove={(i) => updateActiveUnit(activeUnit.blockedRanges.filter((_, idx) => idx !== i))}
+            onRemove={handleRemove}
           />
         </section>
       )}
