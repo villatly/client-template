@@ -58,12 +58,18 @@ export async function POST(req: Request) {
     );
   }
 
-  // Best-effort email — don't block the response on delivery
-  sendAdminLoginOTPEmail(adminEmail, code, config.name).catch((err) =>
-    console.error("Failed to send OTP email:", err)
-  );
+  // Await the email send before responding — this ensures the Lambda doesn't
+  // exit before Resend finishes (cold-start fire-and-forget silently drops emails).
+  // For a login flow the slight latency (~200ms) is acceptable; delivery is not.
+  try {
+    await sendAdminLoginOTPEmail(adminEmail, code, config.name);
+  } catch (err) {
+    console.error("Failed to send OTP email:", err);
+    return NextResponse.json(
+      { error: "Could not send the login code. Check your EMAIL_PROVIDER configuration." },
+      { status: 502 }
+    );
+  }
 
-  // Always return the same response regardless of whether the email was sent.
-  // We don't confirm the email address exists, to avoid information leakage.
   return NextResponse.json({ ok: true }, { status: 200 });
 }
