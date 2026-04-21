@@ -9,13 +9,16 @@ export function renderBookingCancelledAdmin(
   baseUrl: string
 ): { subject: string; html: string; text: string } {
   const wasPaid = booking.payment.status === "paid";
+  const refundIssued =
+    (booking.payment.refundAmount != null && booking.payment.refundAmount > 0) ||
+    booking.payment.status === "refunded";
 
-  const subject = wasPaid
-    ? `[Action Required] Booking cancelled — refund needed — ${booking.confirmationCode}`
+  const subject = wasPaid && !refundIssued
+    ? `[Action Required] Booking cancelled — refund pending — ${booking.confirmationCode}`
     : `Booking cancelled — ${booking.confirmationCode}`;
 
-  const previewText = wasPaid
-    ? `${booking.guest.name} cancelled their paid booking. Issue refund in Stripe.`
+  const previewText = wasPaid && !refundIssued
+    ? `${booking.guest.name} had a paid booking. Issue the refund from your admin panel.`
     : `${booking.guest.name}'s booking has been cancelled. No charge was made.`;
 
   const bookingRows = [
@@ -30,35 +33,48 @@ export function renderBookingCancelledAdmin(
     booking.cancellationReason
       ? detailRow("Reason", booking.cancellationReason)
       : "",
-    wasPaid && booking.payment.intentId
-      ? detailRow("PaymentIntent", `<span style="font-family:'Courier New',monospace;font-size:12px;">${booking.payment.intentId}</span>`)
-      : "",
   ].join("");
 
-  const refundBlock = wasPaid
-    ? `<div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:18px 24px;margin:0 0 28px;">
+  let refundBlock: string;
+
+  if (!wasPaid) {
+    refundBlock = `
+      <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 20px;margin:0 0 28px;">
+        <p style="margin:0;font-size:14px;font-weight:600;color:#15803d;">✓ &nbsp;No refund needed</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#166534;">
+          No payment was captured for this booking — no action required.
+        </p>
+      </div>`;
+  } else if (refundIssued) {
+    const refundAmt = booking.payment.refundAmount ?? booking.totalPrice;
+    refundBlock = `
+      <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 20px;margin:0 0 28px;">
+        <p style="margin:0;font-size:14px;font-weight:600;color:#15803d;">✓ &nbsp;Refund already issued</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#166534;">
+          ${booking.currency} ${refundAmt.toLocaleString()} was refunded before cancellation. No further action needed.
+        </p>
+      </div>`;
+  } else {
+    // Paid, no refund yet — point to admin panel
+    refundBlock = `
+      <div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:18px 24px;margin:0 0 28px;">
         <p style="margin:0;font-size:15px;font-weight:700;color:#991b1b;">⚠ &nbsp;Action required — issue refund</p>
         <p style="margin:8px 0 0;font-size:14px;color:#7f1d1d;line-height:1.6;">
           This guest paid <strong>${booking.currency} ${booking.totalPrice.toLocaleString()}</strong>.
-          The booking has been cancelled and their dates are now free, but
-          <strong>the refund must be issued manually from the Stripe Dashboard.</strong>
+          Open the booking in your admin panel and use the <strong>Issue Refund</strong> button to process it directly — no need to go to Stripe.
         </p>
-        ${booking.payment.intentId
-          ? `<p style="margin:10px 0 0;font-size:13px;color:#991b1b;line-height:1.5;">
-              PaymentIntent: <span style="font-family:'Courier New',monospace;">${booking.payment.intentId}</span><br>
-              Go to Stripe Dashboard → Payments → find this PI → click <strong>Refund</strong>.
-            </p>`
-          : `<p style="margin:10px 0 0;font-size:13px;color:#991b1b;">
-              Find the payment in the Stripe Dashboard by guest email (${booking.guest.email}) and issue a refund.
-            </p>`
-        }
-      </div>`
-    : `<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 20px;margin:0 0 28px;">
-        <p style="margin:0;font-size:14px;font-weight:600;color:#15803d;">✓ &nbsp;No refund needed</p>
-        <p style="margin:4px 0 0;font-size:13px;color:#166534;">
-          No payment was captured for this booking — no action required on Stripe.
-        </p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;">
+          <tr>
+            <td>
+              <a href="${baseUrl}/admin/bookings"
+                style="display:inline-block;background:#991b1b;color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;padding:10px 22px;border-radius:6px;">
+                Open Admin Panel → Issue Refund
+              </a>
+            </td>
+          </tr>
+        </table>
       </div>`;
+  }
 
   const body = `
     <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1c1917;">Booking cancelled</h2>
@@ -89,11 +105,11 @@ export function renderBookingCancelledAdmin(
   const text = [
     subject,
     ``,
-    wasPaid
-      ? `ACTION REQUIRED: This guest paid ${booking.currency} ${booking.totalPrice.toLocaleString()}. Issue a refund in the Stripe Dashboard.`
-      : `No refund needed — no payment was captured.`,
-    ``,
-    booking.payment.intentId ? `PaymentIntent: ${booking.payment.intentId}` : "",
+    wasPaid && !refundIssued
+      ? `ACTION REQUIRED: This guest paid ${booking.currency} ${booking.totalPrice.toLocaleString()}. Open the admin panel and use the Issue Refund button: ${baseUrl}/admin/bookings`
+      : refundIssued
+        ? `Refund already issued — no further action needed.`
+        : `No refund needed — no payment was captured.`,
     ``,
     `BOOKING`,
     `Confirmation: ${booking.confirmationCode}`,
