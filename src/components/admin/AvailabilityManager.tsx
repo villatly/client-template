@@ -718,7 +718,7 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
       {/* Save */}
       <div className="flex items-center justify-end gap-3">
         {saved && <span className="text-sm text-emerald-600">Saved!</span>}
-        <button type="button" onClick={save} disabled={saving}
+        <button type="button" onClick={() => save()} disabled={saving}
           className="rounded-md bg-gray-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50 transition-colors">
           {saving ? "Saving…" : "Save Availability"}
         </button>
