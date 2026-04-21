@@ -546,6 +546,7 @@ function prefillToResult(p: BookingPrefill): AvailabilityResult {
   return {
     room:             p.room,
     available:        true,
+    capacityExceeded: false,
     availableUnits:   1,
     totalUnits:       1,
     pricePerNight:    p.avgPricePerNight,
