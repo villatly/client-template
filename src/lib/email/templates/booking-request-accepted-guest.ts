@@ -1,6 +1,6 @@
 /**
  * Email sent to the guest when the admin accepts their booking request (request_to_book mode).
- * Contains the Stripe payment link. The Checkout Session expires in 30 minutes.
+ * Contains the Stripe payment link. The Checkout Session expires in 23 hours.
  */
 
 import type { Booking } from "@/lib/types";
@@ -15,7 +15,7 @@ export function renderBookingRequestAcceptedGuest(
 ): { subject: string; html: string; text: string } {
   const firstName = booking.guest.name.split(" ")[0];
   const subject   = `Your booking is accepted — complete payment to confirm`;
-  const previewText = `Great news! Your request for ${booking.roomName} at ${config.name} has been accepted. Complete payment to confirm.`;
+  const previewText = `Great news! Your request for ${booking.roomName} at ${config.name} has been accepted. You have 23 hours to complete payment.`;
 
   const detailRows = [
     detailRow("Room",       booking.roomName),
@@ -40,7 +40,7 @@ export function renderBookingRequestAcceptedGuest(
       Your booking request for <strong>${booking.roomName}</strong> at <strong>${config.name}</strong> has been accepted.
     </p>
     <p style="margin:0 0 28px;font-size:13px;color:#a8a29e;text-align:center;">
-      ⏱ Complete payment in the next <strong>30 minutes</strong> to confirm your dates.
+      ⏱ Complete payment within <strong>23 hours</strong> to confirm your dates.
     </p>
 
     ${sectionHeading("Booking summary")}
@@ -77,7 +77,7 @@ export function renderBookingRequestAcceptedGuest(
   const text = `Great news, ${firstName}! — ${config.name}
 
 Your booking request for ${booking.roomName} has been accepted.
-Complete payment in the next 30 minutes to confirm your dates.
+Complete payment within 23 hours to confirm your dates.
 
 BOOKING SUMMARY
   Room:       ${booking.roomName}

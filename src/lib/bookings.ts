@@ -339,7 +339,9 @@ export async function expireBooking(id: string): Promise<Booking> {
     payment: { ...booking.payment, status: "failed" },
   };
   await writeBookings(bookings);
-  // No need to unblockDates — pending_payment bookings never block dates
+  // Unblock dates — request_to_book bookings block dates on accept (pending_payment).
+  // unblockDates is idempotent so safe to call even if no range exists.
+  await unblockDates(bookings[idx]);
   return bookings[idx];
 }
 
@@ -628,6 +630,9 @@ export async function acceptBookingRequest(id: string): Promise<Booking> {
     payment: { ...booking.payment, status: "pending" },
   };
   await writeBookings(bookings);
+  // Block dates immediately on accept so no other guest can take them
+  // while this guest completes payment. Unblocked if they expire.
+  await blockDates(bookings[idx]);
   return bookings[idx];
 }
 
