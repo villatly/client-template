@@ -189,8 +189,8 @@ export async function POST(req: Request) {
 
   // ── Request to Book path ─────────────────────────────────────────────
   if (isRequestMode) {
-    // Notify admin and acknowledge guest — both best-effort (non-blocking)
-    Promise.allSettled([
+    // Awaited so Vercel Lambda doesn't terminate before emails fire
+    await Promise.allSettled([
       sendBookingRequestAdminEmail(booking),
       sendBookingRequestReceivedGuestEmail(booking),
     ]).then((results) => {
@@ -247,7 +247,7 @@ export async function POST(req: Request) {
     await attachStripeSession(booking.id, session.id);
 
     if (session.url) {
-      sendBookingPendingPaymentEmail(booking, session.url).catch((err) =>
+      await sendBookingPendingPaymentEmail(booking, session.url).catch((err) =>
         console.error("Pending payment email failed for booking", booking.id, err)
       );
     } else {

@@ -145,7 +145,7 @@ export async function PATCH(
           updated = await attachStripeSession(updated.id, session.id);
 
           if (session.url) {
-            sendBookingRequestAcceptedGuestEmail(updated, session.url).catch((err) =>
+            await sendBookingRequestAcceptedGuestEmail(updated, session.url).catch((err) =>
               console.error(`Accept: payment link email failed for booking ${id}:`, err)
             );
           } else {
