@@ -9,7 +9,7 @@ export function renderBookingPendingPayment(
   branding: BrandingConfig
 ): { subject: string; html: string; text: string } {
   const subject = `Complete your payment — ${booking.roomName} at ${config.name}`;
-  const previewText = `Your dates are held — complete payment in the next 30 minutes to confirm your stay at ${config.name}.`;
+  const previewText = `Your dates are held — complete payment within 24 hours to confirm your stay at ${config.name}.`;
   const firstName = booking.guest.name.split(" ")[0];
 
   const detailsRows = [
@@ -26,7 +26,7 @@ export function renderBookingPendingPayment(
       Your dates at <strong>${config.name}</strong> are being held. Complete payment now to lock in your reservation.
     </p>
     <p style="margin:0 0 28px;font-size:13px;color:#a8a29e;">
-      ⏱ This payment link is valid for <strong>30 minutes</strong>.
+      ⏱ This payment link is valid for <strong>24 hours</strong>.
     </p>
 
     ${sectionHeading("Booking summary")}
@@ -63,7 +63,7 @@ export function renderBookingPendingPayment(
     ``,
     `Almost there, ${firstName}!`,
     ``,
-    `Your dates at ${config.name} are being held. Complete payment in the next 30 minutes to confirm your reservation.`,
+    `Your dates at ${config.name} are being held. Complete payment within 24 hours to confirm your reservation.`,
     ``,
     `BOOKING SUMMARY`,
     `Room:      ${booking.roomName}`,

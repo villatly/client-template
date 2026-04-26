@@ -198,7 +198,7 @@ export async function POST(req: Request) {
                 bookingId,
                 "Dates were taken by another booking just before payment could be confirmed"
               );
-              sendBookingRejectedGuestEmail(rejected).catch((err) =>
+              await sendBookingRejectedGuestEmail(rejected).catch((err) =>
                 console.error(`Rejection email failed for booking ${bookingId}:`, err)
               );
             } catch (rejectErr) {
@@ -255,7 +255,7 @@ export async function POST(req: Request) {
               `╚═══════════════════════════════════════════════════════╝\n`
             );
             // Alert the admin by email so the issue is not only visible in logs.
-            sendCaptureFailedAdminEmail(booking, intentId, captureErrMsg).catch((emailErr) =>
+            await sendCaptureFailedAdminEmail(booking, intentId, captureErrMsg).catch((emailErr) =>
               console.error(`Failed to send capture failure alert email for booking ${bookingId}:`, emailErr)
             );
             break; // No guest confirmation — requires manual admin resolution
@@ -305,7 +305,7 @@ export async function POST(req: Request) {
       }
 
       // ── checkout.session.expired ────────────────────────────────────────────
-      // The guest did not complete payment within the session window (30 min).
+      // The guest did not complete payment within the session window (24 hours).
       // Dates were never blocked, so no unblocking needed.
       case "checkout.session.expired": {
         const session = event.data.object as Stripe.Checkout.Session;
@@ -339,7 +339,7 @@ export async function POST(req: Request) {
           const expired = await expireBooking(bookingId);
           console.log(`Booking ${bookingId} expired via Stripe webhook`);
           // Notify the guest so they know their session timed out and no charge was made.
-          sendBookingExpiredGuestEmail(expired).catch((err) =>
+          await sendBookingExpiredGuestEmail(expired).catch((err) =>
             console.error(`Expiry email failed for booking ${bookingId}:`, err)
           );
         } catch (err) {

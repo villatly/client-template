@@ -241,7 +241,7 @@ export async function POST(req: Request) {
       payment_intent_data: { capture_method: "manual" },
       success_url: `${baseUrl}/booking/success?id=${booking.id}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/booking/cancel?id=${booking.id}`,
-      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+      expires_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
     });
 
     await attachStripeSession(booking.id, session.id);

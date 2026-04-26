@@ -171,7 +171,7 @@ async function runSync(filter: { roomId?: string; unitId?: string }): Promise<Re
         b.id,
         "Your dates were booked on another platform just before your payment was processed"
       );
-      sendBookingRejectedGuestEmail(rejected).catch((emailErr) =>
+      await sendBookingRejectedGuestEmail(rejected).catch((emailErr) =>
         console.error(
           `iCal sync: rejection email failed for booking ${b.id}:`,
           emailErr
@@ -191,13 +191,13 @@ async function runSync(filter: { roomId?: string; unitId?: string }): Promise<Re
   // ── Expire stale pending_payment bookings ─────────────────────────────────
   // Safety net for cases where the Stripe checkout.session.expired webhook was
   // never delivered (network issue, misconfigured endpoint, etc.).
-  // Any booking stuck in pending_payment for >2 hours is well past the 30-minute
-  // Stripe session window and should be expired now, with the guest notified.
-  const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+  // Sessions are valid for 24 hours — expire anything stuck for >26 hours
+  // (2h buffer) to avoid killing sessions that are still within their window.
+  const TWENTY_SIX_HOURS_MS = 26 * 60 * 60 * 1000;
   const staleBookings = (await getBookings()).filter(
     (b) =>
       b.status === "pending_payment" &&
-      Date.now() - new Date(b.createdAt).getTime() > TWO_HOURS_MS
+      Date.now() - new Date(b.createdAt).getTime() > TWENTY_SIX_HOURS_MS
   );
 
   const staleResults: Array<{
@@ -209,7 +209,7 @@ async function runSync(filter: { roomId?: string; unitId?: string }): Promise<Re
   for (const booking of staleBookings) {
     try {
       const expired = await expireBooking(booking.id);
-      sendBookingExpiredGuestEmail(expired).catch((err) =>
+      await sendBookingExpiredGuestEmail(expired).catch((err) =>
         console.error(`iCal sync: expiry email failed for stale booking ${booking.id}:`, err)
       );
       staleResults.push({ bookingId: booking.id, outcome: "expired" });
