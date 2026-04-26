@@ -175,10 +175,18 @@ export async function PATCH(
           );
         }
         updated = await declineBookingRequest(id, body.reason || "Booking request declined by the property");
-        // Notify guest — reuse the cancellation email (explains no charge was made)
-        sendBookingCancelledGuestEmail(updated).catch((err) =>
-          console.error(`Decline: cancellation email failed for booking ${id}:`, err)
-        );
+        // Notify guest + admin — awaited so Vercel Lambda doesn't terminate before emails fire
+        await Promise.allSettled([
+          sendBookingCancelledGuestEmail(updated),
+          sendBookingCancelledAdminEmail(updated),
+        ]).then((results) => {
+          const labels = ["guest decline", "admin decline"];
+          results.forEach((r, i) => {
+            if (r.status === "rejected") {
+              console.error(`${labels[i]} email failed for booking ${id}:`, r.reason);
+            }
+          });
+        });
         break;
       }
 
