@@ -98,7 +98,7 @@ function HeroDefault({ content, isInternal, onBook, identity, amenities }: Inner
   const badges  = getBadges(amenities);
 
   const primaryCls   = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full bg-white text-gray-900 hover:bg-white/90";
-  const secondaryCls = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-full border border-white/50 text-white hover:bg-white/10 hover:border-white/70";
+  const secondaryCls = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-full bg-white/15 border border-white/60 text-white hover:bg-white/25 hover:border-white/90";
 
   return (
     <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden">
@@ -121,27 +121,26 @@ function HeroDefault({ content, isInternal, onBook, identity, amenities }: Inner
           </p>
         )}
 
-        {/* Title — Playfair Display via CSS heading rule */}
-        <h1 className="mb-6 text-[clamp(2.5rem,7vw,5rem)] font-normal leading-[1.05] tracking-[-0.01em]">
+        {/* Title — Playfair Display, clamp 42px→72px, tight line-height */}
+        <h1 className="mb-7 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
           {content.headline}
         </h1>
 
-        {/* Subtitle — Inter, clean and readable, no italic */}
-        <p className="mx-auto mb-7 max-w-[640px] text-base sm:text-[1.1rem] font-normal leading-[1.65] text-white/85 text-justify [text-align-last:center]"
+        {/* Subtitle — Inter, centered, max 2 lines */}
+        <p className="mx-auto mb-10 max-w-[560px] text-[0.95rem] sm:text-base font-normal leading-[1.6] text-white/80 text-center line-clamp-3"
            style={{ fontFamily: "var(--font-body)" }}>
           {content.intro}
         </p>
 
-        {/* Badges — only if data provided */}
+        {/* Badges — chip style, max 3, only if data provided */}
         {badges.length > 0 && (
-          <div className="mb-9 flex flex-wrap items-center justify-center gap-y-2">
+          <div className="mb-12 flex flex-wrap items-center justify-center gap-2">
             {badges.map((badge, i) => (
               <span
                 key={i}
-                className="flex items-center text-[11px] sm:text-[12px] font-medium uppercase tracking-[0.12em] text-white/50"
+                className="inline-flex items-center px-3.5 py-1 rounded-full text-[12px] sm:text-[13px] font-medium text-white/90 bg-white/10 border border-white/25 truncate max-w-[180px]"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                {i > 0 && <span className="mx-3 text-white/25">·</span>}
                 {badge}
               </span>
             ))}
