@@ -86,7 +86,7 @@ export default function ContactForm({ initial }: { initial: ContactInfo }) {
               placeholder="+62 812 3456 7890"
               className={inp}
             />
-            <p className="mt-1 text-xs text-gray-400">Include country code. Also powers the floating WhatsApp button on the site.</p>
+            <p className="mt-1 text-xs text-gray-400">Optional fallback. Prefer setting WhatsApp in <strong>Booking Settings</strong> — that field powers the whole site.</p>
           </div>
         </div>
       </div>
