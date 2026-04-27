@@ -184,6 +184,7 @@ export default function BookingSettingsForm({
               placeholder="+62 812 345 6789"
               className={inp}
             />
+            <p className="mt-1 text-xs text-gray-400">Include country code. Powers the floating WhatsApp button, the booking bar, and all contact sections across the site.</p>
           </div>
         </div>
       </section>

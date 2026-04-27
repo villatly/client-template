@@ -31,6 +31,13 @@ export default function PropertyPage({ property }: PropertyPageProps) {
   const fontClass = getFontClass(branding.fontStyle);
   const layout: LayoutPreset = branding.layoutPreset ?? "default";
 
+  // Unified WhatsApp: merge both sources so filling in either field works everywhere.
+  // booking.bookingWhatsapp (Booking Settings) takes priority over contact.whatsapp (Content).
+  const contact = {
+    ...content.contact,
+    whatsapp: booking.bookingWhatsapp || content.contact.whatsapp || "",
+  };
+
   return (
     <div style={getBrandingCSSVars(branding)} className={fontClass}>
       {sections.hero && (
@@ -42,7 +49,7 @@ export default function PropertyPage({ property }: PropertyPageProps) {
             identity={content.identity}
             amenities={content.amenities}
             showBookingBar={sections.bookingCta && layout === "default"}
-            contact={content.contact}
+            contact={contact}
             propertyName={content.identity.name}
             bookingBarBg={branding.sectionColors?.bookingCta}
           />
@@ -50,7 +57,7 @@ export default function PropertyPage({ property }: PropertyPageProps) {
 
       {sections.bookingCta && layout !== "default" && (
         <BookingCTA
-          contact={content.contact}
+          contact={contact}
           branding={branding}
           propertyName={content.identity.name}
           booking={booking}
@@ -68,7 +75,7 @@ export default function PropertyPage({ property }: PropertyPageProps) {
       )}
 
       {sections.rooms && (
-        <Rooms rooms={content.rooms} propertyType={content.identity.propertyType} booking={booking} contact={content.contact} layout={layout} bgColor={branding.sectionColors?.rooms} />
+        <Rooms rooms={content.rooms} propertyType={content.identity.propertyType} booking={booking} contact={contact} layout={layout} bgColor={branding.sectionColors?.rooms} />
       )}
 
       {sections.amenities && (
@@ -97,7 +104,7 @@ export default function PropertyPage({ property }: PropertyPageProps) {
 
       {sections.contactCta && (
         <ContactCTA
-          contact={content.contact}
+          contact={contact}
           branding={branding}
           propertyName={content.identity.name}
           layout={layout}
@@ -106,13 +113,13 @@ export default function PropertyPage({ property }: PropertyPageProps) {
       )}
 
       {sections.footer && (
-        <Footer identity={content.identity} contact={content.contact} layout={layout} bgColor={branding.sectionColors?.footer} />
+        <Footer identity={content.identity} contact={contact} layout={layout} bgColor={branding.sectionColors?.footer} />
       )}
 
-      {/* Floating WhatsApp button — only renders if a number is configured */}
-      {booking.bookingWhatsapp && (
+      {/* Floating WhatsApp button — uses unified contact number */}
+      {contact.whatsapp && (
         <WhatsAppButton
-          number={booking.bookingWhatsapp}
+          number={contact.whatsapp}
           propertyName={content.identity.name}
         />
       )}
