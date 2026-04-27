@@ -42,15 +42,15 @@ Generate this file with all the property information. Follow this exact schema:
   },
   "hero": {
     "headline": "A short, evocative headline (max 8 words)",
-    "tagline": "One sentence tagline describing the property",
-    "intro": "2-3 sentence introduction for the hero section",
+    "tagline": "Very short tagline — 5 to 8 words maximum. No full sentences.",
+    "intro": "1-2 sentences maximum. Keep it punchy — under 30 words. Do not include ratings or distances here.",
     "image": "best available photo URL (high res, landscape)",
     "primaryCTA": { "label": "Check Availability", "url": "#booking" },
     "secondaryCTA": { "label": "Explore", "url": "#gallery" }
   },
   "description": {
     "short": "1-2 sentence description for SEO and meta tags",
-    "long": "3-5 paragraph detailed description of the property"
+    "long": "2-3 paragraphs. Each paragraph max 3 sentences. Focus on what makes the place special."
   },
   "gallery": [
     { "url": "photo URL", "alt": "descriptive alt text" }
