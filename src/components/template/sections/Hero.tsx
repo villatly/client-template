@@ -78,7 +78,7 @@ function HeroDefault({ content, isInternal, radius, onBook }: InnerProps) {
         <h1 className="mb-6 text-4xl font-normal sm:text-5xl md:text-6xl lg:text-6xl leading-tight">
           {content.headline}
         </h1>
-        <p className="mx-auto mb-10 max-w-2xl text-lg sm:text-xl font-light text-white/90 leading-relaxed text-justify">
+        <p className="mx-auto mb-10 max-w-2xl text-lg sm:text-xl font-light text-white/90 leading-relaxed text-justify [text-align-last:center]">
           {content.intro}
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
