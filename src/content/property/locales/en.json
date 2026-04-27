@@ -7,9 +7,9 @@
     "country": ""
   },
   "hero": {
-    "headline": "Your Headline Here",
-    "tagline": "A short tagline describing your property",
-    "intro": "Write a compelling introduction to your property here. Describe what makes it special, its surroundings, and the experience guests can expect.",
+    "headline": "My Property",
+    "tagline": "Type · Location",
+    "intro": "One or two sentences highlighting your 3 best features — location, comfort, standout amenity. Keep it under 140 characters.",
     "image": "",
     "primaryCTA": {
       "label": "Check Availability",
