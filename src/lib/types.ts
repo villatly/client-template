@@ -41,6 +41,7 @@ export interface CTAButton {
 export interface DescriptionContent {
   short: string;
   long: string;
+  image?: string;
 }
 
 export interface GalleryItem {
