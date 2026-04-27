@@ -20,6 +20,8 @@ interface HeroProps {
   contact?: ContactInfo;
   /** Property name for the booking bar tagline */
   propertyName?: string;
+  /** Custom background colour override for the booking bar (from sectionColors.bookingCta) */
+  bookingBarBg?: string;
 }
 
 interface InnerProps {
@@ -32,6 +34,7 @@ interface InnerProps {
   showBookingBar?: boolean;
   contact?: ContactInfo;
   propertyName?: string;
+  bookingBarBg?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -68,6 +71,7 @@ export default function Hero({
   showBookingBar,
   contact,
   propertyName,
+  bookingBarBg,
 }: HeroProps) {
   const [widgetOpen, setWidgetOpen] = useState(false);
   const hasBookingWidget = !!booking?.mode;
@@ -80,11 +84,11 @@ export default function Hero({
     showBookingBar,
     contact,
     propertyName,
+    bookingBarBg,
     isInternal: hasBookingWidget,
     onBook: () => setWidgetOpen(true),
   };
 
-  // suppress unused-var warning — branding kept in props for future use
   void branding;
 
   return (
@@ -108,7 +112,7 @@ export default function Hero({
 // Structure: Eyebrow → Title (Playfair) → Subtitle → Badges → CTAs (pill)
 // Gradient: warm and airy at top, dark at bottom for legibility.
 
-function HeroDefault({ content, isInternal, onBook, identity, amenities, showBookingBar, contact, propertyName, booking }: InnerProps) {
+function HeroDefault({ content, isInternal, onBook, identity, amenities, showBookingBar, contact, propertyName, bookingBarBg, booking }: InnerProps) {
   const eyebrow = buildEyebrow(identity, content.tagline);
   const badges  = getBadges(amenities);
 
@@ -174,9 +178,12 @@ function HeroDefault({ content, isInternal, onBook, identity, amenities, showBoo
 
       </div>
 
-      {/* Booking bar — pinned to bottom of hero */}
+      {/* Booking bar — pinned to bottom of hero, uses brand primary colour */}
       {showBookingBar && booking && (
-        <div className="absolute bottom-0 left-0 right-0 z-20 bg-black/50 backdrop-blur-md border-t border-white/10">
+        <div
+          className="absolute bottom-0 left-0 right-0 z-20 bg-primary border-t border-white/10"
+          style={bookingBarBg ? { backgroundColor: bookingBarBg } : undefined}
+        >
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-4 sm:flex-row">
             <p
               className="text-sm font-medium text-white/75 tracking-wide"
