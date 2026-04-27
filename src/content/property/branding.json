@@ -5,7 +5,7 @@
   "logo": "",
   "buttonStyle": "rounded",
   "fontStyle": "serif",
-  "layoutPreset": "default",
+  "layoutPreset": "resort",
   "faviconUrl": "",
   "sectionColors": {}
 }
