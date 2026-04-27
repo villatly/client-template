@@ -71,7 +71,7 @@ export default function HeroForm({ initial }: { initial: HeroContent }) {
       <div>
         <label className="mb-1 block text-xs font-medium text-gray-700">
           Subtitle
-          <span className="ml-1 font-normal text-gray-400">— 1–2 sentences highlighting 3 benefits. ~100–140 characters.</span>
+          <span className="ml-1 font-normal text-gray-400">— max 2 lines. 110–130 characters. 2–3 benefits max. No ratings.</span>
         </label>
         <textarea
           rows={3}

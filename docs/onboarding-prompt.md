@@ -43,7 +43,7 @@ Generate this file with all the property information. Follow this exact schema:
   "hero": {
     "headline": "The property name, or a very short memorable name. Maximum 35 characters. No tagline, no location — just the name.",
     "tagline": "5 to 8 words max. Used as fallback eyebrow only. No full sentences. Example: 'Boutique villa with pool in Ubud'",
-    "intro": "1-2 sentences, 100-140 characters total. Highlight 3 real benefits: location, comfort, standout feature. No italic tone, no filler. Example: 'Private pool villa in Ubud with jungle views, daily breakfast, and 5-min walk to the rice terraces.'",
+    "intro": "Max 110-130 characters. 2-3 ideas only — pick the most relevant: location, view, pool, beach, breakfast, surf, comfort, value. No ratings, no long lists. Example: 'Private pool villa in Ubud with jungle views and daily breakfast included.'",
     "image": "best available photo URL (high res, landscape, ideally 1200x700 or wider)",
     "primaryCTA": { "label": "Check Availability", "url": "#booking" },
     "secondaryCTA": { "label": "Explore", "url": "#gallery" }
