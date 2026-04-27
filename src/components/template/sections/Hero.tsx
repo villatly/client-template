@@ -71,14 +71,14 @@ function HeroDefault({ content, isInternal, radius, onBook }: InnerProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/45 to-black/55" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center text-white">
-        <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-white/80">
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-white">
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-white/70 line-clamp-1">
           {content.tagline}
         </p>
         <h1 className="mb-6 text-4xl font-normal sm:text-5xl md:text-6xl lg:text-7xl">
           {content.headline}
         </h1>
-        <p className="mx-auto mb-10 max-w-2xl text-lg text-white/90 leading-relaxed">
+        <p className="mx-auto mb-10 max-w-2xl text-base sm:text-lg text-white/90 leading-relaxed text-justify">
           {content.intro}
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -120,7 +120,7 @@ function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
     <section className="flex min-h-screen flex-col lg:flex-row overflow-hidden">
 
       {/* Image — first on mobile (top), right on desktop */}
-      <div className="order-1 lg:order-2 relative min-h-[56vw] flex-1 overflow-hidden lg:min-h-screen">
+      <div className="order-1 lg:order-2 relative min-h-[65vw] flex-1 overflow-hidden lg:min-h-screen">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={content.image}
@@ -133,10 +133,10 @@ function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
       </div>
 
       {/* White type panel — second on mobile (below), left on desktop */}
-      <div className="order-2 lg:order-1 relative flex flex-col justify-center lg:w-[44%] bg-white px-10 py-16 lg:px-16 lg:py-0 lg:min-h-screen">
+      <div className="order-2 lg:order-1 relative flex flex-col justify-center lg:w-[44%] bg-white px-6 py-14 sm:px-10 sm:py-16 lg:px-16 lg:py-0 lg:min-h-screen">
 
         {/* Masthead tagline — absolute at top */}
-        <div className="absolute top-8 left-10 lg:top-12 lg:left-16 right-10">
+        <div className="absolute top-8 left-6 sm:left-10 lg:top-12 lg:left-16 right-6 sm:right-10">
           <p className="text-[10px] font-semibold uppercase tracking-[0.45em] text-gray-300 truncate">
             {content.tagline}
           </p>
@@ -152,7 +152,7 @@ function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
 
           {/* Headline — large, tight, commanding */}
           <h1
-            className={`mb-8 text-5xl font-light leading-[1.03] tracking-tight text-gray-900 sm:text-6xl xl:text-[5.25rem] transition-all duration-1000 ease-out ${
+            className={`mb-8 text-4xl font-light leading-[1.03] tracking-tight text-gray-900 sm:text-5xl xl:text-[5.25rem] transition-all duration-1000 ease-out ${
               visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
             }`}
           >
@@ -161,7 +161,7 @@ function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
 
           {/* Intro */}
           <p
-            className={`mb-10 text-base leading-relaxed text-gray-500 max-w-xs transition-all duration-700 delay-200 ease-out ${
+            className={`mb-10 text-base leading-relaxed text-gray-500 max-w-sm lg:max-w-xs transition-all duration-700 delay-200 ease-out ${
               visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
             }`}
           >
@@ -189,9 +189,9 @@ function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator — hidden on mobile to avoid overlap with short panel */}
         <div
-          className={`absolute bottom-8 left-10 lg:left-16 flex items-center gap-3 transition-all duration-700 delay-700 ease-out ${
+          className={`hidden lg:flex absolute bottom-8 left-10 lg:left-16 items-center gap-3 transition-all duration-700 delay-700 ease-out ${
             visible ? "opacity-100" : "opacity-0"
           }`}
         >
