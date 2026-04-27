@@ -1,102 +1,13 @@
 {
   "room-1": {
-    "pricePerNight": 420,
+    "pricePerNight": 200,
     "minStay": 2,
-    "pricePeriods": [
-      {
-        "from": "2026-06-01",
-        "to": "2026-08-31",
-        "pricePerNight": 520,
-        "label": "High Season"
-      },
-      {
-        "from": "2026-12-20",
-        "to": "2027-01-05",
-        "pricePerNight": 680,
-        "label": "Christmas & New Year"
-      }
-    ],
+    "pricePeriods": [],
     "units": [
       {
         "id": "room-1-u1",
-        "blockedRanges": [
-          {
-            "from": "2026-04-25",
-            "to": "2026-05-09"
-          },
-          {
-            "from": "2026-05-10",
-            "to": "2026-05-13",
-            "bookingId": "25087de3-58f3-482b-83f7-28e5c96bf4f3"
-          },
-          {
-            "from": "2026-06-15",
-            "to": "2026-06-22"
-          }
-        ],
+        "blockedRanges": [],
         "icalSources": []
-      }
-    ]
-  },
-  "room-2": {
-    "pricePerNight": 320,
-    "minStay": 2,
-    "pricePeriods": [
-      {
-        "from": "2026-06-01",
-        "to": "2026-08-31",
-        "pricePerNight": 400,
-        "label": "High Season"
-      }
-    ],
-    "units": [
-      {
-        "id": "room-2-u1",
-        "blockedRanges": [
-          {
-            "from": "2026-04-01",
-            "to": "2026-04-04",
-            "bookingId": "9133ae28-752b-4206-8eca-5cb73caa5a2a"
-          },
-          {
-            "from": "2026-05-01",
-            "to": "2026-05-07"
-          }
-        ]
-      },
-      {
-        "id": "room-2-u2",
-        "blockedRanges": []
-      }
-    ]
-  },
-  "room-3": {
-    "pricePerNight": 380,
-    "minStay": 3,
-    "pricePeriods": [
-      {
-        "from": "2026-06-01",
-        "to": "2026-08-31",
-        "pricePerNight": 480,
-        "label": "High Season"
-      },
-      {
-        "from": "2026-12-20",
-        "to": "2027-01-05",
-        "pricePerNight": 580,
-        "label": "Christmas & New Year"
-      }
-    ],
-    "units": [
-      {
-        "id": "room-3-u1",
-        "blockedRanges": [
-          {
-            "from": "2026-04-02",
-            "to": "2026-04-04",
-            "bookingId": "cc293514-71fe-4423-968c-28f662a6c8c1"
-          }
-        ]
       }
     ]
   }
