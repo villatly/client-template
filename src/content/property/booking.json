@@ -3,6 +3,6 @@
   "currency": "USD",
   "ctaLabel": "Check Availability",
   "contactMethod": "email",
-  "bookingEmail": "",
-  "bookingWhatsapp": ""
+  "bookingEmail": "reservations@villaamarabali.com",
+  "bookingWhatsapp": "+62 812 3456 7890"
 }
