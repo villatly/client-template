@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { DescriptionContent } from "@/lib/types";
+import ImageField from "./ImageField";
 
 const ta = "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 resize-y";
 
@@ -9,6 +10,11 @@ export default function DescriptionForm({ initial }: { initial: DescriptionConte
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  function set<K extends keyof DescriptionContent>(k: K, v: DescriptionContent[K]) {
+    setForm(f => ({ ...f, [k]: v }));
+    setSaved(false);
+  }
 
   async function save() {
     setSaving(true);
@@ -25,12 +31,18 @@ export default function DescriptionForm({ initial }: { initial: DescriptionConte
     <div className="space-y-4">
       <div>
         <label className="mb-1 block text-xs font-medium text-gray-700">Short Description <span className="text-gray-400">(shown in listings / cards)</span></label>
-        <textarea rows={3} value={form.short} onChange={e => { setForm(f => ({ ...f, short: e.target.value })); setSaved(false); }} className={ta} />
+        <textarea rows={3} value={form.short} onChange={e => set("short", e.target.value)} className={ta} />
       </div>
       <div>
         <label className="mb-1 block text-xs font-medium text-gray-700">Long Description <span className="text-gray-400">(shown in About section)</span></label>
-        <textarea rows={7} value={form.long} onChange={e => { setForm(f => ({ ...f, long: e.target.value })); setSaved(false); }} className={ta} />
+        <textarea rows={7} value={form.long} onChange={e => set("long", e.target.value)} className={ta} />
       </div>
+      <ImageField
+        label="About Image"
+        hint="(optional — adds a side-by-side image next to the description)"
+        value={form.image ?? ""}
+        onChange={v => set("image", v || undefined)}
+      />
       <SaveBar saving={saving} saved={saved} onSave={save} />
     </div>
   );
