@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, DM_Serif_Display } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 import CookieConsent from "@/components/CookieConsent";
@@ -10,10 +10,11 @@ const inter = Inter({
   display: "swap",
 });
 
-const dmSerif = DM_Serif_Display({
-  weight: "400",
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-dm-serif",
+  variable: "--font-display",
+  weight: ["400", "500", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -30,7 +31,7 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   return (
-    <html lang="en" className={`${inter.variable} ${dmSerif.variable}`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body>
         {children}
         <Analytics gaId={gaId} />
