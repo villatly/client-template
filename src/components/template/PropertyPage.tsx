@@ -116,8 +116,8 @@ export default function PropertyPage({ property }: PropertyPageProps) {
         <Footer identity={content.identity} contact={contact} layout={layout} bgColor={branding.sectionColors?.footer} />
       )}
 
-      {/* Floating WhatsApp button — uses unified contact number */}
-      {contact.whatsapp && (
+      {/* Floating WhatsApp button — only if number set and not explicitly disabled */}
+      {contact.whatsapp && (booking.showWhatsappButton ?? true) && (
         <WhatsAppButton
           number={contact.whatsapp}
           propertyName={content.identity.name}
