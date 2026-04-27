@@ -41,29 +41,62 @@ export default function About({ description, identity, layout = "default", bgCol
             </div>
           </Reveal>
 
-          <div className="grid gap-12 md:grid-cols-[5fr_7fr] md:gap-16">
-
-            <Reveal delay={100}>
-              <div className="relative">
-                <span
-                  className="absolute -top-4 -left-2 select-none text-8xl font-serif leading-none text-primary/10"
-                  aria-hidden="true"
-                >
-                  &ldquo;
-                </span>
-                <p className="relative pt-8 text-xl font-light italic leading-relaxed text-text-secondary">
-                  {description.short}
-                </p>
+          {/* With image: pull-quote + long text top row, image full-width below */}
+          {description.image ? (
+            <>
+              <div className="grid gap-12 md:grid-cols-[5fr_7fr] md:gap-16 mb-12">
+                <Reveal delay={100}>
+                  <div className="relative">
+                    <span
+                      className="absolute -top-4 -left-2 select-none text-8xl font-serif leading-none text-primary/10"
+                      aria-hidden="true"
+                    >
+                      &ldquo;
+                    </span>
+                    <p className="relative pt-8 text-xl font-light italic leading-relaxed text-text-secondary">
+                      {description.short}
+                    </p>
+                  </div>
+                </Reveal>
+                <Reveal delay={200}>
+                  <div className="text-base leading-relaxed text-text-muted whitespace-pre-line text-justify pt-1">
+                    {description.long}
+                  </div>
+                </Reveal>
               </div>
-            </Reveal>
+              <Reveal delay={300} variant="fade">
+                <div className="overflow-hidden rounded-2xl shadow-md aspect-[16/7]">
+                  <img
+                    src={description.image}
+                    alt={`About ${identity.name}`}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </Reveal>
+            </>
+          ) : (
+            <div className="grid gap-12 md:grid-cols-[5fr_7fr] md:gap-16">
+              <Reveal delay={100}>
+                <div className="relative">
+                  <span
+                    className="absolute -top-4 -left-2 select-none text-8xl font-serif leading-none text-primary/10"
+                    aria-hidden="true"
+                  >
+                    &ldquo;
+                  </span>
+                  <p className="relative pt-8 text-xl font-light italic leading-relaxed text-text-secondary">
+                    {description.short}
+                  </p>
+                </div>
+              </Reveal>
+              <Reveal delay={200}>
+                <div className="text-base leading-relaxed text-text-muted whitespace-pre-line text-justify pt-1">
+                  {description.long}
+                </div>
+              </Reveal>
+            </div>
+          )}
 
-            <Reveal delay={200}>
-              <div className="text-base leading-relaxed text-text-muted whitespace-pre-line pt-1">
-                {description.long}
-              </div>
-            </Reveal>
-
-          </div>
         </div>
       </section>
     );
