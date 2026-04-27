@@ -5,7 +5,7 @@
   "logo": "",
   "buttonStyle": "rounded",
   "fontStyle": "serif",
-  "layoutPreset": "editorial",
+  "layoutPreset": "default",
   "faviconUrl": "",
   "sectionColors": {}
 }
