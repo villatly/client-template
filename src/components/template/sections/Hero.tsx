@@ -72,13 +72,13 @@ function HeroDefault({ content, isInternal, radius, onBook }: InnerProps) {
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center text-white">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-white/70 line-clamp-1">
+        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-white/70 line-clamp-1">
           {content.tagline}
         </p>
-        <h1 className="mb-6 text-4xl font-normal sm:text-5xl md:text-6xl lg:text-6xl leading-tight">
+        <h1 className="mb-10 text-4xl font-normal sm:text-5xl md:text-6xl lg:text-6xl leading-tight">
           {content.headline}
         </h1>
-        <p className="mx-auto mb-10 max-w-2xl text-lg sm:text-xl [font-family:var(--font-heading)] text-white/90 leading-relaxed text-justify [text-align-last:center]">
+        <p className="mx-auto mb-12 max-w-2xl text-lg sm:text-xl font-light italic text-white/85 leading-relaxed text-justify [text-align-last:center]">
           {content.intro}
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
