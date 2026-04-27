@@ -1,7 +1,7 @@
 {
   "room-1": {
-    "pricePerNight": 200,
-    "minStay": 2,
+    "pricePerNight": 0,
+    "minStay": 1,
     "pricePeriods": [],
     "units": [
       {

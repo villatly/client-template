@@ -1,126 +1,219 @@
 {
   "identity": {
-    "slug": "my-property",
-    "name": "My Property",
-    "propertyType": "villa",
-    "location": "Location, Country",
-    "country": ""
+    "slug": "the-jumbo-homestay",
+    "name": "The Jumbo Homestay",
+    "propertyType": "guesthouse",
+    "location": "Kuta, Lombok",
+    "country": "Indonesia"
   },
   "hero": {
-    "headline": "Your Headline Here",
-    "tagline": "A short tagline describing your property",
-    "intro": "Write a compelling introduction to your property here. Describe what makes it special, its surroundings, and the experience guests can expect.",
-    "image": "",
-    "primaryCTA": {
-      "label": "Check Availability",
-      "url": "#booking"
-    },
-    "secondaryCTA": {
-      "label": "Explore",
-      "url": "#gallery"
-    }
+    "headline": "Comfort Beyond Expectations in Kuta Lombok",
+    "tagline": "A welcoming family homestay with spacious rooms, sumptuous breakfast, and unbeatable value near Kuta Beach.",
+    "intro": "The Jumbo Homestay offers generously sized rooms finished to a high standard, a hearty inclusive breakfast, and warm family hospitality in the heart of Kuta, Lombok. Just 1.2 miles from Kuta Beach and 8.8 miles from Lombok International Airport, it is the perfect base for exploring Mandalika and beyond. Guests consistently rate it 9.1 out of 10 for comfort, cleanliness, and value.",
+    "image": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2d/fb/98/d0/bed.jpg?w=1200&h=700&s=1",
+    "primaryCTA": { "label": "Check Availability", "url": "#booking" },
+    "secondaryCTA": { "label": "Explore", "url": "#gallery" }
   },
   "description": {
-    "short": "A short description of your property for SEO and previews.",
-    "long": "A longer, detailed description of your property. Describe the setting, architecture, amenities, and what guests can expect during their stay."
+    "short": "Family-run guesthouse in Kuta Lombok with spacious air-conditioned rooms, free breakfast, free WiFi, and private parking — rated 9.1 by guests.",
+    "long": "The Jumbo Homestay is a family-operated bed and breakfast on Jalan Raya Kuta in Lombok's vibrant Kuta district. Rooms are spacious with high ceilings, supremely comfortable beds, and air conditioning that actually works — finished to a standard guests describe as well above what the price suggests.\n\nEach morning begins with a sumptuous breakfast included in the rate. Guests frequently highlight the generous portion sizes, wide variety of choices, and the complimentary free-flow water and hot drinks throughout the day.\n\nThe property features a beautiful garden and private terrace where guests can relax after a day of exploration. Free high-speed WiFi is available throughout, along with free private on-site parking — a genuine convenience in busy Kuta.\n\nThe friendly family owners and their English-speaking staff are always on hand to help with recommendations, transport arrangements, and anything else guests need. Whether you are here for the beaches, the Mandalika circuit, or just passing through on your way around Lombok, The Jumbo Homestay delivers exceptional comfort and hospitality at an accessible price."
   },
   "gallery": [
     {
-      "url": "",
-      "alt": "Property exterior"
+      "url": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2d/fb/98/d0/bed.jpg?w=1200&h=700&s=1",
+      "alt": "Comfortable double bedroom with high ceiling at The Jumbo Homestay"
     },
     {
-      "url": "",
-      "alt": "Bedroom"
+      "url": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2d/fb/98/d1/other.jpg?w=1200&h=700&s=1",
+      "alt": "Room interior at The Jumbo Homestay"
     },
     {
-      "url": "",
-      "alt": "Living area"
+      "url": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2e/07/57/ac/wardrobe.jpg?w=1200&h=700&s=1",
+      "alt": "Wardrobe and room furnishings at The Jumbo Homestay"
     }
   ],
   "rooms": [
     {
       "id": "room-1",
-      "name": "Room Name",
-      "shortDescription": "A short description of this room",
-      "description": "A detailed description of this room — size, style, views, and what makes it special.",
-      "image": "",
+      "name": "Standard Double Room",
+      "shortDescription": "Spacious room with high ceilings, super-comfortable bed, and private bathroom",
+      "description": "Ground-floor room finished to a surprisingly high standard for the price. Features high ceilings, a super-comfortable bed, strong air conditioning, and an en-suite private bathroom with shower. Includes a balcony or small terrace in front of the room.",
+      "image": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2d/fb/98/d0/bed.jpg?w=900&h=500&s=1",
       "capacity": 2,
-      "bedType": "King bed",
+      "bedType": "Double bed",
       "bathroomType": "Ensuite",
       "size": "",
       "priceFrom": "",
       "highlights": [
-        "Private terrace",
-        "Pool access"
+        "High ceilings and spacious layout",
+        "Super-comfortable bed",
+        "Private terrace in front of room"
       ],
       "amenities": [
         "Air conditioning",
-        "Wi-Fi",
-        "Smart TV"
+        "Free WiFi",
+        "Private bathroom with shower",
+        "TV",
+        "Tea and coffee maker",
+        "Electric kettle",
+        "Hairdryer",
+        "Wardrobe",
+        "Free toiletries"
       ],
       "ctaLabel": "",
       "ctaUrl": "",
       "isFeatured": true,
       "displayOrder": 0,
-      "gallery": []
+      "gallery": [
+        {
+          "url": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2d/fb/98/d0/bed.jpg?w=900&h=500&s=1",
+          "alt": "Double bedroom at The Jumbo Homestay"
+        },
+        {
+          "url": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2e/07/57/ac/wardrobe.jpg?w=900&h=500&s=1",
+          "alt": "Wardrobe in guest room"
+        }
+      ]
     }
   ],
   "amenities": [
-    { "icon": "pool", "label": "Private Pool" },
-    { "icon": "wifi", "label": "High-Speed Wi-Fi" },
+    { "icon": "wifi", "label": "Free High-Speed Wi-Fi" },
     { "icon": "ac", "label": "Air Conditioning" },
-    { "icon": "parking", "label": "Free Parking" },
-    { "icon": "kitchen", "label": "Fully Equipped Kitchen" }
+    { "icon": "parking", "label": "Free Private Parking" },
+    { "icon": "garden", "label": "Garden & Terrace" },
+    { "icon": "dining", "label": "Breakfast Included" },
+    { "icon": "tv", "label": "Flat-Screen TV" },
+    { "icon": "safe", "label": "24-Hour Reception" }
   ],
   "reviews": [
     {
-      "author": "Guest Name",
-      "text": "A wonderful stay. The property exceeded our expectations in every way.",
+      "author": "pdmancs",
+      "text": "Had the place we were staying in not been full, we wouldn't have stayed at Jumbo. But it turned out to be a great discovery. Although it's a work in progress, the ground floor rooms are complete, and finished to a standard way beyond what you'd expect for the price tag. It was a similar story at breakfast — lots of choices, all of them plentiful. Other plus points: free-flow water and hot drinks. Decent Wi-Fi, TV, hairdryer. If you just want a very comfortable room on the edge of town and a hearty breakfast, you couldn't do better.",
       "rating": 5,
-      "country": "Country"
+      "country": "United Kingdom"
+    },
+    {
+      "author": "Verified Guest",
+      "text": "Loved this place! The room was spacious, the bed was exceedingly comfortable, the air conditioner worked great, and the breakfast was sumptuous — all at such an affordable price. The family who ran it were friendly and accommodating.",
+      "rating": 5,
+      "country": ""
+    },
+    {
+      "author": "Verified Guest",
+      "text": "I'm super satisfied with the service. The food is really tasty with huge portions. The room is clean, big, and has a great smell — like a 5-star hotel. Definitely recommend this homestay for anyone exploring Mandalika.",
+      "rating": 5,
+      "country": "Indonesia"
+    },
+    {
+      "author": "Verified Guest",
+      "text": "Great location. The rooms are very well sound-insulated. Good WiFi and very friendly staff and owner. Private parking right in front of the building is very convenient. Price-to-value ratio is excellent.",
+      "rating": 5,
+      "country": ""
+    },
+    {
+      "author": "Verified Guest",
+      "text": "Rooms were spacious with high ceilings. The bed was super comfy. Quiet location and off the main street but walkable to the main café and restaurant area. Filtered water provided at reception — a lovely touch.",
+      "rating": 5,
+      "country": ""
     }
   ],
   "faq": [
     {
       "question": "What time is check-in and check-out?",
-      "answer": "Check-in is from 15:00 and check-out is by 11:00. Early check-in and late check-out may be available on request."
+      "answer": "Check-in is from 14:00. Check-out is by 12:00. Early check-in and late check-out may be available on request, subject to availability."
+    },
+    {
+      "question": "Is breakfast included in the room rate?",
+      "answer": "Yes! A generous breakfast is included for all guests. Guests frequently highlight the wide variety of options and the complimentary free-flow water and hot drinks throughout the day."
+    },
+    {
+      "question": "Is parking available?",
+      "answer": "Yes, free private on-site parking is available for all guests directly in front of the property."
+    },
+    {
+      "question": "Is WiFi available?",
+      "answer": "Yes, free high-speed WiFi is available throughout the property."
+    },
+    {
+      "question": "How far is the property from Kuta Beach?",
+      "answer": "The Jumbo Homestay is approximately 1.2 miles (around 2 km) from Kuta Beach, which is walkable or a very short ride away."
+    },
+    {
+      "question": "How far is Lombok International Airport?",
+      "answer": "The property is approximately 8.8 miles (14 km) from Lombok International Airport — roughly a 15–20 minute drive."
     },
     {
       "question": "What is the cancellation policy?",
-      "answer": "Free cancellation up to 30 days before check-in. Please contact us for details."
+      "answer": "Cancellation and prepayment policies vary by room type and dates selected. Please check the specific conditions when booking. The property participates in Booking.com's free cancellation programme for eligible rates."
+    },
+    {
+      "question": "Are children welcome?",
+      "answer": "Yes, children of all ages are welcome at The Jumbo Homestay. Please add the number and ages of children when searching for accurate pricing."
     }
   ],
   "location": {
-    "areaName": "Location, Country",
-    "mapUrl": "",
-    "description": "Describe the location of your property — nearby landmarks, how to get there, and what guests can explore in the area."
+    "areaName": "Kuta, Lombok",
+    "mapUrl": "https://maps.google.com/?q=-8.8897,116.2870",
+    "description": "Located on Jalan Raya Kuta in the heart of Kuta, Lombok — just 1.2 miles from Kuta Beach and 8.8 miles from Lombok International Airport. The area is rated 71/100 for walkability, with over 120 restaurants within 0.75 miles including highly rated spots like El Bazar Cafe, KRNK Restaurant & Bar, and Le Too Much. The Pertamina Mandalika International Circuit is also nearby."
   },
   "nearbyAttractions": [
     {
-      "name": "Nearby Attraction",
-      "description": "A description of a nearby point of interest.",
+      "name": "Kuta Beach",
+      "description": "One of Lombok's most beautiful beaches, famous for its turquoise water and sweeping white sand bay.",
+      "travelTime": "5 min drive"
+    },
+    {
+      "name": "Pertamina Mandalika International Circuit",
+      "description": "World-class MotoGP racing circuit and the centrepiece of the Mandalika Special Economic Zone.",
       "travelTime": "10 min drive"
+    },
+    {
+      "name": "Lombok Dirtbike Adventures",
+      "description": "Highly rated off-road motorcycle tours through Lombok's stunning hills and coastline.",
+      "travelTime": "15 min walk"
+    },
+    {
+      "name": "El Bazar Cafe & Restaurant",
+      "description": "One of Kuta's most popular restaurants serving Mediterranean cuisine, consistently rated 4.7/5 with 2,000+ reviews.",
+      "travelTime": "11 min walk"
+    },
+    {
+      "name": "Narmada Park",
+      "description": "Historic water palace and temple complex, one of Lombok's most important cultural sites.",
+      "travelTime": "45 min drive"
+    },
+    {
+      "name": "Benang Kelambu Waterfall",
+      "description": "Stunning curtain waterfall surrounded by lush tropical forest — one of Lombok's most photogenic natural attractions.",
+      "travelTime": "1 hr drive"
     }
   ],
   "policies": {
-    "checkIn": "15:00",
-    "checkOut": "11:00",
-    "cancellation": "Free cancellation up to 30 days before check-in.",
+    "checkIn": "14:00",
+    "checkOut": "12:00",
+    "cancellation": "Cancellation and prepayment policies vary according to accommodation type. Check the conditions of your selected option when booking.",
     "notes": [
-      "No smoking inside the property.",
-      "Pets not permitted."
+      "Children of all ages are welcome.",
+      "Free private on-site parking is available.",
+      "Breakfast is included in all room rates.",
+      "The property is staffed by English and Indonesian speakers.",
+      "Guests are provided with filtered drinking water at reception."
     ]
   },
   "contact": {
     "whatsapp": "",
     "email": "",
     "phone": "",
-    "ctaButtons": []
+    "ctaButtons": [
+      {
+        "label": "Book on Booking.com",
+        "url": "https://www.booking.com/hotel/id/the-jumbo-homestay.html"
+      }
+    ]
   },
   "seo": {
-    "title": "My Property | Vacation Rental",
-    "description": "Book your stay at My Property. A unique vacation rental experience.",
-    "ogImage": ""
+    "title": "The Jumbo Homestay | Kuta Lombok | Guesthouse with Breakfast",
+    "description": "Stay at The Jumbo Homestay in Kuta Lombok — spacious rooms, sumptuous breakfast included, free WiFi & parking. Rated 9.1/10. 1.2 miles from Kuta Beach.",
+    "ogImage": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2d/fb/98/d0/bed.jpg?w=1200&h=700&s=1"
   }
 }
