@@ -49,6 +49,14 @@
     {
       "url": "/uploads/1777284327147-384sk9.jpg",
       "alt": "Room interior"
+    },
+    {
+      "url": "/uploads/1777285253744-6m7zkx.jpg",
+      "alt": "Pink Beach Lombok"
+    },
+    {
+      "url": "/uploads/1777285331118-vjv9b4.jpg",
+      "alt": "Surf in Kuta"
     }
   ],
   "rooms": [
@@ -201,37 +209,37 @@
     "description": "The Jumbo Homestay is perfectly located on Jalan Raya Kuta, in the heart of Kuta, Lombok — just 1.2 miles from Kuta Beach and 8.8 miles from Lombok International Airport. Surrounded by beautiful beaches, surf spots, cafés, shops, and more than 120 restaurants within walking distance, it is an ideal base for travelers looking to enjoy Lombok’s beach lifestyle, surfing, local food, and the relaxed atmosphere of South Lombok, with the Pertamina Mandalika International Circuit also nearby."
   },
   "nearbyAttractions": [
-  {
-    "name": "Kuta Beach",
-    "description": "One of South Lombok’s most popular beaches, known for its relaxed atmosphere, turquoise water, and easy access to local surf spots.",
-    "travelTime": "5 min drive"
-  },
-  {
-    "name": "Tanjung Aan Beach",
-    "description": "A stunning white-sand beach with calm turquoise waters, perfect for swimming, relaxing, and enjoying one of Lombok’s most iconic coastal landscapes.",
-    "travelTime": "15 min drive"
-  },
-  {
-    "name": "Selong Belanak Beach",
-    "description": "One of Lombok’s best beaches for beginner surfers, with soft sand, gentle waves, and beautiful views across the bay.",
-    "travelTime": "30 min drive"
-  },
-  {
-    "name": "Mawun Beach",
-    "description": "A peaceful crescent-shaped bay surrounded by green hills, ideal for travelers looking for a quieter beach escape near Kuta.",
-    "travelTime": "25 min drive"
-  },
-  {
-    "name": "Bukit Merese",
-    "description": "A scenic hilltop viewpoint overlooking the coastline, especially popular at sunset and perfect for panoramic photos of South Lombok.",
-    "travelTime": "15 min drive"
-  },
-  {
-    "name": "Pertamina Mandalika International Circuit",
-    "description": "A world-class racing circuit and one of Mandalika’s main landmarks, attracting MotoGP fans and visitors from around the world.",
-    "travelTime": "10 min drive"
-  }
-],
+    {
+      "name": "Kuta Beach",
+      "description": "One of South Lombok’s most popular beaches, known for its relaxed atmosphere, turquoise water, and easy access to local surf spots.",
+      "travelTime": "5 min drive"
+    },
+    {
+      "name": "Tanjung Aan Beach",
+      "description": "A stunning white-sand beach with calm turquoise waters, perfect for swimming, relaxing, and enjoying one of Lombok’s most iconic coastal landscapes.",
+      "travelTime": "15 min drive"
+    },
+    {
+      "name": "Selong Belanak Beach",
+      "description": "One of Lombok’s best beaches for beginner surfers, with soft sand, gentle waves, and beautiful views across the bay.",
+      "travelTime": "30 min drive"
+    },
+    {
+      "name": "Mawun Beach",
+      "description": "A peaceful crescent-shaped bay surrounded by green hills, ideal for travelers looking for a quieter beach escape near Kuta.",
+      "travelTime": "25 min drive"
+    },
+    {
+      "name": "Bukit Merese",
+      "description": "A scenic hilltop viewpoint overlooking the coastline, especially popular at sunset and perfect for panoramic photos of South Lombok.",
+      "travelTime": "15 min drive"
+    },
+    {
+      "name": "Pertamina Mandalika International Circuit",
+      "description": "A world-class racing circuit and one of Mandalika’s main landmarks, attracting MotoGP fans and visitors from around the world.",
+      "travelTime": "10 min drive"
+    }
+  ],
   "policies": {
     "checkIn": "14:00",
     "checkOut": "12:00",
