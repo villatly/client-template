@@ -105,6 +105,47 @@ export default function About({ description, identity, layout = "default", bgCol
 
   // ─── Default ───────────────────────────────────────────────────────────────
 
+  // With image: two-column layout, image right, text left
+  if (description.image) {
+    return (
+      <SectionWrapper id="about" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+
+            {/* Text */}
+            <Reveal>
+              <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
+                {typeLabel}
+              </p>
+              <h2 className="mb-6 text-3xl sm:text-4xl text-text">
+                About {identity.name}
+              </h2>
+              <p className="mb-6 text-lg leading-relaxed text-text-secondary">
+                {description.short}
+              </p>
+              <div className="text-base leading-relaxed text-text-muted whitespace-pre-line text-justify">
+                {description.long}
+              </div>
+            </Reveal>
+
+            {/* Image */}
+            <Reveal delay={150} variant="fade">
+              <div className="overflow-hidden rounded-2xl shadow-lg aspect-[4/3]">
+                <img
+                  src={description.image}
+                  alt={`About ${identity.name}`}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </Reveal>
+
+          </div>
+        </div>
+      </SectionWrapper>
+    );
+  }
+
+  // Without image: centered layout
   return (
     <SectionWrapper id="about" background="white" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="mx-auto max-w-3xl text-center">
@@ -117,7 +158,7 @@ export default function About({ description, identity, layout = "default", bgCol
         <p className="mb-8 text-lg leading-relaxed text-text-secondary">
           {description.short}
         </p>
-        <div className="text-base leading-relaxed text-text-muted whitespace-pre-line">
+        <div className="text-base leading-relaxed text-text-muted whitespace-pre-line text-justify">
           {description.long}
         </div>
       </div>
