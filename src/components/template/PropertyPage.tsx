@@ -44,6 +44,7 @@ export default function PropertyPage({ property }: PropertyPageProps) {
             showBookingBar={sections.bookingCta && layout === "default"}
             contact={content.contact}
             propertyName={content.identity.name}
+            bookingBarBg={branding.sectionColors?.bookingCta}
           />
       )}
 
