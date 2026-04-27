@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { HeroContent, BrandingConfig, BookingConfig } from "@/lib/types";
+import type { HeroContent, BrandingConfig, BookingConfig, PropertyIdentity, Amenity } from "@/lib/types";
 import type { LayoutPreset } from "@/lib/layout";
-import { getButtonClass } from "@/lib/theme";
 import AvailabilityWidget from "@/components/template/AvailabilityWidget";
 
 interface HeroProps {
@@ -11,34 +10,67 @@ interface HeroProps {
   branding: BrandingConfig;
   booking?: BookingConfig;
   layout?: LayoutPreset;
+  /** Pass to generate eyebrow from property type + location */
+  identity?: PropertyIdentity;
+  /** Pass to render up to 3 trust badges */
+  amenities?: Amenity[];
 }
 
 interface InnerProps {
   content: HeroContent;
   booking?: BookingConfig;
   isInternal: boolean;
-  radius: string;
   onBook: () => void;
+  identity?: PropertyIdentity;
+  amenities?: Amenity[];
 }
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+const TYPE_LABELS: Record<string, string> = {
+  villa: "Villa",
+  hostel: "Hostel",
+  apartment: "Apartment",
+  homestay: "Homestay",
+  guesthouse: "Guesthouse",
+};
+
+function buildEyebrow(identity: PropertyIdentity | undefined, tagline: string): string {
+  if (identity) {
+    const type = TYPE_LABELS[identity.propertyType] ?? identity.propertyType;
+    return `${type} · ${identity.location}`;
+  }
+  return tagline;
+}
+
+function getBadges(amenities: Amenity[] | undefined): string[] {
+  return amenities?.slice(0, 3).map(a => a.label) ?? [];
+}
+
+// ─── Root ─────────────────────────────────────────────────────────────────────
 
 export default function Hero({
   content,
   branding,
   booking,
   layout = "default",
+  identity,
+  amenities,
 }: HeroProps) {
   const [widgetOpen, setWidgetOpen] = useState(false);
-  // Both instant_book and request_to_book open the availability widget
   const hasBookingWidget = !!booking?.mode;
-  const radius = getButtonClass(branding.buttonStyle);
 
   const inner: InnerProps = {
     content,
     booking,
+    identity,
+    amenities,
     isInternal: hasBookingWidget,
-    radius,
     onBook: () => setWidgetOpen(true),
   };
+
+  // suppress unused-var warning — branding kept in props for future use
+  void branding;
 
   return (
     <>
@@ -57,31 +89,67 @@ export default function Hero({
 }
 
 // ─── Default ─────────────────────────────────────────────────────────────────
-// Full-bleed, centered. Clean and safe.
+// Full-bleed, centered.
+// Structure: Eyebrow → Title (Playfair) → Subtitle → Badges → CTAs (pill)
+// Gradient: warm and airy at top, dark at bottom for legibility.
 
-function HeroDefault({ content, isInternal, radius, onBook }: InnerProps) {
-  const primaryCls = `inline-flex items-center justify-center px-6 py-3 text-sm font-medium tracking-wide uppercase transition-all duration-200 ${radius} bg-white text-gray-900 hover:bg-white/90 shadow-sm`;
-  const secondaryCls = `inline-flex items-center justify-center px-6 py-3 text-sm font-medium tracking-wide uppercase transition-all duration-200 ${radius} border-2 border-white text-white hover:bg-white hover:text-gray-900`;
+function HeroDefault({ content, isInternal, onBook, identity, amenities }: InnerProps) {
+  const eyebrow = buildEyebrow(identity, content.tagline);
+  const badges  = getBadges(amenities);
+
+  const primaryCls   = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full bg-white text-gray-900 hover:bg-white/90";
+  const secondaryCls = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-full border border-white/50 text-white hover:bg-white/10 hover:border-white/70";
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden">
+
+      {/* Background image + gradient */}
       <div className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={content.image} alt="" className="h-full w-full object-cover" fetchPriority="high" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/45 to-black/55" />
+        {/* Warm gradient — barely-there at top, anchors the text at bottom-center */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/10" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6 text-center text-white">
-        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-white/70 line-clamp-1">
-          {content.tagline}
-        </p>
-        <h1 className="mb-10 text-4xl font-normal sm:text-5xl md:text-6xl lg:text-6xl leading-tight">
+      {/* Content block — centered, nudged slightly below middle */}
+      <div className="relative z-10 mx-auto w-[88%] max-w-[720px] text-center text-white mt-12 sm:mt-16">
+
+        {/* Eyebrow */}
+        {eyebrow && (
+          <p className="mb-5 text-[10px] sm:text-[12px] font-semibold uppercase tracking-[0.3em] text-white/60 line-clamp-1">
+            {eyebrow}
+          </p>
+        )}
+
+        {/* Title — Playfair Display via CSS heading rule */}
+        <h1 className="mb-6 text-[clamp(2.5rem,7vw,5rem)] font-normal leading-[1.05] tracking-[-0.01em]">
           {content.headline}
         </h1>
-        <p className="mx-auto mb-12 max-w-2xl text-lg sm:text-xl font-light italic text-white/85 leading-relaxed text-justify [text-align-last:center]">
+
+        {/* Subtitle — Inter, clean and readable, no italic */}
+        <p className="mx-auto mb-7 max-w-[640px] text-base sm:text-[1.1rem] font-normal leading-[1.65] text-white/85 text-justify [text-align-last:center]"
+           style={{ fontFamily: "var(--font-body)" }}>
           {content.intro}
         </p>
-        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+
+        {/* Badges — only if data provided */}
+        {badges.length > 0 && (
+          <div className="mb-9 flex flex-wrap items-center justify-center gap-y-2">
+            {badges.map((badge, i) => (
+              <span
+                key={i}
+                className="flex items-center text-[11px] sm:text-[12px] font-medium uppercase tracking-[0.12em] text-white/50"
+                style={{ fontFamily: "var(--font-body)" }}
+              >
+                {i > 0 && <span className="mx-3 text-white/25">·</span>}
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* CTAs — pill style */}
+        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           {isInternal
             ? <button type="button" onClick={onBook} className={primaryCls}>{content.primaryCTA.label}</button>
             : <a href={content.primaryCTA.url} className={primaryCls}>{content.primaryCTA.label}</a>}
@@ -89,91 +157,91 @@ function HeroDefault({ content, isInternal, radius, onBook }: InnerProps) {
             <a href={content.secondaryCTA.url} className={secondaryCls}>{content.secondaryCTA.label}</a>
           )}
         </div>
+
       </div>
 
+      {/* Scroll chevron */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <svg className="h-6 w-6 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <svg className="h-5 w-5 text-white/35" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
         </svg>
       </div>
+
     </section>
   );
 }
 
 // ─── Editorial ────────────────────────────────────────────────────────────────
-// White typography panel (left 44%) + raw full-height image (right 56%).
-// The white panel is the design statement — no dark tones compete with it here,
-// making the contrast break in Amenities (dark) much more effective later.
-// Staggered entrance: rule → headline → intro → CTAs.
+// White panel (left 44%) + full-height image (right 56%).
+// Structure: eyebrow (absolute top) → rule → Title → Subtitle → Badges → CTAs
 
-function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
+function HeroEditorial({ content, isInternal, onBook, identity, amenities }: InnerProps) {
   const [visible, setVisible] = useState(false);
+  const eyebrow = buildEyebrow(identity, content.tagline);
+  const badges  = getBadges(amenities);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setVisible(true));
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  const primaryCls = `inline-flex items-center justify-center px-6 py-3 text-sm font-medium tracking-wide uppercase transition-all duration-200 ${radius} bg-gray-900 text-white hover:bg-gray-700`;
+  const primaryCls = "inline-flex items-center justify-center px-6 py-3 text-sm font-semibold tracking-wide uppercase transition-all duration-200 rounded-full bg-gray-900 text-white hover:bg-gray-700";
 
   return (
     <section className="flex min-h-screen flex-col lg:flex-row overflow-hidden">
 
-      {/* Image — first on mobile (top), right on desktop */}
+      {/* Image — top on mobile, right on desktop */}
       <div className="order-1 lg:order-2 relative min-h-[65vw] flex-1 overflow-hidden lg:min-h-screen">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={content.image}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-          fetchPriority="high"
-        />
-        {/* Very light vignette — let the photo breathe */}
+        <img src={content.image} alt="" className="absolute inset-0 h-full w-full object-cover" fetchPriority="high" />
         <div className="absolute inset-0 bg-black/8" />
       </div>
 
-      {/* White type panel — second on mobile (below), left on desktop */}
+      {/* White type panel — below image on mobile, left on desktop */}
       <div className="order-2 lg:order-1 relative flex flex-col justify-center lg:w-[44%] bg-white px-6 py-14 sm:px-10 sm:py-16 lg:px-16 lg:py-0 lg:min-h-screen">
 
-        {/* Masthead tagline — absolute at top */}
+        {/* Eyebrow — absolute at top of panel */}
         <div className="absolute top-8 left-6 sm:left-10 lg:top-12 lg:left-16 right-6 sm:right-10">
           <p className="text-[10px] font-semibold uppercase tracking-[0.45em] text-gray-300 truncate">
-            {content.tagline}
+            {eyebrow}
           </p>
         </div>
 
         <div>
-          {/* Thin primary rule — the only brand-color element on this panel */}
-          <div
-            className={`mb-8 h-px w-12 bg-primary transition-all duration-700 ${
-              visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-            }`}
-          />
+          {/* Brand rule */}
+          <div className={`mb-8 h-px w-12 bg-primary transition-all duration-700 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`} />
 
-          {/* Headline — large, tight, commanding */}
-          <h1
-            className={`mb-8 text-4xl font-light leading-[1.03] tracking-tight text-gray-900 sm:text-5xl xl:text-[5.25rem] transition-all duration-1000 ease-out ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-            }`}
-          >
+          {/* Title */}
+          <h1 className={`mb-7 text-4xl font-light leading-[1.03] tracking-tight text-gray-900 sm:text-5xl xl:text-[5.25rem] transition-all duration-1000 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
             {content.headline}
           </h1>
 
-          {/* Intro */}
+          {/* Subtitle — Inter, no italic */}
           <p
-            className={`mb-10 text-base leading-relaxed text-gray-500 max-w-sm lg:max-w-xs transition-all duration-700 delay-200 ease-out ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-            }`}
+            className={`mb-7 text-base leading-relaxed text-gray-500 max-w-sm lg:max-w-xs transition-all duration-700 delay-200 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
+            style={{ fontFamily: "var(--font-body)" }}
           >
             {content.intro}
           </p>
 
+          {/* Badges */}
+          {badges.length > 0 && (
+            <div className={`mb-8 flex flex-wrap gap-x-1 gap-y-2 transition-all duration-700 delay-[300ms] ease-out ${visible ? "opacity-100" : "opacity-0"}`}>
+              {badges.map((badge, i) => (
+                <span
+                  key={i}
+                  className="flex items-center text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-300"
+                  style={{ fontFamily: "var(--font-body)" }}
+                >
+                  {i > 0 && <span className="mx-2.5 text-gray-200">·</span>}
+                  {badge}
+                </span>
+              ))}
+            </div>
+          )}
+
           {/* CTAs */}
-          <div
-            className={`flex flex-wrap items-center gap-5 transition-all duration-700 delay-[350ms] ease-out ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-            }`}
-          >
+          <div className={`flex flex-wrap items-center gap-5 transition-all duration-700 delay-[350ms] ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
             {isInternal
               ? <button type="button" onClick={onBook} className={primaryCls}>{content.primaryCTA.label}</button>
               : <a href={content.primaryCTA.url} className={primaryCls}>{content.primaryCTA.label}</a>}
@@ -189,12 +257,8 @@ function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
           </div>
         </div>
 
-        {/* Scroll indicator — hidden on mobile to avoid overlap with short panel */}
-        <div
-          className={`hidden lg:flex absolute bottom-8 left-10 lg:left-16 items-center gap-3 transition-all duration-700 delay-700 ease-out ${
-            visible ? "opacity-100" : "opacity-0"
-          }`}
-        >
+        {/* Scroll indicator — desktop only */}
+        <div className={`hidden lg:flex absolute bottom-8 left-10 lg:left-16 items-center gap-3 transition-all duration-700 delay-700 ease-out ${visible ? "opacity-100" : "opacity-0"}`}>
           <div className="h-px w-8 bg-gray-300" />
           <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-gray-400">Scroll</span>
         </div>
@@ -205,21 +269,14 @@ function HeroEditorial({ content, isInternal, radius, onBook }: InnerProps) {
 }
 
 // ─── Resort ───────────────────────────────────────────────────────────────────
-// Cinematic. Full viewport. The image is the world.
-//
-// What makes it feel premium:
-//  - Bottom-LEFT text anchor, not centered — luxury hotel typography convention
-//  - Headline at 8xl — visually dominates the frame
-//  - Two-layer gradient: heavy bottom-to-top + left side pull for text legibility
-//  - Solid-fill white CTA: confident and readable, not a ghost button
-//  - Intro text is present and readable, not hidden behind low opacity
-//  - Slow Ken Burns zoom: 20s ease-in-slow-out
-//  - Vertical "Scroll" label at bottom right — cinematic touch
-//  - Content enters 600ms after zoom starts — feels directed
+// Cinematic full-viewport. Bottom-left anchor. Ken Burns zoom.
+// Structure: Eyebrow → Title → Subtitle → Badges → CTAs (pill)
 
-function HeroResort({ content, isInternal, radius, onBook }: InnerProps) {
+function HeroResort({ content, isInternal, onBook, identity, amenities }: InnerProps) {
   const [imgStarted, setImgStarted] = useState(false);
   const [textIn, setTextIn] = useState(false);
+  const eyebrow = buildEyebrow(identity, content.tagline);
+  const badges  = getBadges(amenities);
 
   useEffect(() => {
     const t1 = setTimeout(() => setImgStarted(true), 80);
@@ -227,15 +284,13 @@ function HeroResort({ content, isInternal, radius, onBook }: InnerProps) {
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
-  // Solid white — the single most confident CTA treatment on a dark image
-  const primaryCls = `inline-flex items-center justify-center px-8 py-4 text-sm font-semibold tracking-[0.15em] uppercase transition-all duration-300 ${radius} bg-white text-gray-900 hover:bg-white/90 shadow-lg`;
-  // Ghost secondary — deferential to primary
-  const secondaryCls = `inline-flex items-center justify-center px-8 py-4 text-sm font-medium tracking-[0.15em] uppercase transition-all duration-300 ${radius} border border-white/40 text-white hover:bg-white/10 hover:border-white/70`;
+  const primaryCls   = "inline-flex items-center justify-center px-8 py-4 text-sm font-semibold tracking-[0.15em] uppercase transition-all duration-300 rounded-full bg-white text-gray-900 hover:bg-white/90 shadow-lg";
+  const secondaryCls = "inline-flex items-center justify-center px-8 py-4 text-sm font-medium tracking-[0.15em] uppercase transition-all duration-300 rounded-full border border-white/40 text-white hover:bg-white/10 hover:border-white/70";
 
   return (
     <section className="relative h-screen min-h-[680px] flex flex-col justify-end overflow-hidden">
 
-      {/* Slow Ken Burns zoom — starts slightly zoomed, pulls back over 20s */}
+      {/* Ken Burns zoom */}
       <div className="absolute inset-0 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -248,46 +303,61 @@ function HeroResort({ content, isInternal, radius, onBook }: InnerProps) {
         />
       </div>
 
-      {/* Gradient layer 1: heavy bottom-to-top for text legibility */}
+      {/* Gradient layers */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-      {/* Gradient layer 2: left-side pull that follows the text block */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/10 to-transparent" />
 
-      {/* Text block — bottom-left anchored, generous size, left-aligned */}
+      {/* Text block — bottom-left anchored */}
       <div
         className={`relative z-10 px-6 sm:px-10 md:px-16 lg:px-20 pb-16 sm:pb-20 md:pb-28 max-w-4xl
           transition-all duration-1000 ease-out
           ${textIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
-        {/* Eyebrow — spaced, visible but secondary */}
-        <p className="mb-6 text-[11px] font-semibold uppercase tracking-[0.5em] text-white/50">
-          {content.tagline}
+        {/* Eyebrow */}
+        <p className="mb-6 text-[11px] font-semibold uppercase tracking-[0.5em] text-white/50"
+           style={{ fontFamily: "var(--font-body)" }}>
+          {eyebrow}
         </p>
 
-        {/* Headline — the dominant visual element */}
+        {/* Title */}
         <h1 className="mb-8 text-5xl font-light leading-[0.95] tracking-tight text-white sm:text-7xl md:text-8xl max-w-3xl">
           {content.headline}
         </h1>
 
-        {/* Intro — readable, not hidden */}
-        <p className="mb-10 text-base sm:text-lg font-light leading-relaxed text-white/65 max-w-md">
+        {/* Subtitle — Inter, no italic */}
+        <p className="mb-8 text-base sm:text-lg font-normal leading-relaxed text-white/70 max-w-md"
+           style={{ fontFamily: "var(--font-body)" }}>
           {content.intro}
         </p>
 
-        {/* CTAs — solid primary, ghost secondary */}
+        {/* Badges */}
+        {badges.length > 0 && (
+          <div className="mb-10 flex flex-wrap gap-y-2">
+            {badges.map((badge, i) => (
+              <span
+                key={i}
+                className="flex items-center text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-white/40"
+                style={{ fontFamily: "var(--font-body)" }}
+              >
+                {i > 0 && <span className="mx-3 opacity-50">·</span>}
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* CTAs */}
         <div className="flex flex-wrap items-center gap-4">
           {isInternal
             ? <button type="button" onClick={onBook} className={primaryCls}>{content.primaryCTA.label}</button>
             : <a href={content.primaryCTA.url} className={primaryCls}>{content.primaryCTA.label}</a>}
           {content.secondaryCTA.label && (
-            <a href={content.secondaryCTA.url} className={secondaryCls}>
-              {content.secondaryCTA.label}
-            </a>
+            <a href={content.secondaryCTA.url} className={secondaryCls}>{content.secondaryCTA.label}</a>
           )}
         </div>
       </div>
 
-      {/* Scroll indicator — vertical text + line, bottom-right */}
+      {/* Scroll indicator — bottom-right, vertical */}
       <div
         className={`absolute bottom-8 right-8 sm:right-12 md:right-16 lg:right-20 flex flex-col items-center gap-3
           transition-all duration-700 delay-[1200ms] ease-out

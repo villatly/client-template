@@ -34,7 +34,14 @@ export default function PropertyPage({ property }: PropertyPageProps) {
   return (
     <div style={getBrandingCSSVars(branding)} className={fontClass}>
       {sections.hero && (
-        <Hero content={content.hero} branding={branding} booking={booking} layout={layout} />
+        <Hero
+            content={content.hero}
+            branding={branding}
+            booking={booking}
+            layout={layout}
+            identity={content.identity}
+            amenities={content.amenities}
+          />
       )}
 
       {sections.bookingCta && (
