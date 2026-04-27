@@ -31,12 +31,12 @@ ALTER TABLE property_data ENABLE ROW LEVEL SECURITY;
 INSERT INTO property_data (key, value) VALUES
 
 ('config', '{
-  "slug": "villa-amara-bali",
-  "name": "Villa Amara",
+  "slug": "my-property",
+  "name": "My Property",
   "propertyType": "villa",
-  "location": "Ubud, Bali",
-  "country": "Indonesia",
-  "timezone": "Asia/Makassar",
+  "location": "Location, Country",
+  "country": "",
+  "timezone": "UTC",
   "defaultLocale": "en",
   "enabledLocales": ["en"],
   "adminEmail": "",
@@ -80,27 +80,11 @@ INSERT INTO property_data (key, value) VALUES
 
 ('availability', '{
   "room-1": {
-    "pricePerNight": 420,
+    "pricePerNight": 200,
     "minStay": 2,
     "pricePeriods": [],
     "units": [
-      { "id": "room-1-u1", "blockedRanges": [] }
-    ]
-  },
-  "room-2": {
-    "pricePerNight": 320,
-    "minStay": 2,
-    "pricePeriods": [],
-    "units": [
-      { "id": "room-2-u1", "blockedRanges": [] }
-    ]
-  },
-  "room-3": {
-    "pricePerNight": 380,
-    "minStay": 3,
-    "pricePeriods": [],
-    "units": [
-      { "id": "room-3-u1", "blockedRanges": [] }
+      { "id": "room-1-u1", "blockedRanges": [], "icalSources": [] }
     ]
   }
 }'),
