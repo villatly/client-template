@@ -41,10 +41,13 @@ export default function PropertyPage({ property }: PropertyPageProps) {
             layout={layout}
             identity={content.identity}
             amenities={content.amenities}
+            showBookingBar={sections.bookingCta && layout === "default"}
+            contact={content.contact}
+            propertyName={content.identity.name}
           />
       )}
 
-      {sections.bookingCta && (
+      {sections.bookingCta && layout !== "default" && (
         <BookingCTA
           contact={content.contact}
           branding={branding}
