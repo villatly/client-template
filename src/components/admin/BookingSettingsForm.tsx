@@ -184,9 +184,19 @@ export default function BookingSettingsForm({
               placeholder="+62 812 345 6789"
               className={inp}
             />
-            <p className="mt-1 text-xs text-gray-400">Include country code. Powers the floating WhatsApp button, the booking bar, and all contact sections across the site.</p>
+            <p className="mt-1 text-xs text-gray-400">Include country code. Powers the booking bar and all contact sections across the site.</p>
           </div>
         </div>
+
+        <label className="flex items-center gap-3 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={form.showWhatsappButton ?? true}
+            onChange={e => set("showWhatsappButton", e.target.checked)}
+            className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+          />
+          <span className="text-sm text-gray-700">Show floating WhatsApp button on the site</span>
+        </label>
       </section>
 
       <SaveBar saving={saving} saved={saved} onSave={save} />

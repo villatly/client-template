@@ -205,6 +205,8 @@ export interface BookingConfig {
   bookingEmail: string;
   /** WhatsApp number for booking enquiries (fallback contact). */
   bookingWhatsapp: string;
+  /** Show the floating WhatsApp button on the public page. Defaults to true if a number is set. */
+  showWhatsappButton?: boolean;
 }
 
 // ─── Availability (internal mode only) ───────────────────────────────
