@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { HeroContent, BrandingConfig, BookingConfig, PropertyIdentity, Amenity } from "@/lib/types";
+import type { HeroContent, BrandingConfig, BookingConfig, PropertyIdentity, Amenity, ContactInfo } from "@/lib/types";
 import type { LayoutPreset } from "@/lib/layout";
 import AvailabilityWidget from "@/components/template/AvailabilityWidget";
 
@@ -14,6 +14,12 @@ interface HeroProps {
   identity?: PropertyIdentity;
   /** Pass to render up to 3 trust badges */
   amenities?: Amenity[];
+  /** Show booking bar pinned inside the bottom of the hero (default layout only) */
+  showBookingBar?: boolean;
+  /** Contact info for WhatsApp button in the booking bar */
+  contact?: ContactInfo;
+  /** Property name for the booking bar tagline */
+  propertyName?: string;
 }
 
 interface InnerProps {
@@ -23,6 +29,9 @@ interface InnerProps {
   onBook: () => void;
   identity?: PropertyIdentity;
   amenities?: Amenity[];
+  showBookingBar?: boolean;
+  contact?: ContactInfo;
+  propertyName?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -56,6 +65,9 @@ export default function Hero({
   layout = "default",
   identity,
   amenities,
+  showBookingBar,
+  contact,
+  propertyName,
 }: HeroProps) {
   const [widgetOpen, setWidgetOpen] = useState(false);
   const hasBookingWidget = !!booking?.mode;
@@ -65,6 +77,9 @@ export default function Hero({
     booking,
     identity,
     amenities,
+    showBookingBar,
+    contact,
+    propertyName,
     isInternal: hasBookingWidget,
     onBook: () => setWidgetOpen(true),
   };
@@ -93,7 +108,7 @@ export default function Hero({
 // Structure: Eyebrow → Title (Playfair) → Subtitle → Badges → CTAs (pill)
 // Gradient: warm and airy at top, dark at bottom for legibility.
 
-function HeroDefault({ content, isInternal, onBook, identity, amenities }: InnerProps) {
+function HeroDefault({ content, isInternal, onBook, identity, amenities, showBookingBar, contact, propertyName, booking }: InnerProps) {
   const eyebrow = buildEyebrow(identity, content.tagline);
   const badges  = getBadges(amenities);
 
@@ -159,12 +174,56 @@ function HeroDefault({ content, isInternal, onBook, identity, amenities }: Inner
 
       </div>
 
-      {/* Scroll chevron */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <svg className="h-5 w-5 text-white/35" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
+      {/* Booking bar — pinned to bottom of hero */}
+      {showBookingBar && booking && (
+        <div className="absolute bottom-0 left-0 right-0 z-20 bg-black/50 backdrop-blur-md border-t border-white/10">
+          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-4 sm:flex-row">
+            <p
+              className="text-sm font-medium text-white/75 tracking-wide"
+              style={{ fontFamily: "var(--font-body)" }}
+            >
+              {propertyName ? `Ready to experience ${propertyName}?` : "Ready to book?"}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {isInternal
+                ? <button
+                    type="button"
+                    onClick={onBook}
+                    className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold rounded-full bg-white text-gray-900 hover:bg-white/90 transition-colors"
+                    style={{ fontFamily: "var(--font-body)" }}
+                  >
+                    {booking.ctaLabel || "Check Availability"}
+                  </button>
+                : <a
+                    href={content.primaryCTA.url}
+                    className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold rounded-full bg-white text-gray-900 hover:bg-white/90 transition-colors"
+                    style={{ fontFamily: "var(--font-body)" }}
+                  >
+                    {booking.ctaLabel || "Check Availability"}
+                  </a>
+              }
+              {contact?.whatsapp && (
+                <a
+                  href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`}
+                  className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium rounded-full border border-white/50 text-white hover:bg-white/10 transition-colors"
+                  style={{ fontFamily: "var(--font-body)" }}
+                >
+                  WhatsApp
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Scroll chevron — only when no booking bar */}
+      {!showBookingBar && (
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <svg className="h-5 w-5 text-white/35" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      )}
 
     </section>
   );
