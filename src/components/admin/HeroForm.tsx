@@ -41,34 +41,43 @@ export default function HeroForm({ initial }: { initial: HeroContent }) {
       )}
 
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-700">Headline *</label>
+        <label className="mb-1 block text-xs font-medium text-gray-700">
+          Title *
+          <span className="ml-1 font-normal text-gray-400">— usually the property name. Max ~35 characters.</span>
+        </label>
         <input
           type="text"
           value={form.headline}
           onChange={(e) => set("headline", e.target.value)}
-          placeholder="Your main headline"
+          placeholder="e.g. Villa Amara"
           className={inputClass}
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-700">Tagline</label>
+        <label className="mb-1 block text-xs font-medium text-gray-700">
+          Tagline
+          <span className="ml-1 font-normal text-gray-400">— fallback eyebrow if no location is set. 5–8 words max.</span>
+        </label>
         <input
           type="text"
           value={form.tagline}
           onChange={(e) => set("tagline", e.target.value)}
-          placeholder="Short supporting tagline"
+          placeholder="e.g. Boutique villa with pool in Ubud"
           className={inputClass}
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-700">Intro Paragraph</label>
+        <label className="mb-1 block text-xs font-medium text-gray-700">
+          Subtitle
+          <span className="ml-1 font-normal text-gray-400">— 1–2 sentences highlighting 3 benefits. ~100–140 characters.</span>
+        </label>
         <textarea
           rows={3}
           value={form.intro}
           onChange={(e) => set("intro", e.target.value)}
-          placeholder="Brief intro shown in the hero section"
+          placeholder="e.g. Private pool villa in Ubud with jungle views, daily breakfast, and 5-min walk to the rice terraces."
           className={`${inputClass} resize-y`}
         />
       </div>
