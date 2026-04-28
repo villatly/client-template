@@ -158,10 +158,10 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
 
       </div>
 
-      {/* Booking bar — pinned to bottom of hero, uses brand primary colour */}
+      {/* Booking bar — desktop only; on mobile it renders below the hero in PropertyPage */}
       {showBookingBar && booking && (
         <div
-          className="absolute bottom-0 left-0 right-0 z-20 bg-primary border-t border-white/10"
+          className="hidden sm:block absolute bottom-0 left-0 right-0 z-20 bg-primary border-t border-white/10"
           style={bookingBarBg ? { backgroundColor: bookingBarBg } : undefined}
         >
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-4 sm:flex-row">
@@ -207,7 +207,7 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
       <a
         href="#about"
         aria-label="Scroll down"
-        className={`absolute left-1/2 -translate-x-1/2 z-10 animate-bounce text-white/40 hover:text-white/70 transition-colors ${showBookingBar ? "bottom-[108px] sm:bottom-[92px]" : "bottom-10"}`}
+        className={`absolute left-1/2 -translate-x-1/2 z-10 animate-bounce text-white/40 hover:text-white/70 transition-colors ${showBookingBar ? "bottom-10 sm:bottom-[92px]" : "bottom-10"}`}
       >
         <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M19 9l-7 7-7-7" />
