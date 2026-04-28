@@ -89,60 +89,6 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
         </div>
       </section>
 
-      {/* Style */}
-      <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold text-gray-900">Style</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-xs font-medium text-gray-700">Button Style</label>
-            <select
-              value={form.buttonStyle}
-              onChange={(e) => set("buttonStyle", e.target.value as BrandingConfig["buttonStyle"])}
-              className={inputClass}
-            >
-              <option value="rounded">Rounded</option>
-              <option value="pill">Pill</option>
-              <option value="square">Square</option>
-            </select>
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-gray-700">Font Style</label>
-            <select
-              value={form.fontStyle}
-              onChange={(e) => set("fontStyle", e.target.value as BrandingConfig["fontStyle"])}
-              className={inputClass}
-            >
-              <option value="modern">Modern (sans-serif)</option>
-              <option value="serif">Serif</option>
-              <option value="minimal">Minimal</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <div className="mb-2 flex items-center justify-between">
-            <label className="block text-xs font-medium text-gray-700">
-              Hero Photo Overlay
-              <span className="ml-1 font-normal text-gray-400">— Default layout only</span>
-            </label>
-            <span className="text-xs tabular-nums text-gray-500">{form.heroOverlayOpacity ?? 30}%</span>
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={80}
-            step={5}
-            value={form.heroOverlayOpacity ?? 30}
-            onChange={(e) => set("heroOverlayOpacity", Number(e.target.value))}
-            className="w-full accent-gray-900"
-          />
-          <div className="mt-1 flex justify-between text-[10px] text-gray-400">
-            <span>Photo visible</span>
-            <span>More contrast</span>
-          </div>
-        </div>
-      </section>
-
       {/* Layout Preset */}
       <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">

@@ -3,10 +3,9 @@
   "secondaryColor": "#c9a96e",
   "accentColor": "#e8634a",
   "logo": "",
-  "buttonStyle": "rounded",
-  "fontStyle": "serif",
+  "buttonStyle": "pill",
+  "fontStyle": "modern",
   "layoutPreset": "default",
   "faviconUrl": "",
-  "sectionColors": {},
-  "heroOverlayOpacity": 30
+  "sectionColors": {}
 }

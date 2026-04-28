@@ -18,7 +18,8 @@
     "secondaryCTA": {
       "label": "Explore Villa",
       "url": "#gallery"
-    }
+    },
+    "overlayOpacity": 30
   },
   "description": {
     "short": "Villa Amara is a luxury three-bedroom retreat in Ubud, Bali, featuring a private infinity pool, sweeping rice field views, and authentic Balinese architecture designed for unforgettable tropical escapes.",
