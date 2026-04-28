@@ -151,7 +151,7 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
         </h1>
 
         {/* Subtitle — same style as eyebrow: uppercase, small, tracked */}
-        <p className="mx-auto mb-10 w-full max-w-[800px] text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.22em] leading-[2] text-white/60 text-center line-clamp-2"
+        <p className="mx-auto mb-10 w-full max-w-[800px] text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.22em] leading-[2] text-white/60 text-center"
            style={{ fontFamily: "var(--font-body)" }}>
           {content.intro}
         </p>
@@ -205,7 +205,7 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
 
       {/* Scroll arrow — sits just above the booking bar (or bottom of hero if no bar) */}
       <a
-        href={content.secondaryCTA.url || "#about"}
+        href="#about"
         aria-label="Scroll down"
         className={`absolute left-1/2 -translate-x-1/2 z-10 animate-bounce text-white/40 hover:text-white/70 transition-colors ${showBookingBar ? "bottom-[108px] sm:bottom-[92px]" : "bottom-10"}`}
       >
