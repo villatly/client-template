@@ -7,5 +7,6 @@
   "fontStyle": "serif",
   "layoutPreset": "default",
   "faviconUrl": "",
-  "sectionColors": {}
+  "sectionColors": {},
+  "heroOverlayOpacity": 30
 }
