@@ -146,7 +146,7 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
         )}
 
         {/* Title — Playfair Display, clamp 42px→72px, tight line-height */}
-        <h1 className="mb-20 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
+        <h1 className="mb-28 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
           {content.headline}
         </h1>
 
@@ -207,7 +207,7 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
       <a
         href={content.secondaryCTA.url || "#about"}
         aria-label="Scroll down"
-        className={`absolute left-1/2 -translate-x-1/2 z-10 animate-bounce text-white/40 hover:text-white/70 transition-colors ${showBookingBar ? "bottom-[88px] sm:bottom-[76px]" : "bottom-10"}`}
+        className={`absolute left-1/2 -translate-x-1/2 z-10 animate-bounce text-white/40 hover:text-white/70 transition-colors ${showBookingBar ? "bottom-[108px] sm:bottom-[92px]" : "bottom-10"}`}
       >
         <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M19 9l-7 7-7-7" />
