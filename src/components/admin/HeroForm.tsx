@@ -69,12 +69,18 @@ export default function HeroForm({ initial }: { initial: HeroContent }) {
       </div>
 
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-700">
-          Subtitle
-          <span className="ml-1 font-normal text-gray-400">— max 2 lines. 110–130 characters. 2–3 benefits max. No ratings.</span>
-        </label>
+        <div className="mb-1 flex items-baseline justify-between">
+          <label className="block text-xs font-medium text-gray-700">
+            Subtitle
+            <span className="ml-1 font-normal text-gray-400">— 2–3 benefits, no ratings. Displays as two lines max.</span>
+          </label>
+          <span className={`text-xs tabular-nums ${form.intro.length > 130 ? "text-red-500 font-medium" : "text-gray-400"}`}>
+            {form.intro.length}/130
+          </span>
+        </div>
         <textarea
           rows={3}
+          maxLength={130}
           value={form.intro}
           onChange={(e) => set("intro", e.target.value)}
           placeholder="e.g. Private pool villa in Ubud with jungle views, daily breakfast, and 5-min walk to the rice terraces."

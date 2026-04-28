@@ -138,12 +138,12 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
       <div className="relative z-10 mx-auto w-[88%] max-w-[820px] text-center text-white">
 
         {/* Title — Playfair Display, clamp 42px→72px, tight line-height */}
-        <h1 className="mb-12 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
+        <h1 className="mb-16 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
           {content.headline}
         </h1>
 
-        {/* Subtitle — Inter, wider to reduce line breaks */}
-        <p className="mx-auto mb-10 max-w-[700px] text-[0.95rem] sm:text-base font-normal leading-[1.6] text-white/80 text-center line-clamp-3"
+        {/* Subtitle — same style as eyebrow: uppercase, small, tracked */}
+        <p className="mx-auto mb-10 w-full max-w-[800px] text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.22em] leading-[2] text-white/60 text-center line-clamp-2"
            style={{ fontFamily: "var(--font-body)" }}>
           {content.intro}
         </p>
