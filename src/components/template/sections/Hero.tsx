@@ -121,8 +121,6 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
   const eyebrow = buildEyebrow(identity, content.tagline);
   const overlayAlpha = (heroOverlayOpacity ?? 30) / 100;
 
-  const secondaryCls = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-full bg-white/15 border border-white/60 text-white hover:bg-white/25 hover:border-white/90";
-
   return (
     <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden">
 
@@ -157,11 +155,6 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
            style={{ fontFamily: "var(--font-body)" }}>
           {content.intro}
         </p>
-
-        {/* Single CTA — Explore / secondary action only */}
-        {content.secondaryCTA.label && (
-          <a href={content.secondaryCTA.url} className={secondaryCls}>{content.secondaryCTA.label}</a>
-        )}
 
       </div>
 
@@ -210,14 +203,16 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
         </div>
       )}
 
-      {/* Scroll chevron — only when no booking bar */}
-      {!showBookingBar && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg className="h-5 w-5 text-white/35" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      )}
+      {/* Scroll arrow — sits just above the booking bar (or bottom of hero if no bar) */}
+      <a
+        href={content.secondaryCTA.url || "#about"}
+        aria-label="Scroll down"
+        className={`absolute left-1/2 -translate-x-1/2 z-10 animate-bounce text-white/40 hover:text-white/70 transition-colors ${showBookingBar ? "bottom-[88px] sm:bottom-[76px]" : "bottom-10"}`}
+      >
+        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </a>
 
     </section>
   );
