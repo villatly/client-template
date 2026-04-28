@@ -18,7 +18,8 @@
     "secondaryCTA": {
       "label": "Explore",
       "url": "#gallery"
-    }
+    },
+    "overlayOpacity": 30
   },
   "description": {
     "short": "A short description of your property for SEO and previews.",
