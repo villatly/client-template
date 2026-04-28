@@ -56,6 +56,21 @@ export default function PropertyPage({ property }: PropertyPageProps) {
           />
       )}
 
+      {/* Default layout: bar is inside the hero on desktop; below it on mobile */}
+      {sections.bookingCta && layout === "default" && (
+        <div className="sm:hidden">
+          <BookingCTA
+            contact={contact}
+            branding={branding}
+            propertyName={content.identity.name}
+            booking={booking}
+            layout={layout}
+            bgColor={branding.sectionColors?.bookingCta}
+          />
+        </div>
+      )}
+
+      {/* Other layouts: always below the hero */}
       {sections.bookingCta && layout !== "default" && (
         <BookingCTA
           contact={contact}
