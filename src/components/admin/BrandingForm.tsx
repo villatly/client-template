@@ -118,6 +118,29 @@ export default function BrandingForm({ initial, premiumLayouts = false }: Brandi
             </select>
           </div>
         </div>
+
+        <div>
+          <div className="mb-2 flex items-center justify-between">
+            <label className="block text-xs font-medium text-gray-700">
+              Hero Photo Overlay
+              <span className="ml-1 font-normal text-gray-400">— Default layout only</span>
+            </label>
+            <span className="text-xs tabular-nums text-gray-500">{form.heroOverlayOpacity ?? 30}%</span>
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={80}
+            step={5}
+            value={form.heroOverlayOpacity ?? 30}
+            onChange={(e) => set("heroOverlayOpacity", Number(e.target.value))}
+            className="w-full accent-gray-900"
+          />
+          <div className="mt-1 flex justify-between text-[10px] text-gray-400">
+            <span>Photo visible</span>
+            <span>More contrast</span>
+          </div>
+        </div>
       </section>
 
       {/* Layout Preset */}

@@ -140,6 +140,8 @@ export interface BrandingConfig {
   faviconUrl?: string;
   /** Per-section background color overrides (hex). Undefined = use section default. */
   sectionColors?: Partial<Record<keyof SectionVisibility, string>>;
+  /** Dark overlay on the hero image (0–80). Default layout only. Default: 30. */
+  heroOverlayOpacity?: number;
 }
 
 // ─── Section Visibility Config ────────────────────────────────────────
