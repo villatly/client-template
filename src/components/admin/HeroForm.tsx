@@ -97,6 +97,29 @@ export default function HeroForm({ initial }: { initial: HeroContent }) {
         />
       </div>
 
+      <div>
+        <div className="mb-2 flex items-center justify-between">
+          <label className="block text-xs font-medium text-gray-700">
+            Photo Overlay
+            <span className="ml-1 font-normal text-gray-400">— darken the image to improve text contrast</span>
+          </label>
+          <span className="text-xs tabular-nums text-gray-500">{form.overlayOpacity ?? 30}%</span>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={80}
+          step={5}
+          value={form.overlayOpacity ?? 30}
+          onChange={(e) => set("overlayOpacity", Number(e.target.value))}
+          className="w-full accent-gray-900"
+        />
+        <div className="mt-1 flex justify-between text-[10px] text-gray-400">
+          <span>Photo visible</span>
+          <span>More contrast</span>
+        </div>
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 border-t border-gray-100 pt-4">
         <div>
           <label className="mb-1 block text-xs font-medium text-gray-700">Primary CTA Label</label>
