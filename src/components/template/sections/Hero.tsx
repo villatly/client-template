@@ -109,14 +109,12 @@ export default function Hero({
 
 // ─── Default ─────────────────────────────────────────────────────────────────
 // Full-bleed, centered.
-// Structure: Eyebrow → Title (Playfair) → Subtitle → Badges → CTAs (pill)
-// Gradient: warm and airy at top, dark at bottom for legibility.
+// Structure: Eyebrow (top) → Title (center) → Subtitle → CTA (Explore only)
+// Check Availability lives in the booking bar at the bottom.
 
-function HeroDefault({ content, isInternal, onBook, identity, amenities, showBookingBar, contact, propertyName, bookingBarBg, booking }: InnerProps) {
+function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, contact, propertyName, bookingBarBg, booking }: InnerProps) {
   const eyebrow = buildEyebrow(identity, content.tagline);
-  const badges  = getBadges(amenities);
 
-  const primaryCls   = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full bg-white text-gray-900 hover:bg-white/90";
   const secondaryCls = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-full bg-white/15 border border-white/60 text-white hover:bg-white/25 hover:border-white/90";
 
   return (
@@ -126,55 +124,34 @@ function HeroDefault({ content, isInternal, onBook, identity, amenities, showBoo
       <div className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={content.image} alt="" className="h-full w-full object-cover" fetchPriority="high" />
-        {/* Warm gradient — barely-there at top, anchors the text at bottom-center */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/10" />
       </div>
 
-      {/* Content block — centered, nudged slightly below middle */}
-      <div className="relative z-10 mx-auto w-[88%] max-w-[720px] text-center text-white mt-12 sm:mt-16">
+      {/* Eyebrow — absolute, pushed high in the frame */}
+      {eyebrow && (
+        <p className="absolute top-[18%] sm:top-[22%] left-0 right-0 z-10 text-center text-[10px] sm:text-[12px] font-semibold uppercase tracking-[0.3em] text-white/60">
+          {eyebrow}
+        </p>
+      )}
 
-        {/* Eyebrow */}
-        {eyebrow && (
-          <p className="mb-5 text-[10px] sm:text-[12px] font-semibold uppercase tracking-[0.3em] text-white/60 line-clamp-1">
-            {eyebrow}
-          </p>
-        )}
+      {/* Content block — vertically centered, title + subtitle + single CTA */}
+      <div className="relative z-10 mx-auto w-[88%] max-w-[820px] text-center text-white">
 
         {/* Title — Playfair Display, clamp 42px→72px, tight line-height */}
-        <h1 className="mb-7 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
+        <h1 className="mb-12 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
           {content.headline}
         </h1>
 
-        {/* Subtitle — Inter, centered, max 2 lines */}
-        <p className="mx-auto mb-10 max-w-[560px] text-[0.95rem] sm:text-base font-normal leading-[1.6] text-white/80 text-center line-clamp-3"
+        {/* Subtitle — Inter, wider to reduce line breaks */}
+        <p className="mx-auto mb-10 max-w-[700px] text-[0.95rem] sm:text-base font-normal leading-[1.6] text-white/80 text-center line-clamp-3"
            style={{ fontFamily: "var(--font-body)" }}>
           {content.intro}
         </p>
 
-        {/* Badges — chip style, max 3, only if data provided */}
-        {badges.length > 0 && (
-          <div className="mb-12 flex flex-wrap items-center justify-center gap-2">
-            {badges.map((badge, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center px-3.5 py-1 rounded-full text-[12px] sm:text-[13px] font-medium text-white/90 bg-white/10 border border-white/25 truncate max-w-[180px]"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                {badge}
-              </span>
-            ))}
-          </div>
+        {/* Single CTA — Explore / secondary action only */}
+        {content.secondaryCTA.label && (
+          <a href={content.secondaryCTA.url} className={secondaryCls}>{content.secondaryCTA.label}</a>
         )}
-
-        {/* CTAs — pill style */}
-        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          {isInternal
-            ? <button type="button" onClick={onBook} className={primaryCls}>{content.primaryCTA.label}</button>
-            : <a href={content.primaryCTA.url} className={primaryCls}>{content.primaryCTA.label}</a>}
-          {content.secondaryCTA.label && (
-            <a href={content.secondaryCTA.url} className={secondaryCls}>{content.secondaryCTA.label}</a>
-          )}
-        </div>
 
       </div>
 
