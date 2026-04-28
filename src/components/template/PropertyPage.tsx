@@ -52,6 +52,7 @@ export default function PropertyPage({ property }: PropertyPageProps) {
             contact={contact}
             propertyName={content.identity.name}
             bookingBarBg={branding.sectionColors?.bookingCta}
+            heroOverlayOpacity={branding.heroOverlayOpacity}
           />
       )}
 

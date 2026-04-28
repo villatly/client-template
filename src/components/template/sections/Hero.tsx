@@ -22,6 +22,8 @@ interface HeroProps {
   propertyName?: string;
   /** Custom background colour override for the booking bar (from sectionColors.bookingCta) */
   bookingBarBg?: string;
+  /** Dark overlay on the hero image 0–80. Default layout only. Default: 30. */
+  heroOverlayOpacity?: number;
 }
 
 interface InnerProps {
@@ -35,6 +37,7 @@ interface InnerProps {
   contact?: ContactInfo;
   propertyName?: string;
   bookingBarBg?: string;
+  heroOverlayOpacity?: number;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -72,6 +75,7 @@ export default function Hero({
   contact,
   propertyName,
   bookingBarBg,
+  heroOverlayOpacity,
 }: HeroProps) {
   const [widgetOpen, setWidgetOpen] = useState(false);
   const hasBookingWidget = !!booking?.mode;
@@ -85,6 +89,7 @@ export default function Hero({
     contact,
     propertyName,
     bookingBarBg,
+    heroOverlayOpacity,
     isInternal: hasBookingWidget,
     onBook: () => setWidgetOpen(true),
   };
@@ -112,19 +117,23 @@ export default function Hero({
 // Structure: Eyebrow (top) → Title (center) → Subtitle → CTA (Explore only)
 // Check Availability lives in the booking bar at the bottom.
 
-function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, contact, propertyName, bookingBarBg, booking }: InnerProps) {
+function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, contact, propertyName, bookingBarBg, booking, heroOverlayOpacity }: InnerProps) {
   const eyebrow = buildEyebrow(identity, content.tagline);
+  const overlayAlpha = (heroOverlayOpacity ?? 30) / 100;
 
   const secondaryCls = "inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-full bg-white/15 border border-white/60 text-white hover:bg-white/25 hover:border-white/90";
 
   return (
     <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden">
 
-      {/* Background image + gradient */}
+      {/* Background image + overlays */}
       <div className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={content.image} alt="" className="h-full w-full object-cover" fetchPriority="high" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/10" />
+        {/* Adjustable solid overlay — controls uniform text legibility */}
+        <div className="absolute inset-0 bg-black" style={{ opacity: overlayAlpha }} />
+        {/* Gradient — anchors the bottom content and booking bar */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       </div>
 
       {/* Content block — vertically centered, equal gaps between all three elements */}
