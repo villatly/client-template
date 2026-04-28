@@ -127,18 +127,19 @@ function HeroDefault({ content, isInternal, onBook, identity, showBookingBar, co
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/10" />
       </div>
 
-      {/* Eyebrow — absolute, pushed high in the frame */}
-      {eyebrow && (
-        <p className="absolute top-[18%] sm:top-[22%] left-0 right-0 z-10 text-center text-[10px] sm:text-[12px] font-semibold uppercase tracking-[0.3em] text-white/60">
-          {eyebrow}
-        </p>
-      )}
-
-      {/* Content block — vertically centered, title + subtitle + single CTA */}
+      {/* Content block — vertically centered, equal gaps between all three elements */}
       <div className="relative z-10 mx-auto w-[88%] max-w-[820px] text-center text-white">
 
+        {/* Eyebrow — in flow so its gap to title matches title gap to subtitle */}
+        {eyebrow && (
+          <p className="mb-20 text-[10px] sm:text-[12px] font-semibold uppercase tracking-[0.3em] text-white/60 line-clamp-1"
+             style={{ fontFamily: "var(--font-body)" }}>
+            {eyebrow}
+          </p>
+        )}
+
         {/* Title — Playfair Display, clamp 42px→72px, tight line-height */}
-        <h1 className="mb-16 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
+        <h1 className="mb-20 text-[clamp(2.625rem,6vw,4.5rem)] font-normal leading-[0.97] tracking-[-0.01em]">
           {content.headline}
         </h1>
 
