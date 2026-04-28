@@ -31,6 +31,8 @@ export interface HeroContent {
   image: string;
   primaryCTA: CTAButton;
   secondaryCTA: CTAButton;
+  /** Dark overlay on the hero image 0–80. Default layout only. Default: 30. */
+  overlayOpacity?: number;
 }
 
 export interface CTAButton {
@@ -140,8 +142,6 @@ export interface BrandingConfig {
   faviconUrl?: string;
   /** Per-section background color overrides (hex). Undefined = use section default. */
   sectionColors?: Partial<Record<keyof SectionVisibility, string>>;
-  /** Dark overlay on the hero image (0–80). Default layout only. Default: 30. */
-  heroOverlayOpacity?: number;
 }
 
 // ─── Section Visibility Config ────────────────────────────────────────
