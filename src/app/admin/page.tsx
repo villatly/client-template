@@ -53,7 +53,7 @@ export default async function AdminDashboard() {
     {
       href: "/admin/branding",
       label: "Branding",
-      desc: "Customise colors, logo, button style, and fonts.",
+      desc: "Customise colors, logo, favicon, page layout, and section colors.",
       highlight: false,
     },
     {
@@ -64,8 +64,14 @@ export default async function AdminDashboard() {
     },
     {
       href: "/admin/booking",
-      label: "Booking settings",
-      desc: `Mode: ${modeLabel} · Configure currency, CTA label, and contact details.`,
+      label: "Booking",
+      desc: `Mode: ${modeLabel} · Configure currency, CTA label, WhatsApp, and contact details.`,
+      highlight: false,
+    },
+    {
+      href: "/admin/settings",
+      label: "Settings",
+      desc: "Notification email, property timezone, and deployment sync.",
       highlight: false,
     },
   ];
