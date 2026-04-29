@@ -1,8 +1,15 @@
 {
   "room-1": {
-    "pricePerNight": 200,
-    "minStay": 2,
-    "pricePeriods": [],
+    "pricePerNight": 0,
+    "minStay": 1,
+    "pricePeriods": [
+      {
+        "from": "2026-06-01",
+        "to": "2026-08-31",
+        "pricePerNight": 400,
+        "label": "High season"
+      }
+    ],
     "units": [
       {
         "id": "room-1-u1",
