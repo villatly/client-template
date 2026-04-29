@@ -37,6 +37,26 @@ export default function SettingsForm({ initial }: { initial: PropertyConfig }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved]   = useState(false);
   const [error, setError]   = useState("");
+  const [reseeding, setReseeding] = useState(false);
+  const [reseedDone, setReseedDone] = useState(false);
+  const [reseedError, setReseedError] = useState("");
+
+  async function reseed() {
+    setReseeding(true);
+    setReseedDone(false);
+    setReseedError("");
+    try {
+      const res = await fetch("/api/admin/reseed", { method: "POST" });
+      if (res.ok) {
+        setReseedDone(true);
+      } else {
+        setReseedError("Sync failed. Check the server logs.");
+      }
+    } catch {
+      setReseedError("Network error. Try again.");
+    }
+    setReseeding(false);
+  }
 
   function set<K extends keyof PropertyConfig>(k: K, v: PropertyConfig[K]) {
     setForm(f => ({ ...f, [k]: v }));
@@ -138,6 +158,31 @@ export default function SettingsForm({ initial }: { initial: PropertyConfig }) {
             ))}
           </select>
         </div>
+      </section>
+
+      {/* Sync from deployment */}
+      <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 shadow-sm space-y-3">
+        <div>
+          <h2 className="text-sm font-semibold text-gray-900">Sync Content from Deployment</h2>
+          <p className="mt-0.5 text-xs text-gray-500">
+            After deploying new content files (en.json, branding, booking…) to this server,
+            use this to push them into the database. This overwrites all current live content.
+          </p>
+        </div>
+        {reseedDone && (
+          <p className="text-sm text-emerald-700 font-medium">✓ Sync complete — reload the page to see the updated content.</p>
+        )}
+        {reseedError && (
+          <p className="text-sm text-red-600 font-medium">{reseedError}</p>
+        )}
+        <button
+          type="button"
+          onClick={reseed}
+          disabled={reseeding}
+          className="rounded-md bg-amber-600 px-5 py-2 text-sm font-medium text-white hover:bg-amber-700 transition-colors disabled:opacity-50"
+        >
+          {reseeding ? "Syncing…" : "Sync from deployment files"}
+        </button>
       </section>
 
       {error && (
