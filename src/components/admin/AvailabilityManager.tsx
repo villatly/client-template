@@ -575,6 +575,18 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
     setActiveUnitIdx(Math.max(0, unitIdx - 1));
   }
 
+  function handleUnitLabelChange(label: string) {
+    setData((d) => {
+      const room = d[activeRoom] ?? defaultRoomAvail(activeRoom);
+      const updatedUnits = room.units.map((u, i) =>
+        i === safeUnitIdx ? { ...u, label: label || undefined } : u
+      );
+      return { ...d, [activeRoom]: { ...room, units: updatedUnits } };
+    });
+    setSaved(false);
+    setUnsaved(true);
+  }
+
   function prevDay(d: string) {
     const dt = new Date(d); dt.setDate(dt.getDate() - 1);
     return dt.toISOString().split("T")[0];
@@ -629,29 +641,46 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
       </div>
 
       {/* Unit tabs + Add Unit */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-medium text-gray-400 uppercase tracking-wide mr-1">Units:</span>
-        {rd.units.map((unit, i) => (
-          <div key={unit.id} className="flex items-center gap-0.5">
-            <button type="button"
-              onClick={() => setActiveUnitIdx(i)}
-              className={`rounded-l-md px-3 py-1.5 text-xs font-medium transition-colors ${safeUnitIdx === i ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
-              Unit {i + 1}
-            </button>
-            {rd.units.length > 1 && (
+      <div className="space-y-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-medium text-gray-400 uppercase tracking-wide mr-1">Units:</span>
+          {rd.units.map((unit, i) => (
+            <div key={unit.id} className="flex items-center gap-0.5">
               <button type="button"
-                onClick={() => handleRemoveUnit(i)}
-                title="Remove this unit"
-                className={`rounded-r-md px-1.5 py-1.5 text-xs transition-colors ${safeUnitIdx === i ? "bg-gray-600 text-white/70 hover:bg-rose-600 hover:text-white" : "bg-gray-100 text-gray-400 hover:bg-rose-100 hover:text-rose-600"}`}>
-                ×
+                onClick={() => setActiveUnitIdx(i)}
+                className={`rounded-l-md px-3 py-1.5 text-xs font-medium transition-colors ${safeUnitIdx === i ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                {unit.label || `Unit ${i + 1}`}
               </button>
-            )}
+              {rd.units.length > 1 && (
+                <button type="button"
+                  onClick={() => handleRemoveUnit(i)}
+                  title="Remove this unit"
+                  className={`rounded-r-md px-1.5 py-1.5 text-xs transition-colors ${safeUnitIdx === i ? "bg-gray-600 text-white/70 hover:bg-rose-600 hover:text-white" : "bg-gray-100 text-gray-400 hover:bg-rose-100 hover:text-rose-600"}`}>
+                  ×
+                </button>
+              )}
+            </div>
+          ))}
+          <button type="button" onClick={handleAddUnit}
+            className="rounded-md border border-dashed border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700 transition-colors">
+            + Add Unit
+          </button>
+        </div>
+
+        {/* Inline label editor for the active unit */}
+        {activeUnit && (
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-gray-400">Unit name:</span>
+            <input
+              type="text"
+              value={activeUnit.label ?? ""}
+              onChange={(e) => handleUnitLabelChange(e.target.value)}
+              placeholder={`Unit ${safeUnitIdx + 1}`}
+              className="rounded-md border border-gray-200 bg-white px-2.5 py-1 text-xs text-gray-700 placeholder:text-gray-300 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 w-40"
+            />
+            <span className="text-[11px] text-gray-300">e.g. Room 101, Bungalow A</span>
           </div>
-        ))}
-        <button type="button" onClick={handleAddUnit}
-          className="rounded-md border border-dashed border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700 transition-colors">
-          + Add Unit
-        </button>
+        )}
       </div>
 
       {/* Stats (per unit) */}
@@ -672,7 +701,7 @@ export default function AvailabilityManager({ initial, rooms, currency = "USD" }
         <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900">Blocked Periods — Unit {safeUnitIdx + 1}</h3>
+              <h3 className="text-sm font-semibold text-gray-900">Blocked Periods — {activeUnit.label || `Unit ${safeUnitIdx + 1}`}</h3>
               <p className="text-[11px] text-gray-400 mt-0.5">
                 <span className="inline-flex items-center gap-1 mr-3"><span className="h-2 w-2 rounded-full bg-rose-400 inline-block"/>Upcoming</span>
                 <span className="inline-flex items-center gap-1 mr-3"><span className="h-2 w-2 rounded-full bg-blue-500 inline-block"/>Active now</span>

@@ -2,14 +2,16 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { getBookings } from "@/lib/bookings";
-import { getBooking, getConfig } from "@/lib/property";
+import { getBooking, getConfig, getAvailability } from "@/lib/property";
 import BookingsList from "@/components/admin/BookingsList";
+import type { AvailabilityData } from "@/lib/types";
 
 export default async function AdminBookingsPage() {
-  const [allBookings, bookingConfig, config] = await Promise.all([
+  const [allBookings, bookingConfig, config, availability] = await Promise.all([
     getBookings(),
     getBooking(),
     getConfig(),
+    getAvailability(),
   ]);
   const bookings = allBookings.sort((a, b) =>
     b.createdAt.localeCompare(a.createdAt)
@@ -44,7 +46,7 @@ export default async function AdminBookingsPage() {
           </p>
         </div>
       </div>
-      <BookingsList initialBookings={bookings} currency={currency} />
+      <BookingsList initialBookings={bookings} currency={currency} availability={availability} />
     </div>
   );
 }
