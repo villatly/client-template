@@ -4,6 +4,6 @@
   "ctaLabel": "Check Availability",
   "contactMethod": "email",
   "bookingEmail": "",
-  "bookingWhatsapp": "+111111111",
+  "bookingWhatsapp": "",
   "showWhatsappButton": false
 }

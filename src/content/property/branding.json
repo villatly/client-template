@@ -1,7 +1,7 @@
 {
-  "primaryColor": "#272216",
-  "secondaryColor": "#c9a96e",
-  "accentColor": "#e8634a",
+  "primaryColor": "#1a1a1a",
+  "secondaryColor": "#888888",
+  "accentColor": "#888888",
   "logo": "",
   "buttonStyle": "pill",
   "fontStyle": "modern",

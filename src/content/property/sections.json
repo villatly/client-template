@@ -1,15 +1,15 @@
 {
   "hero": true,
   "bookingCta": true,
-  "about": true,
-  "gallery": true,
-  "rooms": true,
-  "amenities": true,
-  "reviews": true,
-  "faq": true,
-  "location": true,
-  "nearbyAttractions": true,
-  "policies": true,
-  "contactCta": true,
-  "footer": true
+  "about": false,
+  "gallery": false,
+  "rooms": false,
+  "amenities": false,
+  "reviews": false,
+  "faq": false,
+  "location": false,
+  "nearbyAttractions": false,
+  "policies": false,
+  "contactCta": false,
+  "footer": false
 }
