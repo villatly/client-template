@@ -10,7 +10,7 @@
     "headline": "The Jumbo Homestay",
     "tagline": "Family homestay with spacious rooms and breakfast near Kuta Beach.",
     "intro": "Family-run homestay in Kuta, Lombok with spacious rooms, breakfast and warm hospitality near Kuta Beach and Mandalika",
-    "image": "https://dynamic-media-cdn.tripadvisor.com/media/partner/bookingcom/photo-o/2d/fb/98/d0/bed.jpg?w=1200&h=700&s=1",
+    "image": "/uploads/1777429245342-to4vay.jpg",
     "primaryCTA": {
       "label": "Check Availability",
       "url": "#booking"
@@ -19,12 +19,12 @@
       "label": "Explore",
       "url": "#gallery"
     },
-    "overlayOpacity": 30
+    "overlayOpacity": 25
   },
   "description": {
     "short": "Family-run guesthouse in Kuta Lombok with spacious air-conditioned rooms, free breakfast, free WiFi, and private parking — rated 9.1 by guests.",
     "long": "The Jumbo Homestay is a family-operated bed and breakfast on Jalan Raya Kuta in Lombok's vibrant Kuta district. Rooms are spacious with high ceilings, supremely comfortable beds, and air conditioning that actually works — finished to a standard guests describe as well above what the price suggests.\n\nEach morning begins with a sumptuous breakfast included in the rate. Guests frequently highlight the generous portion sizes, wide variety of choices, and the complimentary free-flow water and hot drinks throughout the day.\n\nThe property features a beautiful garden and private terrace where guests can relax after a day of exploration. Free high-speed WiFi is available throughout, along with free private on-site parking — a genuine convenience in busy Kuta.\n\nThe friendly family owners and their English-speaking staff are always on hand to help with recommendations, transport arrangements, and anything else guests need. Whether you are here for the beaches, the Mandalika circuit, or just passing through on your way around Lombok, The Jumbo Homestay delivers exceptional comfort and hospitality at an accessible price.",
-    "image": "/uploads/1777284324620-d43zpv.jpg"
+    "image": "/uploads/1777373346895-f0hyzn.jpg"
   },
   "gallery": [
     {
@@ -58,6 +58,10 @@
     {
       "url": "/uploads/1777285331118-vjv9b4.jpg",
       "alt": "Surf in Kuta"
+    },
+    {
+      "url": "/uploads/1777373456017-bts1gc.jpg",
+      "alt": "Kuta Lombok"
     }
   ],
   "rooms": [
@@ -257,12 +261,7 @@
     "whatsapp": "",
     "email": "",
     "phone": "",
-    "ctaButtons": [
-      {
-        "label": "Book on Booking.com",
-        "url": "https://www.booking.com/hotel/id/the-jumbo-homestay.html"
-      }
-    ]
+    "ctaButtons": []
   },
   "seo": {
     "title": "The Jumbo Homestay | Kuta Lombok | Guesthouse with Breakfast",
