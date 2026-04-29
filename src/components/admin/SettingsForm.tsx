@@ -37,11 +37,16 @@ export default function SettingsForm({ initial }: { initial: PropertyConfig }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved]   = useState(false);
   const [error, setError]   = useState("");
-  const [reseeding, setReseeding] = useState(false);
-  const [reseedDone, setReseedDone] = useState(false);
+  const [reseeding, setReseeding]     = useState(false);
+  const [reseedDone, setReseedDone]   = useState(false);
   const [reseedError, setReseedError] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmText, setConfirmText] = useState("");
+  const CONFIRM_WORD = "SYNC";
 
   async function reseed() {
+    setShowConfirm(false);
+    setConfirmText("");
     setReseeding(true);
     setReseedDone(false);
     setReseedError("");
@@ -165,8 +170,8 @@ export default function SettingsForm({ initial }: { initial: PropertyConfig }) {
         <div>
           <h2 className="text-sm font-semibold text-gray-900">Sync Content from Deployment</h2>
           <p className="mt-0.5 text-xs text-gray-500">
-            After deploying new content files (en.json, branding, booking…) to this server,
-            use this to push them into the database. This overwrites all current live content.
+            Overwrites the live database with the content files bundled in this deployment.
+            Use after pushing new content to the server.
           </p>
         </div>
         {reseedDone && (
@@ -177,13 +182,68 @@ export default function SettingsForm({ initial }: { initial: PropertyConfig }) {
         )}
         <button
           type="button"
-          onClick={reseed}
+          onClick={() => { setShowConfirm(true); setConfirmText(""); setReseedDone(false); setReseedError(""); }}
           disabled={reseeding}
           className="rounded-md bg-amber-600 px-5 py-2 text-sm font-medium text-white hover:bg-amber-700 transition-colors disabled:opacity-50"
         >
           {reseeding ? "Syncing…" : "Sync from deployment files"}
         </button>
       </section>
+
+      {/* Confirmation modal */}
+      {showConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-xl bg-white shadow-2xl p-6 space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
+                <svg className="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900">This will overwrite all live content</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  All changes made through the admin panel (texts, images, colors, pricing…)
+                  will be permanently replaced by the content files in this deployment.
+                  <strong className="text-gray-700"> This cannot be undone.</strong>
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-gray-700">
+                Type <span className="font-mono font-bold text-red-600">{CONFIRM_WORD}</span> to confirm
+              </label>
+              <input
+                type="text"
+                value={confirmText}
+                onChange={e => setConfirmText(e.target.value.toUpperCase())}
+                placeholder={CONFIRM_WORD}
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm font-mono tracking-widest text-gray-900 placeholder:text-gray-300 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+                autoFocus
+              />
+            </div>
+
+            <div className="flex gap-3 justify-end pt-1">
+              <button
+                type="button"
+                onClick={() => { setShowConfirm(false); setConfirmText(""); }}
+                className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={reseed}
+                disabled={confirmText !== CONFIRM_WORD}
+                className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Yes, overwrite everything
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {error && (
         <p className="text-sm text-red-600 font-medium">{error}</p>
