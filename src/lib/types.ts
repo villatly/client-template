@@ -249,6 +249,8 @@ export interface ICalSyncSource {
  */
 export interface RoomUnitAvailability {
   id: string;                     // e.g. "room-1-u1", "room-1-u2"
+  /** Optional human-readable label for this unit (e.g. "Room 101", "Bungalow A"). Shown in availability tabs and booking details. */
+  label?: string;
   blockedRanges: BlockedRange[];
   /** External iCal feeds to import blocked dates from (external mode). */
   icalSources?: ICalSyncSource[];
