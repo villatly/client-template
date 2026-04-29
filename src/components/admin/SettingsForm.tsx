@@ -137,7 +137,8 @@ export default function SettingsForm({ initial }: { initial: PropertyConfig }) {
             className={inp}
           />
           <p className="mt-1 text-xs text-gray-400">
-            Also update it in Content → Property Info to keep your website in sync.
+            Used in email subjects and the admin panel header. Also update it in{" "}
+            <strong className="text-gray-600">Content → Property Info</strong> to keep your website in sync — the two are stored separately.
           </p>
         </div>
       </section>

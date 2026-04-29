@@ -120,46 +120,55 @@ export default function HeroForm({ initial }: { initial: HeroContent }) {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 border-t border-gray-100 pt-4">
+      <div className="border-t border-gray-100 pt-4 space-y-4">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-700">Primary CTA Label</label>
-          <input
-            type="text"
-            value={form.primaryCTA.label}
-            onChange={(e) => set("primaryCTA", { ...form.primaryCTA, label: e.target.value })}
-            placeholder="e.g. Book Now"
-            className={inputClass}
-          />
+          <p className="text-xs font-semibold text-gray-700 mb-0.5">CTA Buttons</p>
+          <p className="text-xs text-gray-400 mb-3">
+            Only shown in <span className="font-medium text-gray-600">Editorial</span> and <span className="font-medium text-gray-600">Resort</span> layouts.
+            Not visible in the Default layout — the Default hero uses the booking bar and a scroll arrow instead.
+          </p>
         </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-gray-700">Primary CTA URL</label>
-          <input
-            type="text"
-            value={form.primaryCTA.url}
-            onChange={(e) => set("primaryCTA", { ...form.primaryCTA, url: e.target.value })}
-            placeholder="https://..."
-            className={inputClass}
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-gray-700">Secondary CTA Label</label>
-          <input
-            type="text"
-            value={form.secondaryCTA.label}
-            onChange={(e) => set("secondaryCTA", { ...form.secondaryCTA, label: e.target.value })}
-            placeholder="e.g. See Rooms"
-            className={inputClass}
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-gray-700">Secondary CTA URL</label>
-          <input
-            type="text"
-            value={form.secondaryCTA.url}
-            onChange={(e) => set("secondaryCTA", { ...form.secondaryCTA, url: e.target.value })}
-            placeholder="#rooms or https://..."
-            className={inputClass}
-          />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-700">Primary CTA Label</label>
+            <input
+              type="text"
+              value={form.primaryCTA.label}
+              onChange={(e) => set("primaryCTA", { ...form.primaryCTA, label: e.target.value })}
+              placeholder="e.g. Book Now"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-700">Primary CTA URL</label>
+            <input
+              type="text"
+              value={form.primaryCTA.url}
+              onChange={(e) => set("primaryCTA", { ...form.primaryCTA, url: e.target.value })}
+              placeholder="https://..."
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-700">Secondary CTA Label</label>
+            <input
+              type="text"
+              value={form.secondaryCTA.label}
+              onChange={(e) => set("secondaryCTA", { ...form.secondaryCTA, label: e.target.value })}
+              placeholder="e.g. See Rooms"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-700">Secondary CTA URL</label>
+            <input
+              type="text"
+              value={form.secondaryCTA.url}
+              onChange={(e) => set("secondaryCTA", { ...form.secondaryCTA, url: e.target.value })}
+              placeholder="#rooms or https://..."
+              className={inputClass}
+            />
+          </div>
         </div>
       </div>
 

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Villatly Admin Panel — Reference Guide</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 800px;
+    margin: 40px auto;
+    line-height: 1.5;
+  }
+  h1 { font-size: 22pt; font-weight: bold; color: #111; border-bottom: 2px solid #111; padding-bottom: 8px; margin-top: 0; }
+  h2 { font-size: 15pt; font-weight: bold; color: #111; border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-top: 30px; }
+  h3 { font-size: 12pt; font-weight: bold; color: #333; margin-top: 18px; margin-bottom: 4px; }
+  h4 { font-size: 11pt; font-weight: bold; color: #555; margin-top: 12px; margin-bottom: 2px; }
+  p { margin: 6px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 10pt; }
+  th { background: #f0f0f0; border: 1px solid #ccc; padding: 6px 10px; text-align: left; font-weight: bold; }
+  td { border: 1px solid #ddd; padding: 5px 10px; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  .note { background: #fff8e1; border-left: 4px solid #f5a623; padding: 8px 12px; margin: 10px 0; font-size: 10pt; }
+  .warning { background: #fff2f2; border-left: 4px solid #e74c3c; padding: 8px 12px; margin: 10px 0; font-size: 10pt; }
+  .tip { background: #f0f7ff; border-left: 4px solid #3498db; padding: 8px 12px; margin: 10px 0; font-size: 10pt; }
+  .label-pill { display: inline-block; background: #eee; border-radius: 4px; padding: 1px 6px; font-size: 9pt; font-family: monospace; color: #333; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 3px 0; }
+  .section-header { background: #f5f5f5; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 11pt; margin-top: 20px; }
+  .toc a { text-decoration: none; color: #1a5276; }
+  .toc li { margin: 4px 0; }
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<h1>Villatly Admin Panel<br><span style="font-size:14pt;font-weight:normal;color:#555">Reference Guide — All Sections &amp; Fields</span></h1>
+<p style="color:#888;font-size:10pt;">Last updated: April 2026 &nbsp;|&nbsp; villatly.com</p>
+
+<hr>
+
+<h2 style="border:none;margin-top:10px;">Contents</h2>
+<ol class="toc">
+  <li><a href="#nav">Navigation Overview</a></li>
+  <li><a href="#dashboard">Dashboard</a></li>
+  <li><a href="#reservations">Reservations</a></li>
+  <li><a href="#availability">Availability</a></li>
+  <li><a href="#content">Content</a>
+    <ul>
+      <li><a href="#identity">Property Info</a></li>
+      <li><a href="#hero">Hero Section</a></li>
+      <li><a href="#description">About / Description</a></li>
+      <li><a href="#amenities">Amenities</a></li>
+      <li><a href="#reviews">Guest Reviews</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="#nearby">Nearby Attractions</a></li>
+      <li><a href="#policies">Policies</a></li>
+      <li><a href="#contact">Contact &amp; Booking Links</a></li>
+      <li><a href="#seo">SEO &amp; Social</a></li>
+    </ul>
+  </li>
+  <li><a href="#rooms">Rooms</a></li>
+  <li><a href="#gallery">Gallery</a></li>
+  <li><a href="#branding">Branding</a></li>
+  <li><a href="#sections">Sections</a></li>
+  <li><a href="#booking">Booking</a></li>
+  <li><a href="#settings">Settings</a></li>
+  <li><a href="#duplicates">Field Overlap &amp; Notes</a></li>
+</ol>
+
+<div class="page-break"></div>
+
+<!-- ───────────────────────────────── NAVIGATION ─────────────────────────────────── -->
+<h2 id="nav">1. Navigation Overview</h2>
+<p>The admin panel is accessible at <strong>/admin</strong>. The top navigation bar contains:</p>
+<table>
+  <tr><th>Nav Item</th><th>URL</th><th>Purpose</th></tr>
+  <tr><td>Reservations</td><td>/admin/bookings</td><td>View and manage all bookings</td></tr>
+  <tr><td>Availability</td><td>/admin/availability</td><td>Block dates, set prices, manage iCal sync</td></tr>
+  <tr><td>Content</td><td>/admin/content</td><td>All guest-facing texts and media</td></tr>
+  <tr><td>Rooms</td><td>/admin/rooms</td><td>Room types, images, descriptions, specs</td></tr>
+  <tr><td>Gallery</td><td>/admin/gallery</td><td>Property-level photo gallery</td></tr>
+  <tr><td>Branding</td><td>/admin/branding</td><td>Colors, logo, favicon, layout, section colors</td></tr>
+  <tr><td>Sections</td><td>/admin/sections</td><td>Show/hide page sections</td></tr>
+  <tr><td>Booking</td><td>/admin/booking</td><td>Booking mode, currency, WhatsApp, CTA</td></tr>
+  <tr><td>Settings</td><td>/admin/settings</td><td>Notification email, timezone, deployment sync</td></tr>
+</table>
+<p>The <strong>View Site →</strong> link (top right) opens your public website in a new tab.</p>
+
+
+<!-- ───────────────────────────────── DASHBOARD ─────────────────────────────────── -->
+<h2 id="dashboard">2. Dashboard</h2>
+<p>The dashboard (<strong>/admin</strong>) shows a grid of quick-access cards, one per section. The <strong>Reservations</strong> card highlights in amber if there are bookings that need attention (pending review, payment failed, etc.).</p>
+<p>The header displays the property name and type from <strong>Settings → Property Name</strong> and <strong>Content → Property Info → Property Type / Location</strong>.</p>
+
+
+<!-- ───────────────────────────────── RESERVATIONS ─────────────────────────────────── -->
+<h2 id="reservations">3. Reservations</h2>
+<p>URL: <span class="label-pill">/admin/bookings</span></p>
+<p>Lists all bookings with their status, guest name, dates, room, and total price. Actions available per booking:</p>
+<ul>
+  <li><strong>Accept / Decline</strong> — for Request to Book mode</li>
+  <li><strong>Cancel</strong> — cancel a confirmed booking</li>
+  <li><strong>View detail</strong> — guest info, payment status, admin notes</li>
+</ul>
+
+<h3>Booking statuses</h3>
+<table>
+  <tr><th>Status</th><th>Meaning</th></tr>
+  <tr><td>Pending Review</td><td>Request submitted, awaiting your accept/decline</td></tr>
+  <tr><td>Confirmed</td><td>Booking active, dates blocked</td></tr>
+  <tr><td>Pending Payment</td><td>Awaiting guest payment (after acceptance)</td></tr>
+  <tr><td>Payment Failed</td><td>Stripe charge failed</td></tr>
+  <tr><td>Cancelled</td><td>Cancelled by guest or admin</td></tr>
+  <tr><td>Completed</td><td>Stay finished</td></tr>
+</table>
+
+<div class="note"><strong>Note:</strong> Bookings are not editable from this panel (dates, room, price). To manually create or adjust a booking, contact Villatly support.</div>
+
+
+<!-- ───────────────────────────────── AVAILABILITY ─────────────────────────────────── -->
+<h2 id="availability">4. Availability</h2>
+<p>URL: <span class="label-pill">/admin/availability</span></p>
+<p>Manage availability and pricing per room. Each room can have multiple physical units (e.g. Room 101, Room 102).</p>
+
+<h3>Fields per room</h3>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Base Price per Night</td><td>Default nightly rate when no seasonal period applies</td></tr>
+  <tr><td>Min Stay (nights)</td><td>Minimum number of nights required for a booking</td></tr>
+  <tr><td>Seasonal Price Periods</td><td>Custom pricing for date ranges (e.g. High Season, Christmas). Each period has: label, from date, to date, price per night.</td></tr>
+  <tr><td>Blocked Dates</td><td>Date ranges manually blocked (not available for booking). Shown in calendar view.</td></tr>
+  <tr><td>iCal Sync</td><td>External calendars (Airbnb, Booking.com) imported as blocked dates. One feed per unit. See iCal section below.</td></tr>
+</table>
+
+<h3>iCal Sync (per unit)</h3>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Label</td><td>Name of the platform (e.g. "Airbnb", "Booking.com")</td></tr>
+  <tr><td>iCal URL</td><td>The webcal:// or https:// feed URL from the external platform</td></tr>
+  <tr><td>Last synced</td><td>Timestamp of last successful sync (read only)</td></tr>
+</table>
+<div class="tip"><strong>Tip:</strong> iCal sync is one-way (import only). It pulls blocked dates from external platforms into Villatly's calendar. It does not push Villatly bookings back to those platforms.</div>
+
+
+<!-- ───────────────────────────────── CONTENT ─────────────────────────────────── -->
+<div class="page-break"></div>
+<h2 id="content">5. Content</h2>
+<p>URL: <span class="label-pill">/admin/content</span></p>
+<p>All guest-facing text, images, and structured content is organized here in collapsible accordion sections. Each section has its own Save button — changes are not shared between sections.</p>
+
+<!-- IDENTITY -->
+<h3 id="identity" class="section-header">5.1 Property Info</h3>
+<p>Basic metadata shown throughout the website (page header, hero eyebrow, location section, footer, emails).</p>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>Property Name</td><td>Website header, hero eyebrow, footer, emails</td><td>Keep in sync with <em>Settings → Property Name in Emails</em> (stored separately)</td></tr>
+  <tr><td>Property Type</td><td>Admin dashboard subtitle; some layout labels</td><td>Options: Villa, Hostel, Apartment, Homestay, Guesthouse</td></tr>
+  <tr><td>Location / City</td><td>Hero eyebrow ("Ubud, Bali")</td><td>Short form: "City, Region"</td></tr>
+  <tr><td>Country</td><td>Admin dashboard; some email templates</td><td>Full country name</td></tr>
+</table>
+<div class="warning"><strong>Important:</strong> Property Name here controls what guests see on the website. The name in <em>Settings</em> controls what appears in email subject lines and the admin panel header. Update both when renaming your property.</div>
+
+<!-- HERO -->
+<h3 id="hero" class="section-header">5.2 Hero Section</h3>
+<p>The full-screen opening section of your website.</p>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>Title <em>(required)</em></td><td>Large headline in the hero</td><td>Usually the property name. Max ~35 characters.</td></tr>
+  <tr><td>Tagline</td><td>Eyebrow text above the title (if no Location is set)</td><td>5–8 words max. Falls back to "Location · Property Type" when Location is filled.</td></tr>
+  <tr><td>Subtitle</td><td>Uppercase small text below the title</td><td>2–3 benefits. Max 130 characters. Displayed in all caps, tracking style.</td></tr>
+  <tr><td>Hero Image</td><td>Background of the entire hero section</td><td>Landscape format recommended. Min 1920px wide.</td></tr>
+  <tr><td>Photo Overlay</td><td>Darkens the hero image to improve text contrast</td><td>Slider 0–80%. Default: 30%. Only affects the Default layout.</td></tr>
+  <tr><td>Primary CTA Label + URL</td><td>Button in Editorial and Resort layouts only</td><td><strong>Not shown in the Default layout.</strong> Default uses the booking bar + scroll arrow instead.</td></tr>
+  <tr><td>Secondary CTA Label + URL</td><td>Secondary link in Editorial and Resort layouts only</td><td><strong>Not shown in the Default layout.</strong></td></tr>
+</table>
+<div class="note"><strong>Note (Default layout):</strong> In the Default layout the hero shows: eyebrow → title → subtitle → scroll arrow → booking bar (desktop only). The CTA button fields are ignored. They only take effect if you switch to Editorial or Resort layout in Branding.</div>
+
+<!-- DESCRIPTION -->
+<h3 id="description" class="section-header">5.3 About / Description</h3>
+<p>The "About" section of the website, below the hero.</p>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>Short Description</td><td>Preview cards, search results, meta fallback</td><td>1–2 sentences. Keep it punchy.</td></tr>
+  <tr><td>Long Description</td><td>About section body text</td><td>2–4 paragraphs. Supports line breaks.</td></tr>
+  <tr><td>About Image</td><td>Side-by-side image next to the description text</td><td>Optional. Portrait or square format works best.</td></tr>
+</table>
+
+<!-- AMENITIES -->
+<h3 id="amenities" class="section-header">5.4 Amenities</h3>
+<p>The amenities grid shown in the Amenities section of the page.</p>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Label</td><td>Name of the amenity (e.g. "Private Pool", "Free WiFi", "Airport Transfer")</td></tr>
+  <tr><td>Icon</td><td>Optional emoji or icon code displayed next to the label</td></tr>
+</table>
+<div class="tip"><strong>Tip:</strong> These are property-level amenities (applies to all rooms). Room-specific amenities (e.g. "Nespresso in room") are set per room in the Rooms section.</div>
+
+<!-- REVIEWS -->
+<h3 id="reviews" class="section-header">5.5 Guest Reviews</h3>
+<p>Displayed in the Reviews section. Add testimonials manually.</p>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Author Name</td><td>Guest's first name or full name</td></tr>
+  <tr><td>Review Text</td><td>The testimonial body</td></tr>
+  <tr><td>Rating</td><td>1–5 stars</td></tr>
+  <tr><td>Country</td><td>Optional. Shown as a flag or text next to the name.</td></tr>
+</table>
+
+<!-- FAQ -->
+<h3 id="faq" class="section-header">5.6 FAQ</h3>
+<p>Expandable question &amp; answer pairs shown in the FAQ section.</p>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Question</td><td>Shown as the accordion header</td></tr>
+  <tr><td>Answer</td><td>Shown when the item is expanded</td></tr>
+</table>
+
+<!-- LOCATION -->
+<h3 id="location" class="section-header">5.7 Location</h3>
+<p>The Location &amp; Map section of the page.</p>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>Area Name</td><td>Section heading ("Ubud, Bali")</td><td>Short form of location</td></tr>
+  <tr><td>Description</td><td>Body text in the Location section</td><td>Describe the area, surroundings, how to get there</td></tr>
+  <tr><td>Google Maps URL</td><td>Embedded map iframe</td><td>Paste any Google Maps share link — place URL, coordinates, or directions link. The embed is auto-generated.</td></tr>
+</table>
+
+<!-- NEARBY -->
+<h3 id="nearby" class="section-header">5.8 Nearby Attractions</h3>
+<p>A list of points of interest shown near the Location section.</p>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Name</td><td>Name of the attraction or place</td></tr>
+  <tr><td>Description</td><td>Short description (1–2 sentences)</td></tr>
+  <tr><td>Travel Time</td><td>Optional. e.g. "5 min walk", "15 min by scooter"</td></tr>
+</table>
+
+<!-- POLICIES -->
+<h3 id="policies" class="section-header">5.9 Policies</h3>
+<p>Displayed in the Policies &amp; Stay Info section and included in booking confirmation emails.</p>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Check-in Time</td><td>e.g. "15:00" or "3:00 PM". Shown to guests in confirmation emails and on the page.</td></tr>
+  <tr><td>Check-out Time</td><td>e.g. "11:00"</td></tr>
+  <tr><td>Cancellation Policy</td><td>Free text. Describe refund conditions, deadlines, etc.</td></tr>
+  <tr><td>Additional Notes</td><td>List of house rules or stay conditions (e.g. "No smoking on premises", "Pets not allowed"). Add one at a time with the Add button.</td></tr>
+</table>
+
+<!-- CONTACT -->
+<h3 id="contact" class="section-header">5.10 Contact &amp; Booking Links</h3>
+<p>Shown in the Contact CTA section and footer.</p>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>Email</td><td>Contact section, footer</td><td>Public contact email for guests</td></tr>
+  <tr><td>Phone</td><td>Contact section, footer</td><td>Optional. Include country code.</td></tr>
+  <tr><td>WhatsApp Number</td><td>Contact section fallback</td><td><strong>Optional fallback only.</strong> The main WhatsApp field is in <em>Booking → WhatsApp Number</em> — that one powers the booking bar, floating button, and all contact sections. Only fill this field if you want a different number for the contact section specifically.</td></tr>
+  <tr><td>CTA Buttons (up to 4)</td><td>Contact section as booking/action buttons</td><td>Add external links: Booking.com, Airbnb, your own booking engine, etc. The first button is styled as the primary CTA; the rest are secondary.</td></tr>
+</table>
+<div class="warning"><strong>WhatsApp — important:</strong> There are two WhatsApp fields in the system. The one in <em>Booking → WhatsApp Number</em> is the master — it powers the booking bar, floating button, and all contact areas. The one here is an optional override for the Contact section only. If you only fill one, fill the Booking one.</div>
+
+<!-- SEO -->
+<h3 id="seo" class="section-header">5.11 SEO &amp; Social</h3>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>Page Title</td><td>Browser tab, Google search results</td><td>Max 60 characters. Format: "Property Name | Tagline"</td></tr>
+  <tr><td>Meta Description</td><td>Google search snippet</td><td>Max 160 characters. Describe your property for potential guests finding you via search.</td></tr>
+  <tr><td>Social Share Image (OG Image)</td><td>Image when the link is shared on WhatsApp, Instagram, etc.</td><td>Use a 1200×630px landscape image. Ideally your best hero photo.</td></tr>
+</table>
+
+
+<!-- ───────────────────────────────── ROOMS ─────────────────────────────────── -->
+<div class="page-break"></div>
+<h2 id="rooms">6. Rooms</h2>
+<p>URL: <span class="label-pill">/admin/rooms</span></p>
+<p>Each room type is a separate entry. Pricing and availability are managed in <em>Availability</em>. Rooms are shown in the Rooms section of the public website.</p>
+
+<h3>Basic Information</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Room Name <em>(required)</em></td><td>e.g. "Master Suite", "Deluxe Dorm"</td></tr>
+  <tr><td>Short Description</td><td>One-line teaser shown in the room listing card</td></tr>
+  <tr><td>Description <em>(required)</em></td><td>Full description shown in the room detail popup</td></tr>
+</table>
+
+<h3>Media</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Main Image</td><td>Primary photo shown on the room card (4:3 ratio recommended)</td></tr>
+  <tr><td>Gallery Images</td><td>Additional photos shown in the room detail popup carousel. Upload multiple.</td></tr>
+</table>
+
+<h3>Room Details</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Max Guests</td><td>Maximum occupancy</td></tr>
+  <tr><td>Bed Type</td><td>e.g. "1 King Bed", "2 Single Beds", "6 Bunk Beds"</td></tr>
+  <tr><td>Bathroom</td><td>e.g. "Private en-suite", "Shared"</td></tr>
+  <tr><td>Room Size</td><td>e.g. "45 sqm" — display only, no calculations</td></tr>
+  <tr><td>Price From (display only)</td><td>e.g. "$120/night". A static label for display — the actual booking price is set in Availability.</td></tr>
+  <tr><td>Display Order</td><td>Lower number = shown first in the rooms grid</td></tr>
+  <tr><td>Mark as Featured</td><td>Featured rooms may be highlighted or shown first depending on layout</td></tr>
+</table>
+
+<h3>Highlights</h3>
+<p>Short bullet points shown as tags on the room card (e.g. "Private Pool", "Sea View", "Free Breakfast"). Add one at a time.</p>
+
+<h3>Room Amenities</h3>
+<p>Room-specific amenities (e.g. "Nespresso Machine", "Smart TV", "Outdoor shower"). Different from property-level amenities in the Content section.</p>
+
+<h3>Call to Action (optional)</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Button Label</td><td>e.g. "Book This Room". Leave blank to use the global booking CTA label.</td></tr>
+  <tr><td>Button URL</td><td>Optional external link (e.g. Booking.com room page). If blank, the button triggers the internal booking flow.</td></tr>
+</table>
+<div class="tip"><strong>Tip:</strong> If you leave Button URL blank, clicking the room CTA opens the built-in booking calendar. Only fill the URL if you want to send guests to an external booking platform for that specific room.</div>
+
+
+<!-- ───────────────────────────────── GALLERY ─────────────────────────────────── -->
+<h2 id="gallery">7. Gallery</h2>
+<p>URL: <span class="label-pill">/admin/gallery</span></p>
+<p>The property-level photo gallery shown in the Gallery section. Different from room gallery images (those are per-room, set in Rooms).</p>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Images</td><td>Upload or drag-and-drop photos. Each has an optional Alt Text for accessibility.</td></tr>
+  <tr><td>Order</td><td>Drag to reorder. First image is shown prominently.</td></tr>
+</table>
+
+
+<!-- ───────────────────────────────── BRANDING ─────────────────────────────────── -->
+<div class="page-break"></div>
+<h2 id="branding">8. Branding</h2>
+<p>URL: <span class="label-pill">/admin/branding</span></p>
+
+<h3>Colors</h3>
+<table>
+  <tr><th>Field</th><th>Where it appears</th></tr>
+  <tr><td>Primary Color</td><td>Navigation bar, booking bar background, primary buttons, accents throughout the site</td></tr>
+  <tr><td>Secondary Color</td><td>Secondary buttons, hover states, decorative elements</td></tr>
+  <tr><td>Accent Color</td><td>Highlights, badges, call-to-action emphasis elements</td></tr>
+</table>
+<p>Each color has both a color picker and a hex text input. The Color Preview section shows all three swatches together.</p>
+
+<h3>Page Layout</h3>
+<table>
+  <tr><th>Option</th><th>Description</th><th>Availability</th></tr>
+  <tr><td>Default</td><td>Clean, full-screen hero with booking bar anchored at the bottom. Scroll-arrow navigation. Works for all property types.</td><td>Free</td></tr>
+  <tr><td>Editorial</td><td>Magazine-style layout with large typography and CTA buttons in the hero.</td><td>Premium</td></tr>
+  <tr><td>Resort</td><td>Luxury resort aesthetic with full-bleed sections and immersive imagery.</td><td>Premium</td></tr>
+</table>
+<div class="note"><strong>Note:</strong> Premium layouts are unlocked by enabling <span class="label-pill">premiumLayouts: true</span> in your Villatly plan configuration. Contact Villatly to upgrade.</div>
+
+<h3>Logo</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Logo URL</td><td>Optional. Paste a URL to an image file (PNG with transparent background recommended). Leave blank to show the property name as text in the header.</td></tr>
+</table>
+
+<h3>Favicon</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Favicon URL</td><td>Optional. The small icon shown in browser tabs. Leave blank to use an auto-generated icon: the first letter of your property name on a background of your Primary Color. PNG or ICO, 64×64px recommended.</td></tr>
+</table>
+
+<h3>Section Background Colors</h3>
+<p>Override the default background color for any individual page section. Leave blank to keep that section's default color.</p>
+<table>
+  <tr><th>Section</th><th>Default appearance</th></tr>
+  <tr><td>Booking Bar</td><td>Uses Primary Color by default</td></tr>
+  <tr><td>About</td><td>White</td></tr>
+  <tr><td>Gallery</td><td>Light gray</td></tr>
+  <tr><td>Rooms</td><td>White</td></tr>
+  <tr><td>Amenities</td><td>Light gray</td></tr>
+  <tr><td>Reviews</td><td>White</td></tr>
+  <tr><td>FAQ</td><td>Light gray</td></tr>
+  <tr><td>Location</td><td>White</td></tr>
+  <tr><td>Nearby Attractions</td><td>Light gray</td></tr>
+  <tr><td>Policies</td><td>White</td></tr>
+  <tr><td>Contact CTA</td><td>Dark / Primary Color</td></tr>
+  <tr><td>Footer</td><td>Dark</td></tr>
+</table>
+
+
+<!-- ───────────────────────────────── SECTIONS ─────────────────────────────────── -->
+<h2 id="sections">9. Sections</h2>
+<p>URL: <span class="label-pill">/admin/sections</span></p>
+<p>Toggle each page section on or off. Hidden sections are completely removed from the public website. This does not delete the content — you can re-enable sections at any time.</p>
+<table>
+  <tr><th>Section</th><th>Notes</th></tr>
+  <tr><td>Hero</td><td>The opening full-screen section. Recommended: always ON.</td></tr>
+  <tr><td>Booking CTA Bar</td><td>The "Check Availability" bar (desktop: inside hero; mobile: below hero). Turn off if not taking direct bookings.</td></tr>
+  <tr><td>About / Description</td><td>Property description and optional side image.</td></tr>
+  <tr><td>Photo Gallery</td><td>The full property gallery grid.</td></tr>
+  <tr><td>Rooms / Accommodation</td><td>The rooms grid with pricing and detail popups.</td></tr>
+  <tr><td>Amenities</td><td>The amenities icon grid.</td></tr>
+  <tr><td>Guest Reviews</td><td>The testimonials section.</td></tr>
+  <tr><td>FAQ</td><td>The expandable FAQ accordion.</td></tr>
+  <tr><td>Location &amp; Map</td><td>The map embed and location description.</td></tr>
+  <tr><td>Nearby Attractions</td><td>The points of interest list.</td></tr>
+  <tr><td>Policies &amp; Stay Info</td><td>Check-in/out times, cancellation policy, house rules.</td></tr>
+  <tr><td>Contact CTA</td><td>The "Get in touch" CTA section with email/WhatsApp buttons.</td></tr>
+  <tr><td>Footer</td><td>The page footer. Recommended: always ON.</td></tr>
+</table>
+
+
+<!-- ───────────────────────────────── BOOKING ─────────────────────────────────── -->
+<div class="page-break"></div>
+<h2 id="booking">10. Booking</h2>
+<p>URL: <span class="label-pill">/admin/booking</span></p>
+
+<h3>Booking Mode</h3>
+<table>
+  <tr><th>Mode</th><th>How it works</th></tr>
+  <tr><td>Instant Book</td><td>Guest picks dates, pays via Stripe, and is confirmed immediately. Requires Stripe to be configured.</td></tr>
+  <tr><td>Request to Book</td><td>Guest submits a request (no payment). You accept or decline. If accepted, the guest receives a Stripe payment link. Works without Stripe for receiving requests.</td></tr>
+</table>
+
+<h3>Online Payments (Stripe)</h3>
+<p>This panel shows whether Stripe is configured (active / not configured). To activate Stripe, add <span class="label-pill">STRIPE_SECRET_KEY</span>, <span class="label-pill">STRIPE_WEBHOOK_SECRET</span>, and <span class="label-pill">NEXT_PUBLIC_URL</span> to your Vercel environment variables.</p>
+
+<h3>Booking Settings</h3>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>CTA Button Label</td><td>Booking bar button, rooms CTA (default)</td><td>e.g. "Check Availability", "Book Now", "Request a Stay"</td></tr>
+  <tr><td>Currency</td><td>Price displays throughout the site and in emails</td><td>ISO 4217 code: USD, EUR, GBP, IDR, AUD, etc. Uppercase only.</td></tr>
+</table>
+
+<h3>Fallback Contact</h3>
+<table>
+  <tr><th>Field</th><th>Where it appears</th><th>Notes</th></tr>
+  <tr><td>Preferred Contact Method</td><td>Determines which contact is shown most prominently when Stripe is not set up</td><td>Email or WhatsApp</td></tr>
+  <tr><td>Booking Email</td><td>Fallback contact email, some email templates</td><td>e.g. reservations@yourvilla.com</td></tr>
+  <tr><td>WhatsApp Number <strong>(master)</strong></td><td>Booking bar, floating button, Contact CTA section, all contact areas across the site</td><td><strong>This is the main WhatsApp field for the whole site.</strong> Include country code: +62 812 345 6789. This powers the floating WhatsApp button and the booking bar contact option.</td></tr>
+  <tr><td>Show floating WhatsApp button</td><td>Floating circle button on all pages (bottom right corner)</td><td>Checkbox. Visible only if a WhatsApp number is set. Uncheck to hide the button without removing the number.</td></tr>
+</table>
+<div class="tip"><strong>Tip:</strong> The WhatsApp number here (Booking Settings) is the master for the whole site. The optional WhatsApp field in <em>Content → Contact</em> is only a fallback and is rarely needed.</div>
+
+
+<!-- ───────────────────────────────── SETTINGS ─────────────────────────────────── -->
+<h2 id="settings">11. Settings</h2>
+<p>URL: <span class="label-pill">/admin/settings</span></p>
+
+<h3>Booking Notification Email</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Notification Email</td><td>Where booking alerts are sent: new bookings, cancellations, payment failures, refund alerts. Can be any email address — it doesn't need to be your login email. Your admin login email is fixed in Vercel environment variables (<span class="label-pill">ADMIN_EMAIL</span>) and cannot be changed here.</td></tr>
+</table>
+
+<h3>Property Name in Emails</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Property Name</td><td>Appears in email subjects ("Booking confirmed at Villa Amara") and in the admin panel header. <strong>Separate from</strong> Content → Property Info → Property Name (which controls the website). Update both when renaming your property.</td></tr>
+</table>
+
+<h3>Timezone</h3>
+<table>
+  <tr><th>Field</th><th>Notes</th></tr>
+  <tr><td>Property Timezone</td><td>Used to display check-in and check-out times correctly in emails and the admin panel. Select the timezone where your property is physically located.</td></tr>
+</table>
+
+<h3>Sync Content from Deployment</h3>
+<p>This action overwrites all live database content (texts, images, colors, pricing) with the JSON files bundled in the current Vercel deployment. Use this after pushing new template content to the server.</p>
+<div class="warning"><strong>Destructive action:</strong> Clicking "Sync from deployment files" and confirming with the word <strong>SYNC</strong> will permanently replace all changes made through the admin panel with the deployment's seed files. This cannot be undone. Only use this if you intentionally want to reset to the last deployed content.</div>
+
+
+<!-- ───────────────────────────────── DUPLICATES ─────────────────────────────────── -->
+<div class="page-break"></div>
+<h2 id="duplicates">12. Field Overlap &amp; Important Notes</h2>
+
+<h3>Property Name — two fields, same value needed</h3>
+<table>
+  <tr><th>Location</th><th>Used for</th><th>Action required</th></tr>
+  <tr><td>Content → Property Info → Property Name</td><td>Website: header, hero, footer, guest-facing text</td><td rowspan="2">Update <strong>both</strong> when renaming the property</td></tr>
+  <tr><td>Settings → Property Name in Emails</td><td>Email subjects, admin dashboard title</td></tr>
+</table>
+
+<h3>WhatsApp — master vs fallback</h3>
+<table>
+  <tr><th>Location</th><th>Role</th><th>What it powers</th></tr>
+  <tr><td>Booking → WhatsApp Number</td><td><strong>Master field</strong></td><td>Booking bar, floating button, Contact CTA, all contact sections</td></tr>
+  <tr><td>Content → Contact → WhatsApp Number</td><td>Optional fallback</td><td>Only overrides the Contact section if the Booking field is empty. Rarely needed.</td></tr>
+</table>
+<p><strong>Rule:</strong> Always use the Booking Settings field. Leave the Contact field empty unless you specifically need a different number for the Contact section.</p>
+
+<h3>Hero CTA buttons — layout-dependent</h3>
+<table>
+  <tr><th>Layout</th><th>Hero CTA buttons shown?</th><th>Hero interaction</th></tr>
+  <tr><td>Default (free)</td><td>No</td><td>Booking bar (desktop) + scroll arrow</td></tr>
+  <tr><td>Editorial (premium)</td><td>Yes — Primary + Secondary CTA</td><td>Buttons link to URL or open booking flow</td></tr>
+  <tr><td>Resort (premium)</td><td>Yes — Primary + Secondary CTA</td><td>Buttons link to URL or open booking flow</td></tr>
+</table>
+<p>The CTA Label/URL fields in Hero are stored but only visible to guests if you are on a premium layout. On the Default layout, those fields have no effect.</p>
+
+<h3>Room pricing — display vs actual</h3>
+<table>
+  <tr><th>Field</th><th>Location</th><th>Purpose</th></tr>
+  <tr><td>Price From</td><td>Rooms → Room Details</td><td>Static text label displayed on the room card. No calculations. e.g. "from $120/night".</td></tr>
+  <tr><td>Base Price per Night</td><td>Availability → Room</td><td>Actual price used for booking calculations, calendar, and payment.</td></tr>
+  <tr><td>Seasonal Price Periods</td><td>Availability → Room</td><td>Override the base price for specific date ranges.</td></tr>
+</table>
+<p><strong>Rule:</strong> Availability prices are what guests are charged. The "Price From" in Rooms is decoration only.</p>
+
+<h3>Gallery — two levels</h3>
+<table>
+  <tr><th>Gallery type</th><th>Location</th><th>Shown in</th></tr>
+  <tr><td>Property Gallery</td><td>Gallery section (main nav)</td><td>Gallery section of the public page</td></tr>
+  <tr><td>Room Gallery</td><td>Rooms → [room] → Gallery Images</td><td>Room detail popup when a guest clicks a room</td></tr>
+</table>
+
+<hr style="margin-top:40px;">
+<p style="font-size:9pt;color:#aaa;text-align:center;">Villatly Admin Reference Guide &nbsp;|&nbsp; villatly.com &nbsp;|&nbsp; For support: support@villatly.com</p>
+
+</body>
+</html>
