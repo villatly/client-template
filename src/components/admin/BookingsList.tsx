@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import type { Booking, BookingStatus } from "@/lib/types";
+import type { Booking, BookingStatus, AvailabilityData } from "@/lib/types";
 import PriceBreakdown from "@/components/template/PriceBreakdown";
 
 // ─── Status display helpers ───────────────────────────────────────────────────
@@ -432,7 +432,7 @@ function DetailPanel({
           <TimelineRow label="Check-in"  date={booking.checkIn} />
           <TimelineRow label="Check-out" date={booking.checkOut} />
           <Row label="Source">{booking.source} · {booking.confirmationMode}</Row>
-          <Row label="Unit">{booking.unitId ?? "—"}</Row>
+          <Row label="Unit">{resolveUnitLabel(booking.unitId, availability)}</Row>
         </div>
       </section>
 
@@ -858,11 +858,22 @@ function BookingRow({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
+function resolveUnitLabel(unitId: string | undefined, availability: AvailabilityData): string {
+  if (!unitId) return "—";
+  for (const rd of Object.values(availability)) {
+    const unit = rd.units?.find((u) => u.id === unitId);
+    if (unit) return unit.label || unitId;
+  }
+  return unitId;
+}
+
 export default function BookingsList({
   initialBookings,
+  availability = {},
 }: {
   initialBookings: Booking[];
   currency: string; // kept for compat but currency is per-booking
+  availability?: AvailabilityData;
 }) {
   const [bookings, setBookings] = useState<Booking[]>(
     // Most recent first
