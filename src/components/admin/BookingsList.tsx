@@ -164,9 +164,11 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
 function DetailPanel({
   booking,
   onUpdate,
+  availability,
 }: {
   booking: Booking;
   onUpdate: (b: Booking) => void;
+  availability: AvailabilityData;
 }) {
   const [notes, setNotes] = useState(booking.adminNotes ?? "");
   const [notesSaved, setNotesSaved] = useState(false);
@@ -778,11 +780,13 @@ function BookingRow({
   expanded,
   onToggle,
   onUpdate,
+  availability,
 }: {
   booking: Booking;
   expanded: boolean;
   onToggle: () => void;
   onUpdate: (b: Booking) => void;
+  availability: AvailabilityData;
 }) {
   const badge = STATUS_BADGE[booking.status];
   const isMuted = booking.status === "cancelled" || booking.status === "expired" || booking.status === "rejected";
@@ -850,7 +854,7 @@ function BookingRow({
       </button>
 
       {expanded && (
-        <DetailPanel booking={booking} onUpdate={onUpdate} />
+        <DetailPanel booking={booking} onUpdate={onUpdate} availability={availability} />
       )}
     </div>
   );
@@ -968,6 +972,7 @@ export default function BookingsList({
               expanded={expandedId === b.id}
               onToggle={() => setExpandedId(expandedId === b.id ? null : b.id)}
               onUpdate={updateBooking}
+              availability={availability}
             />
           ))}
         </div>
