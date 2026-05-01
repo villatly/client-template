@@ -1,16 +1,16 @@
 {
   "identity": {
     "slug": "pitch",
-    "name": "Your Property Name",
+    "name": "Metis Eco Lodge",
     "propertyType": "villa",
-    "location": "Location, Country",
+    "location": "Kuta, Lombok, Indonesia",
     "country": ""
   },
   "hero": {
-    "headline": "Your Property Name",
+    "headline": "Metis Eco Lodge",
     "tagline": "Your tagline here",
-    "intro": "A short line about what makes this place special — change this from the admin.",
-    "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&q=80",
+    "intro": "Simple eco bungalows above Kuta, where ocean views, jungle calm, and slow Lombok days reconnect you with nature and island soul",
+    "image": "/uploads/1777630120078-q1dge8.jpg",
     "primaryCTA": {
       "label": "Check Availability",
       "url": "#booking"
@@ -19,7 +19,7 @@
       "label": "Explore",
       "url": "#gallery"
     },
-    "overlayOpacity": 30
+    "overlayOpacity": 50
   },
   "description": {
     "short": "Placeholder description.",

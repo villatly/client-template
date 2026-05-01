@@ -34,11 +34,9 @@ export default function Accordion({ sections }: { sections: Section[] }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          {open === s.id && (
-            <div className="border-t border-gray-100 px-5 py-5">
-              {s.form}
-            </div>
-          )}
+          <div className={`border-t border-gray-100 px-5 py-5 ${open === s.id ? "" : "hidden"}`}>
+            {s.form}
+          </div>
         </div>
       ))}
     </div>
