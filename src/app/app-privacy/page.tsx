@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Content Auto Publisher",
+  title: "Privacy Policy — Infoteclive Publisher",
   robots: { index: false },
 };
 
@@ -24,7 +24,7 @@ export default function AppPrivacyPage() {
               <rect width="100" height="100" rx="18" fill={GOLD} />
               <polygon points="28,18 28,82 82,50" fill={NAVY} />
             </svg>
-            <span style={{ fontWeight: 700, fontSize: 16, color: CREAM }}>Content Auto Publisher</span>
+            <span style={{ fontWeight: 700, fontSize: 16, color: CREAM }}>Infoteclive Publisher</span>
           </div>
           <nav style={{ display: "flex", gap: 24, fontSize: 13 }}>
             <span style={{ color: GOLD, borderBottom: `1px solid ${GOLD}`, paddingBottom: 2 }}>Privacy Policy</span>
