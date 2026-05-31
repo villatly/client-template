@@ -26,6 +26,7 @@ export default function AppTermsPage() {
             <span style={{ fontWeight: 700, fontSize: 16, color: CREAM }}>Infoteclive Publisher</span>
           </div>
           <nav style={{ display: "flex", gap: 24, fontSize: 13 }}>
+            <Link href="/app-home" style={{ color: MUTED, textDecoration: "none" }}>Home</Link>
             <Link href="/app-privacy" style={{ color: MUTED, textDecoration: "none" }}>Privacy Policy</Link>
             <span style={{ color: GOLD, borderBottom: `1px solid ${GOLD}`, paddingBottom: 2 }}>Terms of Service</span>
           </nav>
@@ -88,6 +89,7 @@ export default function AppTermsPage() {
       {/* Footer */}
       <footer style={{ borderTop: `1px solid #1e3a52`, padding: "24px 0" }}>
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 24px", display: "flex", gap: 24, fontSize: 13, color: MUTED }}>
+          <Link href="/app-home" style={{ color: MUTED, textDecoration: "none" }}>Home</Link>
           <Link href="/app-privacy" style={{ color: MUTED, textDecoration: "none" }}>Privacy Policy</Link>
           <span style={{ color: GOLD }}>Terms of Service</span>
         </div>
