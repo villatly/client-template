@@ -43,6 +43,15 @@ if (process.env.NODE_ENV === "production") {
 // ─── Next.js config ───────────────────────────────────────────────────────────
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/app-privacy",
+        permanent: false,
+      },
+    ];
+  },
   // Without this, Turbopack walks up to D:\LandigsBali (the .git root) and
   // uses it as the module resolution root — where there is no node_modules.
   // This fixes CSS @import "tailwindcss" resolution in dev mode.
