@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 /**
  * GDPR-compliant cookie consent banner.
@@ -14,6 +15,9 @@ import { useState, useEffect } from "react";
  */
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/app-")) return null;
 
   useEffect(() => {
     const consent = localStorage.getItem("cookie_consent");
