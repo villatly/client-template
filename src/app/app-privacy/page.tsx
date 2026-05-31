@@ -27,6 +27,7 @@ export default function AppPrivacyPage() {
             <span style={{ fontWeight: 700, fontSize: 16, color: CREAM }}>Infoteclive Publisher</span>
           </div>
           <nav style={{ display: "flex", gap: 24, fontSize: 13 }}>
+            <Link href="/app-home" style={{ color: MUTED, textDecoration: "none" }}>Home</Link>
             <span style={{ color: GOLD, borderBottom: `1px solid ${GOLD}`, paddingBottom: 2 }}>Privacy Policy</span>
             <Link href="/app-terms" style={{ color: MUTED, textDecoration: "none" }}>Terms of Service</Link>
           </nav>
@@ -81,6 +82,7 @@ export default function AppPrivacyPage() {
       {/* Footer */}
       <footer style={{ borderTop: `1px solid #1e3a52`, padding: "24px 0" }}>
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 24px", display: "flex", gap: 24, fontSize: 13, color: MUTED }}>
+          <Link href="/app-home" style={{ color: MUTED, textDecoration: "none" }}>Home</Link>
           <span style={{ color: GOLD }}>Privacy Policy</span>
           <Link href="/app-terms" style={{ color: MUTED, textDecoration: "none" }}>Terms of Service</Link>
         </div>

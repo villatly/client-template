@@ -47,7 +47,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: "/app-privacy",
+        destination: "/app-home",
         permanent: false,
       },
     ];
